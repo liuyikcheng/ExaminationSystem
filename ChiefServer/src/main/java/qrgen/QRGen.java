@@ -113,8 +113,7 @@ public class QRgen extends JPanel {
         hints.put(EncodeHintType.AZTEC_LAYERS, 10);
         hints.put("Version", "10");
         
-        
-        
+        if(!this.qrCode.equals("")){
             try {
 
                 BitMatrix byteMatrix = qrCodeWriter.encode(qrCode, BarcodeFormat.QR_CODE, width, height,hints);
@@ -129,20 +128,21 @@ public class QRgen extends JPanel {
             } catch (WriterException ex) {
                 Logger.getLogger(QRgen.class.getName()).log(Level.SEVERE, null, ex);
             }
-            SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run(){
-
-//                try 
-////                  (new ClientComm(socket, serverComm)).start();
+//            SwingUtilities.invokeLater(new Runnable(){
+//            @Override
+//            public void run(){
 //
-////                    System.out.print(socket.getLocalPort());
-//                } catch (Exception ex) {
-//                    System.out.println("Error: Create new ClientComm failed. ");
-//                }
-                
-            }
-    });
+////                try 
+//////                  (new ClientComm(socket, serverComm)).start();
+////
+//////                    System.out.print(socket.getLocalPort());
+////                } catch (Exception ex) {
+////                    System.out.println("Error: Create new ClientComm failed. ");
+////                }
+//                
+//            }
+//    });
+        }
     }
     
     

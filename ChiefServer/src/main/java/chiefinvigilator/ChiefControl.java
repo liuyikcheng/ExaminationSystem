@@ -121,7 +121,7 @@ public class ChiefControl {
             System.out.println(randomString);
             generateQRInterface(socket, randomString); ///need to remove this
             System.out.println("new clientComm created");
-            (new ClientComm(socket, this.serverComm, this.invMap, this.chief, this.qrgen)).start();
+            (new ClientComm(socket, this.serverComm, this.invMap, this.chief, this.qrgen, this)).start();
 //            timer.start();
         }
 //        else
@@ -133,6 +133,13 @@ public class ChiefControl {
         this.qrgen.setPreferredSize(new Dimension(500,500));
       
         chiefGui.addQRPanel(qrgen);
+    }
+    
+    public void createNewClientComm() throws IOException{
+        ServerSocket socket = new ServerSocket();
+        chief.setPort();
+        socket = this.chief.getServerSocket();
+        (new ClientComm(socket, this.serverComm, this.invMap, this.chief, this.qrgen, this)).start();
     }
     
 

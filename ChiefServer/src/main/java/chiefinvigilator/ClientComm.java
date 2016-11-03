@@ -60,6 +60,7 @@ public class ClientComm extends Thread {
     private ChiefServer chiefServer;
     private QRgen qrGen;
     private String challengeMsg;
+    private ChiefControl chiefControl;
     
     //Send The message inside the queue
     private Thread queueThread = new Thread(new Runnable() {
@@ -79,13 +80,15 @@ public class ClientComm extends Thread {
     }
     
     public ClientComm(ServerSocket socket, ServerComm serverComm,
-            HashMap invMap, ChiefServer chiefServer, QRgen qrGen) throws IOException{
+            HashMap invMap, ChiefServer chiefServer, QRgen qrGen,
+            ChiefControl chiefControl) throws IOException{
         this.socket= socket; 
         this.serverComm = serverComm;
         this.threadId = Thread.currentThread().getId();
         this.invMap = invMap;
         this.chiefServer = chiefServer;
         this.qrGen = qrGen;
+        this.chiefControl = chiefControl;
         serverComm.createReceiveQueue(this.threadId);
         timer.start();
         
@@ -109,6 +112,7 @@ public class ClientComm extends Thread {
                     setClient(this.socket.accept());
                     
                     timer.stop(); //stop generate QRcode
+                    this.chiefControl.createNewClientComm();
                     
                     queueThread.start(); // create a queue with the serverComm
                     System.out.println("connected to "+ getClient().getRemoteSocketAddress());
@@ -159,13 +163,13 @@ public class ClientComm extends Thread {
             
             switch(checkIn){
                 case CheckInType.STAFF_LOGIN : 
-                                    this.setStaff(new Staff(json.getString(JSONKey.ID_NO)));
+                                    this.setStaff(new Staff(json.getString(InfoType.ID_NO)));
                                     this.getStaff().setInvInfo();
                                     this.getServerComm().getSendQueue(new ThreadMessage(this.getThreadId(),message,this.challengeMsg)); // send to main server
                                     break;
                                     
                 case CheckInType.EXAM_INFO_LIST :  
-                                    this.staff.prepareInvExamList(json.getString(JSONKey.VENUE));
+                                    sendMessage(this.staff.prepareInvExamList(json.getString(InfoType.VALUE)).toString());
                                     break;
                                     
                 case CheckInType.STAFF_RECONNECT:   
@@ -548,6 +552,10 @@ public class ClientComm extends Thread {
      */
     public void setStaff(Staff staff) {
         this.staff = staff;
+    }
+    
+    public void setChiefControl(ChiefControl chiefControl){
+        this.chiefControl = chiefControl;
     }
     
     public void setChallengeMsg(String challengeMsg){

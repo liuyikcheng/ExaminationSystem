@@ -290,7 +290,7 @@ public class Staff {
             papers = papersToJson(getPapers(venue));
             JSONArray attdList = cddListToJson(getCddList(venue));
             
-            json.put(InfoType.CANDIDATE_LIST, attdList);
+            json.put(InfoType.ATTENDANCE_LIST, attdList);
             json.put(InfoType.PAPER_LIST, papers);
             json.put(InfoType.RESULT, true);
             json.put(InfoType.TYPE, CheckInType.EXAM_INFO_LIST);

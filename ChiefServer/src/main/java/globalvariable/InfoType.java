@@ -11,6 +11,7 @@ package globalvariable;
  */
 public class InfoType {
     public static final String CANDIDATE_LIST = "CddList";
+    public static final String ATTENDANCE_LIST = "AttendanceList";
     public static final String PAPER_LIST = "PaperMap";
     public static final String RESULT = "Result";
     public static final String TYPE = "Type";
