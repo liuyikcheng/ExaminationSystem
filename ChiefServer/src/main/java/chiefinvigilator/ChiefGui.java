@@ -104,6 +104,8 @@ public class ChiefGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        signInButton.setText("Sign In");
+
         staffInfoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

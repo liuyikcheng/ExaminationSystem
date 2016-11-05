@@ -106,7 +106,7 @@ public class Candidate {
             json.put("ExamIndex", getExamId());
             json.put("RegNum", getRegNum());
             json.put("Status", getStatus());
-            json.put("Code", getPaperCode());
+            json.put("PaperCode", getPaperCode());
             json.put("Programme", getProgramme());
         }catch (JSONException ex){
             throw new Exception("Error: " + ex.getMessage());
@@ -128,7 +128,7 @@ public class Candidate {
        
         this.examId = json.getString("ExamIndex");
         this.tableNo = json.getInt("TableNo");
-        this.paperCode = json.getString("Code");
+        this.paperCode = json.getString("PaperCode");
         this.attendance = json.getString("Attendance");
         }catch(JSONException ex){
             throw new Exception("Error: " + ex.getMessage());

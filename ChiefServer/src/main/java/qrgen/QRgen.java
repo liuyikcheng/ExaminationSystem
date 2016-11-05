@@ -73,15 +73,13 @@ public class QRgen extends JPanel {
      * @param socket 
      */
     public void regenerateQR(ServerSocket socket, ServerComm serverComm, String randomString) throws Exception{
-        JLabel qrLabel = new JLabel("Scan the QR Code to sign in");
-        qrLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        this.add(qrLabel);
         this.serverComm = serverComm;
         this.socket = socket;
         this.randomString = randomString;
         
             try {
                 
+//                this.qrCode = "$CHIEF:"+localIp(socket.getLocalPort())+":"+randomString+":$";
                 this.qrCode = "$CHIEF:"+localIp(socket.getLocalPort())+":"+randomString+":$";
             } catch (Exception ex) {
                 Logger.getLogger(QRgen.class.getName()).log(Level.SEVERE, null, ex);

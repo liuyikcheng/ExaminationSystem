@@ -31,8 +31,12 @@ public class ChiefControl {
     ChiefGui chiefGui;
     ChiefModel chiefModel;
     ServerComm serverComm;
+    ClientComm currentClientComm;
     ChiefServer chief;
     QRgen qrgen;
+    
+    
+    Timer timer = new Timer(4000, new ChiefControl.TimerActionListener());
     
     HashMap invMap = new HashMap();
     Integer invNum;
@@ -42,7 +46,6 @@ public class ChiefControl {
         this.invNum = 0;
         this.chiefGui = chiefGui;
         this.chiefGui.setVisible(true);
-//        this.chiefModel = chiefModel;
         serverComm = new ServerComm();
         chief = new ChiefServer();
         
@@ -112,34 +115,48 @@ public class ChiefControl {
      */
     public void activateQRTab(Integer tabNum) throws IOException{
         
+        generateQRInterface();
+        
         if(tabNum == 1){
-            ServerSocket socket = new ServerSocket();
-            
-            String randomString = this.generateRandomString();
-            chief.setPort();
-            socket = this.chief.getServerSocket();
-            System.out.println(randomString);
-            generateQRInterface(socket, randomString); ///need to remove this
-            System.out.println("new clientComm created");
-            (new ClientComm(socket, this.serverComm, this.invMap, this.chief, this.qrgen, this)).start();
-//            timer.start();
+            try {
+                createNewClientComm();
+//                timer.start();
+            } catch (Exception ex) {
+                Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-//        else
+        else{
 //            timer.stop();
+        }
     }
     
-    public void generateQRInterface(ServerSocket socket, String randomString){
+    public void generateQRInterface(){
         this.qrgen = new QRgen();
         this.qrgen.setPreferredSize(new Dimension(500,500));
       
         chiefGui.addQRPanel(qrgen);
     }
     
-    public void createNewClientComm() throws IOException{
+    public void createNewClientComm() throws IOException, Exception{
         ServerSocket socket = new ServerSocket();
+            
+        String randomString = this.generateRandomString();
         chief.setPort();
         socket = this.chief.getServerSocket();
-        (new ClientComm(socket, this.serverComm, this.invMap, this.chief, this.qrgen, this)).start();
+        System.out.println(randomString);
+        System.out.println("new clientComm created");
+        this.currentClientComm = new ClientComm(socket, this.serverComm, this.chief, this.qrgen, this);
+        (this.currentClientComm).start();
+        regenerateCurrentQRInterface();
+        
+    }
+    
+    public void regenerateCurrentQRInterface(){
+        try {
+            this.currentClientComm.requestForRandomMessage();
+        } catch (Exception ex) {
+            Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 
@@ -187,4 +204,15 @@ public class ChiefControl {
         return saltStr;
     }
 
+    class TimerActionListener implements ActionListener{
+      public void actionPerformed(ActionEvent e) {
+          try {
+              regenerateCurrentQRInterface();
+          } catch (Exception ex) {
+              System.out.println("Error TimerActionListener->actionPerformed");
+          }
+            
+      }
+    }
+    
 }

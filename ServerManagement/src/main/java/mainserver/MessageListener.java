@@ -15,8 +15,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -24,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import querylist.CddPaper;
 import querylist.ExamDataList;
+import querylist.CandidateAttendance;
 
 /**
  *
@@ -72,9 +76,8 @@ public class MessageListener extends Thread{
     
     private void sendMessage(String message) throws IOException{
         
-        DataOutputStream out =
-                 new DataOutputStream(client.getOutputStream());
-            out.writeUTF(message);
+        DataOutputStream out = new DataOutputStream(client.getOutputStream());
+        out.writeUTF(message);
         System.out.println("Message sent: " + message);
     }
     
@@ -107,8 +110,16 @@ public class MessageListener extends Thread{
                                     sendMessage(jsonIdentity.toString());
                                     break;
                                     
-                case CheckInType.CDDPAPERS:   sendMessage(cddPaperListToJson(json.getString(InfoType.VALUE)));
+                case CheckInType.CDDPAPERS:   
+                                    sendMessage(cddPaperListToJson(json.getString(InfoType.VALUE)));
                                     break;
+                                    
+                case CheckInType.GEN_RANDOM_MSG:
+                                    sendMessage(challengMsgToJson(json, generateRandomString()).toString());
+                                    break;
+                                    
+                case CheckInType.ATTDLIST:
+                                    updateDB();
             }
         } catch (Exception ex) {
             Logger.getLogger(MessageListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -116,6 +127,29 @@ public class MessageListener extends Thread{
         
         
     }
+    
+    public void updateDB(){
+        
+    }
+    
+    public void updateCddAttdList(ArrayList<CandidateAttendance> cddAttdList) throws SQLException{
+        Connection conn = new ConnectDB().connect();
+        
+        for(int i=0; i<cddAttdList.size(); i++){
+            String sql = "UPDATE CandidateAttendance "
+                    + "SET Attendance = ?, TableNum = ? "
+                    + "Where CA_id = ? ";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, cddAttdList.get(i).getAttendance());
+            ps.setInt(2, cddAttdList.get(i).getTableNo());
+            ps.setInt(3, cddAttdList.get(i).getCa_id());
+
+            ps.executeUpdate();
+            ps.close();
+           
+       }
+        conn.close();
+   }
     
     /**
     * @brief    To convert a boolean into JSON object
@@ -138,6 +172,7 @@ public class MessageListener extends Thread{
             System.out.println(jsonReceived.toString());
             if(new ChiefData().verifyStaff(jsonReceived.getString(InfoType.ID_NO), jsonReceived.getString(InfoType.PASSWORD), jsonReceived.getString(InfoType.RANDOM_MSG))){
                 json.put(InfoType.RESULT, true);
+                
                 System.out.println("checkasas");
             }
             else
@@ -172,8 +207,8 @@ public class MessageListener extends Thread{
             //System.out.println(chief.getCddAttdList().get(0).getCa_id());
             jsonString = mapper.writeValueAsString(examDataList);
             JSONObject jsonData = new JSONObject(jsonString);
-            json.put("CheckIn", "ExamData");
-            json.put("Values", jsonData);
+            json.put(InfoType.TYPE, CheckInType.EXAM_INFO_LIST);
+            json.put(InfoType.VALUE, jsonData);
         } catch (SQLException | IOException ex) {
             Logger.getLogger(MessageListener.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -208,14 +243,41 @@ public class MessageListener extends Thread{
             cddPaperList = chief.getCddPaperList(regNum);
             jsonString = mapper.writeValueAsString(cddPaperList);
             JSONObject jsonData = new JSONObject(jsonString);
-            json.put("Result", true);
-            json.put("Values", jsonData);
+            json.put(InfoType.RESULT, true);
+            json.put(InfoType.VALUE, jsonData);
         } catch (SQLException ex) {
-            json.put("Result", false);
+            json.put(InfoType.RESULT, false);
         }
         
-        json.put("CheckIn", "CddPapers");
+        json.put(InfoType.TYPE, CheckInType.CDDPAPERS);
         return json.toString();
+    }
+    
+    /**
+     * 
+     */
+    protected JSONObject challengMsgToJson(JSONObject jsonMessage, String challengMsg){
+        JSONObject json = new JSONObject(jsonMessage.toString());
+        System.out.println(json.toString());
+        json.put(InfoType.VALUE, challengMsg);
+        System.out.println(jsonMessage.toString());
+        return json;
+    }
+    
+    /**
+     * @brief   To generate a random message with certain character string
+     * @return 
+     */
+    protected String generateRandomString() {
+        String seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+Long.toString(System.nanoTime());
+        StringBuilder str = new StringBuilder();
+        Random rnd = new Random();
+        while (str.length() < 18) {
+            int index = (int) (rnd.nextFloat() * seed.length());
+            str.append(seed.charAt(index));
+        }
+        String saltStr = str.toString();
+        return saltStr;
     }
     
 }

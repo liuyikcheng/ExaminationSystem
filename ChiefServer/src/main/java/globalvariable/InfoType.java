@@ -14,6 +14,7 @@ public class InfoType {
     public static final String ATTENDANCE_LIST = "AttendanceList";
     public static final String PAPER_LIST = "PaperMap";
     public static final String RESULT = "Result";
+    public static final String DUEL_MSG = "DuelMsg";
     public static final String TYPE = "Type";
     public static final String CHECK_IN = "CheckIn";
     public static final String HASHCODE = "HashPass";

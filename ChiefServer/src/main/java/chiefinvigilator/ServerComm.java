@@ -17,8 +17,12 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -86,10 +90,10 @@ public class ServerComm extends Thread implements Runnable{
     public void run(){
         this.queueThread.start();
         try {
+            System.out.println("\nconnected to "+ socket.getRemoteSocketAddress());
             
             while(this.socket.isClosed() != true){
             
-            System.out.println("\n connected to "+ socket.getRemoteSocketAddress());
             String message = receiveMessage();
             System.out.println("ServerComm Message Received: " + message);
             response(message);
@@ -105,7 +109,7 @@ public class ServerComm extends Thread implements Runnable{
         try {
             while(this.serverQueue.isEmpty()){
                 sleep(1000);
-                System.out.print(this.serverQueue.size());
+//                System.out.print(this.serverQueue.size());
             };
             System.out.println("check123");
             ThreadMessage tm = (ThreadMessage) this.serverQueue.poll();
@@ -130,7 +134,7 @@ public class ServerComm extends Thread implements Runnable{
     public String identityInToJson(String id, String password, String block) throws JSONException{
         JSONObject json = new JSONObject();
         
-        json.put("CheckIn","ChiefSignIn");
+        json.put("Type","ChiefSignIn");
         json.put("IdNo",id);
         json.put("Password",password);
         json.put("Block",block);
@@ -159,7 +163,6 @@ public class ServerComm extends Thread implements Runnable{
         
         this.signIn = (boolean) json.get("Result");
         
-        
     }
     
     public void response(String message){
@@ -179,10 +182,19 @@ public class ServerComm extends Thread implements Runnable{
                                     updateDB(json.getJSONObject(InfoType.VALUE).toString());
                                     break;
                                     
-                case CheckInType.STAFF_LOGIN:    putQueue(json.getLong(InfoType.THREAD_ID), message);
+                case CheckInType.STAFF_LOGIN:    
+                                    if(json.getBoolean(InfoType.RESULT))
+                                        setInvigilatorSignInTime(json.getString(InfoType.ID_NO));
+                                            
+                                    putQueue(json.getLong(InfoType.THREAD_ID), message);
                                     break;
                 
-                case CheckInType.CDDPAPERS:   putQueue(json.getLong(InfoType.THREAD_ID), message);
+                case CheckInType.CDDPAPERS:   
+                                    putQueue(json.getLong(InfoType.THREAD_ID), message);
+                                    break;
+                                    
+                case CheckInType.GEN_RANDOM_MSG:
+                                    putQueue(json.getLong(InfoType.THREAD_ID), message);
                                     break;
                                     
             }
@@ -191,9 +203,31 @@ public class ServerComm extends Thread implements Runnable{
         }
     }
     
+    private void setInvigilatorSignInTime(String staffId) throws SQLException{
+        
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        
+        Calendar cal = Calendar.getInstance();
+
+        Connection conn = new ConnectDB().connect();
+        
+        String sql = "UPDATE InvigilatorAndAssistant "
+                + "SET SignInTime = ? , Attendance = ? "
+                + "WHERE StaffID = ?";
+        
+        PreparedStatement ps = conn.prepareStatement(sql);
+        
+        ps.setString(1, dateFormat.format(cal.getTime()));
+        ps.setString(2, "PRESENT");
+        ps.setString(3, staffId);
+        
+        ps.executeUpdate();
+        ps.close();
+    }
+    
     public void getSendQueue(ThreadMessage tm){
         this.serverQueue.add(tm);
-        System.out.println("ServerComm Size = "+this.serverQueue.size());
+//        System.out.println("ServerComm Size = "+this.serverQueue.size());
     }
     
     public void createReceiveQueue(long threadId){
@@ -216,8 +250,10 @@ public class ServerComm extends Thread implements Runnable{
     }
     
     public void updateDB(String data) throws IOException, SQLException{
+        
         ObjectMapper mapper = new ObjectMapper();
         ChiefData chief = new ChiefData();
+        
         ExamDataList examDataList = mapper.readValue(data, ExamDataList.class);
         chief.updateCddAttdList(examDataList.getCddAttd());
         chief.updateCddInfoList(examDataList.getCddInfo());

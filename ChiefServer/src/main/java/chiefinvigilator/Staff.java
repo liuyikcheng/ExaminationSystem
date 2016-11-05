@@ -350,7 +350,7 @@ public class Staff {
             attd.put("ExamIndex", attdList.get(i).getExamId());
             attd.put("RegNum", attdList.get(i).getRegNum());
             attd.put("Status", attdList.get(i).getStatus());
-            attd.put("Code", attdList.get(i).getPaperCode());
+            attd.put("PaperCode", attdList.get(i).getPaperCode());
             attd.put("Programme", attdList.get(i).getProgramme());
             jArr.put(attd);
         }

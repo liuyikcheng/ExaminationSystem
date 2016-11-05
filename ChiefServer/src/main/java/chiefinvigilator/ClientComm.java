@@ -23,7 +23,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
@@ -49,14 +52,12 @@ import queue.ThreadMessage;
  * @author Krissy
  */
 public class ClientComm extends Thread {
-    Timer timer = new Timer(5000, new TimerActionListener());
     private boolean signIn = false;
-    private ServerSocket socket;
+    private ServerSocket serverSocket;
     private Socket client;
     private ServerComm serverComm;
     private long threadId;
     private Staff staff;
-    private HashMap invMap;
     private ChiefServer chiefServer;
     private QRgen qrGen;
     private String challengeMsg;
@@ -67,11 +68,7 @@ public class ClientComm extends Thread {
          public void run()
          {
              while(true){
-                 try {
-                     sendMessage(getQueuePacket());// Insert some method call here.
-                 } catch (IOException ex) {
-                     System.out.println("Send Queue error");
-                 }
+                 getQueuePacket();
              }
          }
         });
@@ -79,20 +76,17 @@ public class ClientComm extends Thread {
     public ClientComm() {
     }
     
-    public ClientComm(ServerSocket socket, ServerComm serverComm,
-            HashMap invMap, ChiefServer chiefServer, QRgen qrGen,
-            ChiefControl chiefControl) throws IOException{
-        this.socket= socket; 
+    public ClientComm(ServerSocket serverSocket, ServerComm serverComm,
+                        ChiefServer chiefServer, QRgen qrGen,
+                        ChiefControl chiefControl) throws IOException{
+        this.serverSocket= serverSocket; 
         this.serverComm = serverComm;
         this.threadId = Thread.currentThread().getId();
-        this.invMap = invMap;
         this.chiefServer = chiefServer;
         this.qrGen = qrGen;
         this.chiefControl = chiefControl;
         serverComm.createReceiveQueue(this.threadId);
-        timer.start();
-        
-//        this.run();
+//        timer.start();
     }
 
     
@@ -105,34 +99,58 @@ public class ClientComm extends Thread {
             public void run()
             {
                 try {
-                    this.socket.setSoTimeout(30000);
                     
-                    regenerateQRInterface();
+                    this.serverSocket.setSoTimeout(100000);
                     
-                    setClient(this.socket.accept());
+//                    System.out.println("Socket "+this.socket.getLocalPort()+" is accepting....");
+//                    setClient(this.socket.accept());
+//                    System.out.println("connected to "+ getClient().getRemoteSocketAddress());
                     
-                    timer.stop(); //stop generate QRcode
-                    this.chiefControl.createNewClientComm();
+//                    regenerateQRInterface();
+//                    this.chiefControl.createNewClientComm();
+                    getConnectionFromStaff();
                     
-                    queueThread.start(); // create a queue with the serverComm
-                    System.out.println("connected to "+ getClient().getRemoteSocketAddress());
-                    while(getClient().isClosed() != true){
-                        System.out.println("ClientComm Ready to receive message");
-                        String message = receiveMessage();
-                        System.out.println("ClientComm Received: " + message);
-                        response(message);
-                    }
-                    
-                    
-                } catch (SocketTimeoutException ex) {
-                    System.out.println("\nSocket timed out!:"+this.socket.getLocalSocketAddress());
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
                 }
                 
+                
               }
+            
+    public void getConnectionFromStaff(){
+        
+        queueThread.start(); // create a queue with the serverComm
+
+                    while(true){
+                        
+                            
+                            try{
+                                System.out.println("Socket "+this.serverSocket.getLocalPort()+" is accepting....");
+                            setClient(this.serverSocket.accept());
+                            
+                            System.out.println("connected to "+ getClient().getRemoteSocketAddress());
+                            
+                            while(getClient().isClosed() != true){
+                                
+                                System.out.println(getClient().isClosed());
+                                    System.out.println("ClientComm Ready to receive message");
+                                    String message = receiveMessage();
+                                    System.out.println("ClientComm Received: " + message);
+                                    
+                                    if((message.equals("-1"))||(message.equals(null)))
+                                        break;
+                                    else{
+                                        response(message);
+                                    }
+                             }
+                            } catch (Exception ex) {
+                                System.out.println("ClientComm run() error : " + ex.getMessage());
+                            }
+                        
+                    }
+    }
 
     
     
@@ -152,7 +170,7 @@ public class ClientComm extends Thread {
         System.out.println("ClientComm Message sent: " + message);
     }
     
-    public void response(String message) throws IOException, JSONException{ 
+    public void response(String message) throws IOException { 
         if(message != null){
         JSONObject json = new JSONObject(message);
             System.out.println(json.toString());
@@ -173,7 +191,8 @@ public class ClientComm extends Thread {
                                     break;
                                     
                 case CheckInType.STAFF_RECONNECT:   
-                                    
+                                    sendMessage(replyRconnect().toString());
+                                    break;
                                     
                 case CheckInType.COLLECTION : 
                                     break;
@@ -183,11 +202,12 @@ public class ClientComm extends Thread {
                                     break;
                     
                 case CheckInType.ATTDLIST : 
-                                    downloadCddData(json.getJSONArray(JSONKey.CDD_LIST));
+                                    downloadCddData(json.getJSONArray(InfoType.ATTENDANCE_LIST));
                                     sendMessage(booleanToJson(true).toString());
                                     break;
                                   
-                case CheckInType.PAPERS:      if(isSignedIn()){
+                case CheckInType.PAPERS:      
+                                    if(isSignedIn()){
                                         JSONObject jsonMsg = this.getStaff().prepareInvExamList(json.getString(JSONKey.VENUE));
                                     }
                 
@@ -206,7 +226,7 @@ public class ClientComm extends Thread {
      * @Brief   To check whether the queue pack with ServerComm is empty or not
      * @return 
      */
-    public String getQueuePacket(){
+    public void getQueuePacket(){
         String message = null;
         try {
             JSONObject json;
@@ -225,10 +245,19 @@ public class ClientComm extends Thread {
                                     }
                                     else
                                         message = json.toString();
+                                    
+                                    sendMessage(message);
                                     break;
                 
                 case CheckInType.CDDPAPERS:   
                                     message = json.toString();
+                                    sendMessage(message);
+                                    break;
+                                    
+                case CheckInType.GEN_RANDOM_MSG:
+                                    regenerateQRInterface(json.getString(InfoType.VALUE));
+                                    break;
+                                    
                     
             }
             
@@ -238,7 +267,6 @@ public class ClientComm extends Thread {
             Logger.getLogger(ClientComm.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return message;
     }
     
     /**
@@ -355,6 +383,7 @@ public class ClientComm extends Thread {
         return cddPapers;
     }
     
+    
     public JSONArray cddListToJson(ArrayList<Candidate> attdList) throws JSONException{
         JSONArray jArr = new JSONArray();
         JSONObject attd;
@@ -429,18 +458,19 @@ public class ClientComm extends Thread {
     
         Connection conn = new ConnectDB().connect();
         
-         PreparedStatement pstmt = conn.prepareStatement(sql);
+        PreparedStatement pstmt = conn.prepareStatement(sql);
          
-         for(int i = 0; i < cddList.size(); i++)  {
+        for(int i = 0; i < cddList.size(); i++)  {
             
             pstmt.setString(1,cddList.get(i).getAttendance());
             pstmt.setInt(2,cddList.get(i).getTableNo());
             pstmt.setString(3,cddList.get(i).getExamId());
             pstmt.executeUpdate();
             
-         }
-          pstmt.close();
-          conn.close();
+        }
+        
+        pstmt.close();
+        conn.close();
     }
 
    /**
@@ -457,6 +487,16 @@ public class ClientComm extends Thread {
         
         return bool;
     }
+    
+    private JSONObject replyRconnect() throws JSONException{
+        JSONObject bool = new JSONObject();
+        
+        bool.put(InfoType.RESULT, true);
+        bool.put(InfoType.DUEL_MSG, this.challengeMsg);
+        
+        return bool;
+    }
+    
     
     private void downloadCddData(JSONArray jArr) throws JSONException, Exception{
         ArrayList<Candidate> cddList = new ArrayList<>();
@@ -488,14 +528,14 @@ public class ClientComm extends Thread {
      * @return the server
      */
     public ServerSocket getServerSocket() {
-        return socket;
+        return serverSocket;
     }
 
     /**
      * @param server the server to set
      */
-    public void setServerSocket(ServerSocket socket) {
-        this.socket = socket;
+    public void setServerSocket(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
     }
 
     /**
@@ -563,10 +603,17 @@ public class ClientComm extends Thread {
         this.challengeMsg = challengeMsg;
     }
     
-    public void regenerateQRInterface() throws Exception{
-        String randomString = generateRandomString();
+    public void regenerateQRInterface(String randomString) throws Exception{
         setChallengeMsg(randomString);
+//        System.out.println("*******"+this.challengeMsg);
         this.qrGen.regenerateQR(this.chiefServer.getServerSocket(), this.serverComm, randomString);
+    }
+    
+    public void requestForRandomMessage(){
+        JSONObject json = new JSONObject();
+        
+        json.put(InfoType.TYPE, CheckInType.GEN_RANDOM_MSG);
+        this.getServerComm().getSendQueue(new ThreadMessage(this.getThreadId(),json.toString()));
     }
     
     protected String generateRandomString() {
@@ -584,7 +631,7 @@ public class ClientComm extends Thread {
     class TimerActionListener implements ActionListener{
       public void actionPerformed(ActionEvent e) {
           try {
-              regenerateQRInterface();
+              requestForRandomMessage();
           } catch (Exception ex) {
               System.out.println("Error TimerActionListener->actionPerformed");
           }

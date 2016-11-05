@@ -23,5 +23,4 @@ public class InfoType {
     public static final String THREAD_ID = "ThreadId";
     public static final String RANDOM_MSG = "RandomMessage";
     
-    
 }
