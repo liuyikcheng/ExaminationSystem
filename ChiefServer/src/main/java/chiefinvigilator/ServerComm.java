@@ -124,11 +124,7 @@ public class ServerComm extends Thread implements Runnable{
     }
     
     public void loginToServer(String id, String password, String block) throws Exception{
-        String message;
-        
         sendMessage(identityInToJson(id,password,block));
-        
-//        socket.close();
     }
     
     public String identityInToJson(String id, String password, String block) throws JSONException{

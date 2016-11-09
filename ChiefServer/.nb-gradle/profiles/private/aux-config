@@ -8,6 +8,8 @@
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ChiefServer.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/qrgen/QRgen.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ServerComm.java</file>
+        <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/queue/ThreadMessage.java</file>
+        <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ChiefData.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ClientComm.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ChiefControl.java</file>
       </group>
@@ -18,6 +20,7 @@
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ChiefServer.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/qrgen/QRgen.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ServerComm.java</file>
+        <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ChiefGui.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/queue/ThreadMessage.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ChiefData.java</file>
         <file>file:/C:/Users/user/Documents/ChiefServer/src/main/java/chiefinvigilator/ClientComm.java</file>

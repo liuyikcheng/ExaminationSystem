@@ -20,13 +20,20 @@ import javax.swing.table.DefaultTableModel;
 import qrgen.QRgen;
 import chiefinvigilator.InfoData;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
@@ -42,6 +49,8 @@ public class ChiefGui extends javax.swing.JFrame {
     DefaultComboBoxModel  statusBoxModel = new DefaultComboBoxModel();
     
     JLabel qrLabel = new JLabel("Scan the QR Code to sign in.");
+    Color presetColor;
+
 
     /**
      * Creates new form ChiefGui
@@ -51,6 +60,8 @@ public class ChiefGui extends javax.swing.JFrame {
         initComponents();
         prepareComboBox();
         candidateTableModel = (DefaultTableModel) candidateTable.getModel();
+        
+        this.candidateTable.setDefaultRenderer(Object.class, new MyTableCellRenderer());
         candidateTable.setAutoCreateRowSorter(rootPaneCheckingEnabled);
 //        chiefTabbedPane.setEnabled(false);
     }
@@ -198,7 +209,7 @@ public class ChiefGui extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Venue", "Student Registration Number", "Status", "Attendance", "Table Number"
+                "Venue", "Student Registration Number", "Status", "Table Number"
             }
         ));
         jScrollPane6.setViewportView(candidateTable);
@@ -252,7 +263,7 @@ public class ChiefGui extends javax.swing.JFrame {
 
         venueComboBox.setModel(venueBoxModel);
 
-        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "ABSENT", "PRESENT", "EXEMPTED", "BARRED" }));
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "ELIGIBLE", "EXEMPTED", "BARRED" }));
 
         attendanceComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "ABSENT", "PRESENT" }));
 
@@ -439,6 +450,47 @@ public class ChiefGui extends javax.swing.JFrame {
     public void addCandidateTableModelRow(Object[] object){
         candidateTableModel.addRow(object);
     }
+    
+    public void setTableRowColor(Color color, Integer row){
+        this.presetColor = color;
+        candidateTableModel.fireTableRowsUpdated(row, row);
+    }
+    
+    public Color getPresetColor(){
+        return this.presetColor;
+    }
+    
+    /**
+     * To change the cell of the table
+     */
+    class MyTableCellRenderer extends DefaultTableCellRenderer {
+        
+        
+        public MyTableCellRenderer(){
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            
+            super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            
+            TableModel model = table.getModel();
+            int modelRow = table.getRowSorter().convertRowIndexToModel(row);
+            String statusColumnValue = (String) model.getValueAt(modelRow, 2);
+
+            
+            if (statusColumnValue.equals("EXEMPTED")){
+                setBackground(Color.YELLOW);
+            }
+            else if (statusColumnValue.equals("BARRED")){
+                setBackground(Color.PINK);
+            }
+            else {
+                setBackground(Color.WHITE);
+            }
+            return this;
+        }
+}
     
     /**
      * @brief   set or update the number in the summary panel

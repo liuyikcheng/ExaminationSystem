@@ -90,17 +90,19 @@ public class MessageListener extends Thread{
             switch(json.getString(InfoType.TYPE)){
                 
                 case CheckInType.CHIEF_LOGIN: String id = json.getString(InfoType.ID_NO);
-                                    String ps = json.getString(InfoType.PASSWORD);
+                                    String ps = json.getString("Password");                 //Need to be change
                                     String block = json.getString(InfoType.BLOCK);
-                                    String randomMsg = json.getString(InfoType.RANDOM_MSG);
+                                    String randomMsg = json.getString(InfoType.RANDOM_MSG); //Need to be chagne
                                     
                                     chief = new ChiefData();
                                     
                                     System.out.println(chief.verifyStaff(id, ps, randomMsg) + chief.getStatus(id, block));  
                                     
-                                    if((chief.verifyStaff(id, ps, randomMsg))&&(chief.getStatus(id, block).equals("CHIEF"))){ // if id is valid staff and status is CHIEF
+                                    // if id is valid staff and status is CHIEF
+                                    if((chief.verifyStaff(id, ps, randomMsg))&&(chief.getStatus(id, block).equals("CHIEF"))){ 
+                                        //send the desired semester database
                                         sendMessage(booleanToJson(true,CheckInType.CHIEF_LOGIN).toString());
-                                        sendMessage(dbToJson(id, block));    //send the desired semester database
+                                        sendMessage(dbToJson(id, block));    
                                     }
                                     else
                                         sendMessage(booleanToJson(false,CheckInType.CHIEF_LOGIN).toString());

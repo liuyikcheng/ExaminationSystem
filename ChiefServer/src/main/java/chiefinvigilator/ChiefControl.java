@@ -5,6 +5,7 @@
  */
 package chiefinvigilator;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,8 +29,12 @@ import qrgen.QRgen;
  * @author Krissy
  */
 public class ChiefControl {
+    private final static String ELIGIBLE = "ELIGIBLE";
+    private final static String BARRED = "BARRED";
+    private final static String EXEMPTED = "EXEMPTED";
+    
+    
     ChiefGui chiefGui;
-    ChiefModel chiefModel;
     ServerComm serverComm;
     ClientComm currentClientComm;
     ChiefServer chief;
@@ -180,7 +185,19 @@ public class ChiefControl {
         chiefGui.setCandidateTableModelRow(0);
         
         for(int i = 0; i<cddList.size(); i++){
-                chiefGui.addCandidateTableModelRow(new Object[]{cddList.get(i).getVenueName(), cddList.get(i).getRegNum(), cddList.get(i).getStatus(), cddList.get(i).getAttendance(), cddList.get(i).getTableNum()});
+            
+                if (cddList.get(i).getStatus().equals(ELIGIBLE)){
+                    chiefGui.addCandidateTableModelRow(new Object[]{cddList.get(i).getVenueName(), cddList.get(i).getRegNum(), cddList.get(i).getAttendance(), cddList.get(i).getTableNum()});
+
+                }
+                else if (cddList.get(i).getStatus().equals(EXEMPTED)){
+                    chiefGui.addCandidateTableModelRow(new Object[]{cddList.get(i).getVenueName(), cddList.get(i).getRegNum(), cddList.get(i).getStatus(), cddList.get(i).getTableNum()});
+
+                }
+                else if (cddList.get(i).getStatus().equals(BARRED)){
+                    chiefGui.addCandidateTableModelRow(new Object[]{cddList.get(i).getVenueName(), cddList.get(i).getRegNum(), cddList.get(i).getStatus(), cddList.get(i).getTableNum()});
+ 
+                }
             }
         
         try {
