@@ -22,6 +22,7 @@ public class InfoType {
     public static final String THREAD_ID = "ThreadId";
     public static final String VALUE = "Value";
     public static final String ID_NO = "IdNo";
+    public static final String BLOCK = "Block";
     
     
 }

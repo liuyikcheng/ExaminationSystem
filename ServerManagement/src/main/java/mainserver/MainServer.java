@@ -5,6 +5,7 @@
  */
 package mainserver;
 
+import examdatabase.ExamDataGUI;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ public class MainServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+//        new ExamDataGUI().setVisible(true);
         MessageListener ml = new MessageListener(5006);
         
     }

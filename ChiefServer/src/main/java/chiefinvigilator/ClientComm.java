@@ -125,26 +125,25 @@ public class ClientComm extends Thread {
 
                     while(true){
                         
-                            
                             try{
                                 System.out.println("Socket "+this.serverSocket.getLocalPort()+" is accepting....");
-                            setClient(this.serverSocket.accept());
-                            
-                            System.out.println("connected to "+ getClient().getRemoteSocketAddress());
-                            
-                            while(getClient().isClosed() != true){
-                                
-                                System.out.println(getClient().isClosed());
-                                    System.out.println("ClientComm Ready to receive message");
-                                    String message = receiveMessage();
-                                    System.out.println("ClientComm Received: " + message);
-                                    
-                                    if((message.equals("-1"))||(message.equals(null)))
-                                        break;
-                                    else{
-                                        response(message);
-                                    }
-                             }
+                                setClient(this.serverSocket.accept());
+
+                                System.out.println("connected to "+ getClient().getRemoteSocketAddress());
+
+                                while(getClient().isClosed() != true){
+
+                                    System.out.println(getClient().isClosed());
+                                        System.out.println("ClientComm Ready to receive message");
+                                        String message = receiveMessage();
+                                        System.out.println("ClientComm Received: " + message);
+
+                                        if((message.equals("-1"))||(message.equals(null)))
+                                            break;
+                                        else{
+                                            response(message);
+                                        }
+                                }
                             } catch (Exception ex) {
                                 System.out.println("ClientComm run() error : " + ex.getMessage());
                             }

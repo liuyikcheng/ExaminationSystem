@@ -53,15 +53,10 @@ public class ExamDataControl {
                     list = getData.getDataFromTable();
                     int i = 0;
                     for(i = 0; i<list.size(); i++){
-                        examDataGUI.addExamTableRow(new Object[]{list.get(i).name, list.get(i).ic, list.get(i).regNum,
-                                                    list.get(i).progName, list.get(i).faculty, 
-                                                    list.get(i).paperCode, list.get(i).venueName,
-                                                    list.get(i).date, list.get(i).session, list.get(i).status,
-                                                    list.get(i).attendance, list.get(i).tableNum
-                                                    });
+                        examDataGUI.addExamTableRow(new Object[]{list.get(i).getName(), list.get(i).getIc(), list.get(i).getRegNum(), list.get(i).getProgName(), list.get(i).getFaculty(), list.get(i).getPaperCode(), list.get(i).getVenueName(), list.get(i).getDate(), list.get(i).getSession(), list.get(i).getStatus(), list.get(i).getAttendance(), list.get(i).getTableNum()});
                     }
 
-                } catch (CustomException ex) {
+                } catch (Exception ex) {
                     String message = ex.getMessage();
                     examDataGUI.setWarningMessage(message);
                 }
@@ -90,14 +85,10 @@ public class ExamDataControl {
             
             int i = 0;
             for(i = 0; i<list.size(); i++){
-                examDataGUI.addMarkTable(new Object[]{list.get(i).name, list.get(i).regNum, list.get(i).ic,
-                                            list.get(i).progName, list.get(i).faculty, 
-                                            list.get(i).paperCode,list.get(i).practical,
-                                            list.get(i).coursework
-                                            });
+                examDataGUI.addMarkTable(new Object[]{list.get(i).getName(), list.get(i).getRegNum(), list.get(i).getIc(), list.get(i).getProgName(), list.get(i).getFaculty(), list.get(i).getPaperCode(), list.get(i).getPractical(), list.get(i).getCoursework()});
             }
         
-        } catch (CustomException ex) {
+        } catch (Exception ex) {
             String message = ex.getMessage();
             examDataGUI.setStatusMessage(message);
         }
@@ -171,12 +162,8 @@ public class ExamDataControl {
                     for(int i = 0; i<listTable.size(); i++){
                         try{
                             listData = listTable.get(i).getDataCheckMark();
-                            examDataGUI.addMarkTable(new Object[]{listData.get(0).name, listData.get(0).regNum, listData.get(0).ic,
-                                                        listData.get(0).progName, listData.get(0).faculty, 
-                                                        listData.get(0).paperCode,listData.get(0).practical,
-                                                        listData.get(0).coursework
-                                                        });
-                        }catch (CustomException ex) {
+                            examDataGUI.addMarkTable(new Object[]{listData.get(0).getName(), listData.get(0).getRegNum(), listData.get(0).getIc(), listData.get(0).getProgName(), listData.get(0).getFaculty(), listData.get(0).getPaperCode(), listData.get(0).getPractical(), listData.get(0).getCoursework()});
+                        }catch (Exception ex) {
                             String message = ex.getMessage();
                             examDataGUI.setStatusMessage(message);
                         }

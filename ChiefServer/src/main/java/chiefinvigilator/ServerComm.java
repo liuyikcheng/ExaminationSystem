@@ -26,8 +26,12 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -127,16 +131,23 @@ public class ServerComm extends Thread implements Runnable{
         sendMessage(identityInToJson(id,password,block));
     }
     
-    public String identityInToJson(String id, String password, String block) throws JSONException{
+    public String identityInToJson(String id, String password, String block) throws JSONException, Exception{
         JSONObject json = new JSONObject();
+        Hmac hmac = new Hmac();
+        String randomMessage = hmac.generateRandomString();
         
-        json.put("Type","ChiefSignIn");
-        json.put("IdNo",id);
-        json.put("Password",password);
-        json.put("Block",block);
+        
+        json.put(InfoType.TYPE,CheckInType.CHIEF_LOGIN);
+        json.put(InfoType.ID_NO,id);
+        json.put(InfoType.RANDOM_MSG,randomMessage);
+        json.put(InfoType.HASHCODE,hmac.encode(password, randomMessage));
+        json.put(InfoType.BLOCK,block);
+//        json.put(InfoType.THREAD_ID,"fff");
         
         return json.toString();
     }
+    
+    
     
     private String receiveMessage() throws IOException{
 //        System.out.println(socket.getLocalPort());

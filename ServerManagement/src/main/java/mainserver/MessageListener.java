@@ -90,13 +90,13 @@ public class MessageListener extends Thread{
             switch(json.getString(InfoType.TYPE)){
                 
                 case CheckInType.CHIEF_LOGIN: String id = json.getString(InfoType.ID_NO);
-                                    String ps = json.getString("Password");                 //Need to be change
+                                    String ps = json.getString(InfoType.PASSWORD);                 //Need to be change
                                     String block = json.getString(InfoType.BLOCK);
                                     String randomMsg = json.getString(InfoType.RANDOM_MSG); //Need to be chagne
                                     
                                     chief = new ChiefData();
                                     
-                                    System.out.println(chief.verifyStaff(id, ps, randomMsg) + chief.getStatus(id, block));  
+//                                    System.out.println(chief.verifyStaff(id, ps, randomMsg) + chief.getStatus(id, block));  
                                     
                                     // if id is valid staff and status is CHIEF
                                     if((chief.verifyStaff(id, ps, randomMsg))&&(chief.getStatus(id, block).equals("CHIEF"))){ 
@@ -175,7 +175,6 @@ public class MessageListener extends Thread{
             if(new ChiefData().verifyStaff(jsonReceived.getString(InfoType.ID_NO), jsonReceived.getString(InfoType.PASSWORD), jsonReceived.getString(InfoType.RANDOM_MSG))){
                 json.put(InfoType.RESULT, true);
                 
-                System.out.println("checkasas");
             }
             else
                 json.put(InfoType.RESULT, false);
