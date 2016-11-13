@@ -20,6 +20,8 @@ public class Hmac {
     
     public String encode(String key, String data) throws Exception {
         Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+        System.out.println("KEY: "+ key);
+        System.out.println("Data: "+ data);
         SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
         sha256_HMAC.init(secret_key);
         return DatatypeConverter.printBase64Binary(sha256_HMAC.doFinal(data.getBytes()))+"\n";

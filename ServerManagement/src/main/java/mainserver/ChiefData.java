@@ -150,16 +150,20 @@ public class ChiefData {
         return password;
     }
     
-    public boolean verifyStaff(String id, String hashPass, String randomMsg) throws Exception{
+    public boolean verifyStaff(String id, String hashPass, String randomMsg){
         
-        String password = getStaffPassword(id);
-        
-        Hmac hmac = new Hmac();
-        String encodedPassword = hmac.encode(password, randomMsg);
-        System.out.println("hashPass: "+hashPass);
-        System.out.println("encodedPassword: "+encodedPassword);
-        System.out.println("randomMsg: "+randomMsg);
-        return hashPass.equals(encodedPassword);
+        try {
+            String password = getStaffPassword(id);
+            
+            Hmac hmac = new Hmac();
+            String encodedPassword = hmac.encode(password, randomMsg);
+            System.out.println("hashPass: "+hashPass);
+            System.out.println("encodedPassword: "+encodedPassword);
+            System.out.println("randomMsg: "+randomMsg);
+            return hashPass.equals(encodedPassword);
+        } catch (Exception ex) {
+            return false;
+        }
         
     }
     

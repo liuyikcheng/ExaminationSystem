@@ -102,10 +102,13 @@ public class MessageListener extends Thread{
                                     if((chief.verifyStaff(id, ps, randomMsg))&&(chief.getStatus(id, block).equals("CHIEF"))){ 
                                         //send the desired semester database
                                         sendMessage(booleanToJson(true,CheckInType.CHIEF_LOGIN).toString());
-                                        sendMessage(dbToJson(id, block));    
+                                        //sendMessage(dbToJson(id, block));    
                                     }
-                                    else
+                                    else{
                                         sendMessage(booleanToJson(false,CheckInType.CHIEF_LOGIN).toString());
+                                    
+                                    }
+                                    break;
                                     
                 case CheckInType.STAFF_LOGIN:    
                                     JSONObject jsonIdentity = loginReply(json);
@@ -161,7 +164,7 @@ public class MessageListener extends Thread{
     */
     private JSONObject booleanToJson(boolean b, String type) throws JSONException{
         JSONObject bool = new JSONObject();
-        bool.put(InfoType.TYPE, "ACK");
+        bool.put(InfoType.TYPE, type);
         bool.put(InfoType.RESULT, b);
         
         return bool;
@@ -179,7 +182,9 @@ public class MessageListener extends Thread{
             else
                 json.put(InfoType.RESULT, false);
             
-            json.put(InfoType.THREAD_ID, jsonReceived.getInt(InfoType.THREAD_ID));
+            if(InfoType.TYPE.equals(CheckInType.STAFF_LOGIN))
+                json.put(InfoType.THREAD_ID, jsonReceived.getInt(InfoType.THREAD_ID));
+
             json.put(InfoType.TYPE, jsonReceived.getString(InfoType.TYPE));
             json.put(InfoType.ID_NO, jsonReceived.getString(InfoType.ID_NO));
             
