@@ -207,12 +207,49 @@ public class StaffTest {
             Logger.getLogger(StaffTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        assertEquals("CXTfyy84BfM0iMC/Pr3kNiuqyJz85ZilYr8m/I11/tw=" , encodedStr);
+        assertEquals("CXTfyy84BfM0iMC/Pr3kNiuqyJz85ZilYr8m/I11/tw=\n" , encodedStr);
     }
     
     @Test
-    public void testResponse(){
+    public void testVerifyForCollector(){
+        Staff staff = new Staff();
+        Boolean verifyResult = false;
         
+        try {
+            verifyResult = staff.verifyForCollector("staff1", "bundle1");
+        } catch (SQLException ex) {
+            Logger.getLogger(StaffTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(verifyResult, true);
+    }
+    
+    @Test
+    public void testVerifyForCollector2(){
+        Staff staff = new Staff();
+        Boolean verifyResult = false;
+        
+        try {
+            verifyResult = staff.verifyForCollector("staff3", "bundle4");
+        } catch (SQLException ex) {
+            Logger.getLogger(StaffTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(verifyResult, true);
+    }
+    
+    @Test
+    public void testVerifyForCollector3(){
+        Staff staff = new Staff();
+        Boolean verifyResult = false;
+        
+        try {
+            verifyResult = staff.verifyForCollector("staff2", "bundle4");
+        } catch (SQLException ex) {
+            Logger.getLogger(StaffTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(verifyResult, false);
     }
     
 }

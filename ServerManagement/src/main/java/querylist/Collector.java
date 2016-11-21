@@ -10,17 +10,22 @@ package querylist;
  * @author Krissy
  */
 public class Collector {
+    Integer collector_id;
     Integer paper_id;
     String staffId;
+    String bundleId;
     
     public Collector(){}
     
-    public Collector(   Integer paper_id,
-                        String staffId
+    public Collector(   Integer collector_id,
+                        Integer paper_id,
+                        String staffId,
+                        String bundleId
                         ){
+        this.collector_id = collector_id;
         this.paper_id = paper_id;
         this.staffId = staffId;
-        
+        this.bundleId = bundleId;
     }
     
     public Integer getPaper(){

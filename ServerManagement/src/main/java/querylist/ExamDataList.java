@@ -15,6 +15,7 @@ public class ExamDataList {
     private ArrayList<CandidateAttendance> cddAttd = new ArrayList<>();
     private ArrayList<CandidateInfo> cddInfo = new ArrayList<>();
     private ArrayList<ChiefAndRelief> chAndRe = new ArrayList<>();
+    private ArrayList<Collector> collector = new ArrayList<>();
     private ArrayList<Invigilator> inv = new ArrayList<>();
     private ArrayList<Paper> paper = new ArrayList<>();
     private ArrayList<PaperInfo> paperInfo = new ArrayList<>();
@@ -27,6 +28,7 @@ public class ExamDataList {
     public ExamDataList(ArrayList<CandidateAttendance> cddAttd,
                         ArrayList<CandidateInfo> cddInfo,
                         ArrayList<ChiefAndRelief> chAndRe,
+                        ArrayList<Collector> collector,
                         ArrayList<Invigilator> inv,
                         ArrayList<Paper> paper,
                         ArrayList<PaperInfo> paperInfo,
@@ -38,6 +40,7 @@ public class ExamDataList {
         this.cddAttd = cddAttd;
         this.cddInfo = cddInfo;
         this.chAndRe = chAndRe;
+        this.collector = collector;
         this.inv = inv;
         this.paper = paper;
         this.paperInfo = paperInfo;
@@ -66,6 +69,13 @@ public class ExamDataList {
      */
     public ArrayList<ChiefAndRelief> getChAndRe() {
         return chAndRe;
+    }
+    
+    /**
+     * @return the chAndRe
+     */
+    public ArrayList<Collector> getCollector() {
+        return collector;
     }
 
     /**

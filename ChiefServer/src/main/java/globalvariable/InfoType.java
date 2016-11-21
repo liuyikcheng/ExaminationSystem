@@ -23,6 +23,7 @@ public class InfoType {
     public static final String VALUE = "Value";
     public static final String ID_NO = "IdNo";
     public static final String BLOCK = "Block";
-    
+    public static final String PAPERBUNDLE_JSON = "PaperBundle";
+    public static final String COLLECTOR = "Collector";
     
 }

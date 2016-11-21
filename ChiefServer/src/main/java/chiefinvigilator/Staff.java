@@ -429,6 +429,34 @@ public class Staff {
           pstmt.close();
           conn.close();
     }
+   
+   /**
+    * @brief    To verify whether the given staffId hav a match with a bundleId in database
+    * @param staffId
+    * @param bundleId
+    * @return
+    * @throws SQLException 
+    */
+    public Boolean verifyForCollector(String staffId, String bundleId) throws SQLException{
+        Boolean valid = false;
+        Connection conn = new ConnectDB().connect();
+        String sql = "SELECT Collector_id FROM Collector "
+                + " WHERE StaffID = ? AND BundleID = ? ";
+        
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, staffId);
+        ps.setString(2, bundleId);
+        
+        ResultSet result = ps.executeQuery();
+        
+        valid = result.next();
+        
+        result.close();
+        ps.close();
+        conn.close();
+        
+        return valid;
+    }
 
    /**
     * @brief    To convert a boolean into JSON object

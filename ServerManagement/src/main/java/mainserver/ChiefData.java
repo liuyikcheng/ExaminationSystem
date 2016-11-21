@@ -398,6 +398,23 @@ public class ChiefData {
     public ArrayList<Collector> getCollectorList() throws SQLException{
         ArrayList<Collector> collectorList = new ArrayList<>();
         
+        Connection conn = new ConnectDB().connect();
+        String sql = "SELECT * FROM Collector ";
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ResultSet result = ps.executeQuery();
+        
+        while ( result.next() ){
+            collectorList.add(new Collector(    result.getInt("Collector_id"),
+                                                result.getInt("Paper_id"),
+                                                result.getString("StaffID"),
+                                                result.getString("BundleID")
+                                                ));
+        }
+        
+        result.close();
+        ps.close();
+        conn.close();
         
         return collectorList;
     }

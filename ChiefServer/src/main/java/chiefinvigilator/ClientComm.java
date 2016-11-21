@@ -9,6 +9,7 @@ import globalvariable.CheckInType;
 import globalvariable.HashCode;
 import globalvariable.InfoType;
 import globalvariable.JSONKey;
+import globalvariable.PaperBundle;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -188,7 +189,8 @@ public class ClientComm extends Thread {
                                     break;
                                     
                 case CheckInType.COLLECTION : 
-                    
+                                    JSONObject paperBundle = new JSONObject(json.getJSONObject(InfoType.PAPERBUNDLE_JSON));
+                                    this.getStaff().verifyForCollector(json.getString(InfoType.COLLECTOR), paperBundle.getString(PaperBundle.BUNDLE_ID));
                                     break;
                     
                 case CheckInType.CDDPAPERS : 
@@ -303,10 +305,6 @@ public class ClientComm extends Thread {
         conn.close();
         
         return cddList;
-    }
-    
-    public void collectorVerify(String collector, String bundle){
-        
     }
     
     /**
