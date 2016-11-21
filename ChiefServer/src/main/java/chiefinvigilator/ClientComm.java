@@ -101,14 +101,8 @@ public class ClientComm extends Thread {
                 try {
                     
                     this.serverSocket.setSoTimeout(100000);
-                    
-//                    System.out.println("Socket "+this.socket.getLocalPort()+" is accepting....");
-//                    setClient(this.socket.accept());
-//                    System.out.println("connected to "+ getClient().getRemoteSocketAddress());
-                    
-//                    regenerateQRInterface();
-//                    this.chiefControl.createNewClientComm();
-                    getConnectionFromStaff();
+                   
+//                    getConnectionFromStaff();
                     
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
@@ -123,15 +117,15 @@ public class ClientComm extends Thread {
         
         queueThread.start(); // create a queue with the serverComm
 
-                    while(true){
+        while(true){
                         
-                            try{
-                                System.out.println("Socket "+this.serverSocket.getLocalPort()+" is accepting....");
-                                setClient(this.serverSocket.accept());
+            try{
+                System.out.println("Socket "+this.serverSocket.getLocalPort()+" is accepting....");
+                setClient(this.serverSocket.accept());
 
-                                System.out.println("connected to "+ getClient().getRemoteSocketAddress());
+                System.out.println("connected to "+ getClient().getRemoteSocketAddress());
 
-                                while(getClient().isClosed() != true){
+                while(getClient().isClosed() != true){
 
                                     System.out.println(getClient().isClosed());
                                         System.out.println("ClientComm Ready to receive message");
@@ -194,6 +188,7 @@ public class ClientComm extends Thread {
                                     break;
                                     
                 case CheckInType.COLLECTION : 
+                    
                                     break;
                     
                 case CheckInType.CDDPAPERS : 
@@ -255,6 +250,7 @@ public class ClientComm extends Thread {
                                     
                 case CheckInType.GEN_RANDOM_MSG:
                                     regenerateQRInterface(json.getString(InfoType.VALUE));
+                                    getConnectionFromStaff();
                                     break;
                                     
                     
@@ -307,6 +303,10 @@ public class ClientComm extends Thread {
         conn.close();
         
         return cddList;
+    }
+    
+    public void collectorVerify(String collector, String bundle){
+        
     }
     
     /**
@@ -608,6 +608,9 @@ public class ClientComm extends Thread {
         this.qrGen.regenerateQR(this.chiefServer.getServerSocket(), this.serverComm, randomString);
     }
     
+    /**
+     * @brief   To ask serverComm to send a request to main server for a random message
+     */
     public void requestForRandomMessage(){
         JSONObject json = new JSONObject();
         
@@ -619,6 +622,7 @@ public class ClientComm extends Thread {
         String seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+Long.toString(System.nanoTime());
         StringBuilder str = new StringBuilder();
         Random rnd = new Random();
+        
         while (str.length() < 18) {
             int index = (int) (rnd.nextFloat() * seed.length());
             str.append(seed.charAt(index));

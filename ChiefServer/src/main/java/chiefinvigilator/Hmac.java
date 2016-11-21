@@ -23,7 +23,7 @@ public class Hmac {
         Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
         SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
         sha256_HMAC.init(secret_key);
-        return DatatypeConverter.printBase64Binary(sha256_HMAC.doFinal(data.getBytes()));
+        return DatatypeConverter.printBase64Binary(sha256_HMAC.doFinal(data.getBytes())) + "\n";
     }
     
     public String generateRandomString() {

@@ -15,7 +15,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -53,8 +56,8 @@ public class ServerComm extends Thread implements Runnable{
     Socket socket;
     boolean signIn = false;
     ChiefData chief;
-    Queue serverQueue;
-    HashMap clientQueueList;
+    Queue serverQueue = new LinkedList();
+    HashMap clientQueueList = new HashMap();
     
     Thread queueThread = new Thread(new Runnable() {
          public void run()
@@ -66,29 +69,45 @@ public class ServerComm extends Thread implements Runnable{
          }
         });
     
-    public ServerComm() throws IOException, SQLException{
-        connectToServer();
+    public ServerComm(){
         chief = new ChiefData();
         serverQueue = new LinkedList();
         clientQueueList = new HashMap();
-        
-        this.start();
-
     }
     
     public boolean getSignIn(){
         return this.signIn;
     }
     
-    public void connectToServer() throws IOException{
-
-//        System.out.println("Connecting to " + serverName +
-//		 " on port " + port);
-        socket = new Socket("localhost", 5006);
-//         System.out.println("Just connected to " 
-//		 + socket.getRemoteSocketAddress());
-        
+    public void connectToServer(String hostName, int port) throws IOException{
+            socket = new Socket(hostName, port);
+//            this.start();
+       
     }
+    
+    public boolean isSocketAliveUitlitybyCrunchify(String hostName, int port) {
+		boolean isAlive = false;
+ 
+		// Creates a socket address from a hostname and a port number
+		SocketAddress socketAddress = new InetSocketAddress(hostName, port);
+		Socket socket = new Socket();
+ 
+		// Timeout required - it's in milliseconds
+		int timeout = 2000;
+ 
+		try {
+			socket.connect(socketAddress, timeout);
+			socket.close();
+			isAlive = true;
+ 
+		} catch (SocketTimeoutException exception) {
+			System.out.println("SocketTimeoutException " + hostName + ":" + port + ". " + exception.getMessage());
+		} catch (IOException exception) {
+			System.out.println(
+					"IOException - Unable to connect to " + hostName + ":" + port + ". " + exception.getMessage());
+		}
+		return isAlive;
+	}
     
     @Override
     public void run(){
@@ -248,6 +267,11 @@ public class ServerComm extends Thread implements Runnable{
         this.clientQueueList.replace(threadId, list);
     }
     
+    /**
+     * @brief   Continuously
+     * @param threadId
+     * @return 
+     */
     public ThreadMessage getReceiveQueue(long threadId){
         LinkedList list = (LinkedList)(this.clientQueueList.get(threadId));
         while(list.isEmpty()){

@@ -22,14 +22,18 @@ import chiefinvigilator.InfoData;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.awt.event.MouseListener;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -50,6 +54,11 @@ public class ChiefGui extends javax.swing.JFrame {
     
     JLabel qrLabel = new JLabel("Scan the QR Code to sign in.");
     Color presetColor;
+    
+    private String chiefId = "";
+    private String chiefPs = "";
+    private String chiefBlock = "";
+    
 
 
     /**
@@ -60,7 +69,6 @@ public class ChiefGui extends javax.swing.JFrame {
         initComponents();
         prepareComboBox();
         candidateTableModel = (DefaultTableModel) candidateTable.getModel();
-        
         this.candidateTable.setDefaultRenderer(Object.class, new MyTableCellRenderer());
         candidateTable.setAutoCreateRowSorter(rootPaneCheckingEnabled);
 //        chiefTabbedPane.setEnabled(false);
@@ -75,6 +83,7 @@ public class ChiefGui extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel7 = new javax.swing.JPanel();
         chiefTabbedPane = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
@@ -112,6 +121,20 @@ public class ChiefGui extends javax.swing.JFrame {
         statusComboBox = new javax.swing.JComboBox<>();
         attendanceComboBox = new javax.swing.JComboBox<>();
         tableNumTextField = new javax.swing.JTextField();
+        statusPanel = new javax.swing.JPanel();
+        connectivityTextField = new javax.swing.JLabel();
+        connectButton = new javax.swing.JButton();
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -139,11 +162,11 @@ public class ChiefGui extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1007, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
         );
 
         jLabel1.setText("ID:");
@@ -323,7 +346,7 @@ public class ChiefGui extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1005, Short.MAX_VALUE)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,7 +362,7 @@ public class ChiefGui extends javax.swing.JFrame {
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(28, 28, 28)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
         );
 
         jScrollPane5.setViewportView(jPanel4);
@@ -352,22 +375,51 @@ public class ChiefGui extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jScrollPane4.setViewportView(jPanel3);
 
         chiefTabbedPane.addTab("tab3", jScrollPane4);
 
+        connectivityTextField.setText("jLabel9");
+
+        connectButton.setText("Connect");
+
+        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
+        statusPanel.setLayout(statusPanelLayout);
+        statusPanelLayout.setHorizontalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(connectivityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(connectButton)
+                .addContainerGap(873, Short.MAX_VALUE))
+        );
+        statusPanelLayout.setVerticalGroup(
+            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(connectivityTextField)
+                    .addComponent(connectButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(chiefTabbedPane)
+            .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(chiefTabbedPane)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(chiefTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -383,6 +435,10 @@ public class ChiefGui extends javax.swing.JFrame {
 
     public void addCandSearchListener(MouseListener al){
         this.candSearch.addMouseListener(al);
+    }
+    
+    public void addConnectListener(ActionListener al){
+        this.connectButton.addActionListener(al);
     }
     
     public void addQRPanel(QRgen s){
@@ -460,6 +516,10 @@ public class ChiefGui extends javax.swing.JFrame {
         return this.presetColor;
     }
     
+    public void setStatusForConnectivityTextField(String text){
+        this.connectivityTextField.setText(text);
+    }
+    
     /**
      * To change the cell of the table
      */
@@ -502,6 +562,45 @@ public class ChiefGui extends javax.swing.JFrame {
         totalCddLabel.setText("Total Candidate: "+ totalCdd);
         preCddLabel.setText("Present Candidate: "+ presentCdd);
         absCddLabel.setText("Absent Candidate: "+ absentCdd);
+    }
+    
+    public void popUpChiefSignInJOptionPane(){
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        JTextField chiefIdField = new JTextField();
+        JTextField chiefPsField = new JTextField();
+        JTextField chiefBlockField = new JTextField();
+        
+        panel.add(new JLabel("Chief ID: "));
+        panel.add(chiefIdField);
+        panel.add(new JLabel("Password: "));
+        panel.add(chiefPsField);
+        panel.add(new JLabel("Block: "));
+        panel.add(chiefBlockField);
+        
+        int result = JOptionPane.showConfirmDialog(null, panel, "Test",
+            JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            this.chiefId = chiefIdField.getText();
+            this.chiefPs = chiefPsField.getText();
+            this.chiefBlock = chiefBlockField.getText();
+        }
+    }
+    
+    protected String getChiefId(){
+        return this.chiefId;
+    }
+    
+    protected String getChiefPs(){
+        return this.chiefPs;
+    }
+    
+    protected String getChiefBlock(){
+        return this.chiefBlock;
+    }
+    
+    protected void setTabbedPanelEnable(Boolean enable){
+        this.chiefTabbedPane.setEnabled(enable);
     }
     
     public Integer getTabbedNumber(){
@@ -547,6 +646,8 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JButton candSearch;
     private static javax.swing.JTable candidateTable;
     public static javax.swing.JTabbedPane chiefTabbedPane;
+    private javax.swing.JButton connectButton;
+    private javax.swing.JLabel connectivityTextField;
     private javax.swing.JTextField idTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -562,6 +663,7 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -575,6 +677,7 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JButton signInButton;
     private static javax.swing.JTable staffInfoTable;
     private javax.swing.JComboBox<String> statusComboBox;
+    private javax.swing.JPanel statusPanel;
     private javax.swing.JTextField tableNumTextField;
     private javax.swing.JLabel totalCddLabel;
     private javax.swing.JComboBox<String> venueComboBox;

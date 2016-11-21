@@ -40,12 +40,16 @@ public class ChiefControl {
     ChiefServer chief;
     QRgen qrgen;
     
+    String mainServerHostName = "localhost";
+    Integer mainServerPortNum = 5006;
+    
     
     Timer timer = new Timer(4000, new ChiefControl.TimerActionListener());
     
     HashMap invMap = new HashMap();
     Integer invNum;
 //    ChiefControl(){}
+    
     
     ChiefControl(ChiefGui chiefGui) throws Exception{
         this.invNum = 0;
@@ -54,10 +58,34 @@ public class ChiefControl {
         serverComm = new ServerComm();
         chief = new ChiefServer();
         
+        generateQRInterface();
+        
+        chiefGui.addConnectListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                try {
+                    ChiefControl.this.serverComm.connectToServer(ChiefControl.this.mainServerHostName, ChiefControl.this.mainServerPortNum);
+//                    ChiefControl.this.chiefGui.popUpChiefSignInJOptionPane();
+//                    chiefSignIn(chiefGui.getChiefId(),chiefGui.getChiefPs(),chiefGui.getChiefBlock());
+//                    ChiefControl.this.displayConnectivity("Connected");
+                } catch (Exception ex) {
+                    System.out.println("Warning: "+ex.toString());
+//                    ChiefControl.this.displayConnectivity("Not connected");
+                }
+                
+                if(ChiefControl.this.serverComm.isSocketAliveUitlitybyCrunchify(ChiefControl.this.mainServerHostName, ChiefControl.this.mainServerPortNum)){
+                    ChiefControl.this.displayConnectivity("Connected");
+                    ChiefControl.this.serverComm.start();
+                }
+                else{
+                    ChiefControl.this.displayConnectivity("Not connected");
+                }
+            }
+        });
+        
         chiefGui.addSignInButtonListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 try {
-                    chiefSignIn(chiefGui.getIdField(),chiefGui.getPsField(),chiefGui.getBlockField());
+                    
                 } catch (Exception ex) {
                     Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -100,6 +128,8 @@ public class ChiefControl {
                 //To change body of generated methods, choose Tools | Templates.
             }
         });
+        
+        
     }
     
     /**
@@ -113,15 +143,17 @@ public class ChiefControl {
         serverComm.loginToServer(id,password,block);
     }
     
+    public void displayConnectivity(String status){
+        this.chiefGui.setStatusForConnectivityTextField(status);
+    }
+    
     /**
      * @brief   To activate the Tab which generate the QR code
      * @param tabNum
      * @throws IOException 
      */
     public void activateQRTab(Integer tabNum) throws IOException{
-        
-        generateQRInterface();
-        
+
         if(tabNum == 1){
             try {
                 createNewClientComm();
@@ -134,6 +166,7 @@ public class ChiefControl {
 //            timer.stop();
         }
     }
+    
     
     public void generateQRInterface(){
         this.qrgen = new QRgen();

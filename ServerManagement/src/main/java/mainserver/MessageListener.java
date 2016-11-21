@@ -102,7 +102,8 @@ public class MessageListener extends Thread{
                                     if((chief.verifyStaff(id, ps, randomMsg))&&(chief.getStatus(id, block).equals("CHIEF"))){ 
                                         //send the desired semester database
                                         sendMessage(booleanToJson(true,CheckInType.CHIEF_LOGIN).toString());
-                                        //sendMessage(dbToJson(id, block));    
+                                        chief.setChiefSignInTime(id);
+                                        sendMessage(dbToJson(id, block));    
                                     }
                                     else{
                                         sendMessage(booleanToJson(false,CheckInType.CHIEF_LOGIN).toString());
@@ -111,8 +112,12 @@ public class MessageListener extends Thread{
                                     break;
                                     
                 case CheckInType.STAFF_LOGIN:    
-                                    JSONObject jsonIdentity = loginReply(json);
-                                    sendMessage(jsonIdentity.toString());
+                                    if(new ChiefData().verifyStaff(json.getString(InfoType.ID_NO), json.getString(InfoType.PASSWORD), json.getString(InfoType.RANDOM_MSG))){
+                                        sendMessage(loginReply(json, true).toString());
+                                        chief.setChiefSignInTime(json.getString(InfoType.ID_NO));
+                                    }
+                                    else
+                                        sendMessage(loginReply(json, false).toString());
                                     break;
                                     
                 case CheckInType.CDDPAPERS:   
@@ -170,17 +175,12 @@ public class MessageListener extends Thread{
         return bool;
     }
     
-    private JSONObject loginReply(JSONObject jsonReceived){
+    private JSONObject loginReply(JSONObject jsonReceived, boolean bool){
         JSONObject json = new JSONObject();
         
         try {
             System.out.println(jsonReceived.toString());
-            if(new ChiefData().verifyStaff(jsonReceived.getString(InfoType.ID_NO), jsonReceived.getString(InfoType.PASSWORD), jsonReceived.getString(InfoType.RANDOM_MSG))){
-                json.put(InfoType.RESULT, true);
-                
-            }
-            else
-                json.put(InfoType.RESULT, false);
+            json.put(InfoType.RESULT, bool);
             
             if(InfoType.TYPE.equals(CheckInType.STAFF_LOGIN))
                 json.put(InfoType.THREAD_ID, jsonReceived.getInt(InfoType.THREAD_ID));

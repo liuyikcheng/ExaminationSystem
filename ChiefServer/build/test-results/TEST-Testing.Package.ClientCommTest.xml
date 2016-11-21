@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Testing.Package.ClientCommTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2016-11-13T10:36:41" hostname="Kriss" time="0.631">
-  <properties/>
-  <testcase name="testSendInfo" classname="Testing.Package.ClientCommTest" time="0.211"/>
-  <testcase name="testStaffRequest" classname="Testing.Package.ClientCommTest" time="0.419"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
