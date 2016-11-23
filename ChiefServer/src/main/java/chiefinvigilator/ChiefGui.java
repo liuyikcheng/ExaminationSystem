@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -37,6 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -68,8 +70,11 @@ public class ChiefGui extends javax.swing.JFrame {
 
         initComponents();
         prepareComboBox();
+        
+        staffInfoTable.getColumn("Log Out").setCellRenderer(new LogOutButtonRenderer());
+        
         candidateTableModel = (DefaultTableModel) candidateTable.getModel();
-        this.candidateTable.setDefaultRenderer(Object.class, new MyTableCellRenderer());
+        candidateTable.setDefaultRenderer(Object.class, new CandidateTableCellRenderer());
         candidateTable.setAutoCreateRowSorter(rootPaneCheckingEnabled);
 //        chiefTabbedPane.setEnabled(false);
     }
@@ -145,11 +150,11 @@ public class ChiefGui extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Staff ID", "Staff Name", "Venue", "Status"
+                "Staff ID", "Staff Name", "Venue", "Status", "Log Out"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -482,7 +487,6 @@ public class ChiefGui extends javax.swing.JFrame {
        for(int i = 0; i<list.size(); i++){
            venueBoxModel.addElement(list.get(i));
        }
-//       AutoCompleteDecorator.decorate(venueComboBox);
        
        statusBoxModel.addElement("");
        for(int i = 0; i<list.size(); i++){
@@ -523,10 +527,10 @@ public class ChiefGui extends javax.swing.JFrame {
     /**
      * To change the cell of the table
      */
-    class MyTableCellRenderer extends DefaultTableCellRenderer {
+    class CandidateTableCellRenderer extends DefaultTableCellRenderer {
         
         
-        public MyTableCellRenderer(){
+        public CandidateTableCellRenderer(){
         }
 
         @Override
@@ -550,7 +554,21 @@ public class ChiefGui extends javax.swing.JFrame {
             }
             return this;
         }
-}
+    }
+    
+    /**
+     * @brief "Log Out" custom table cell renderer for candidateTable
+     */
+    class LogOutButtonRenderer extends JPanel implements TableCellRenderer {
+
+        public Component getTableCellRendererComponent(
+                                final JTable table, Object value,
+                                boolean isSelected, boolean hasFocus,
+                                int row, int column) {
+                    this.add( new JButton("Log Out"));
+                    return this;
+            }
+    }
     
     /**
      * @brief   set or update the number in the summary panel

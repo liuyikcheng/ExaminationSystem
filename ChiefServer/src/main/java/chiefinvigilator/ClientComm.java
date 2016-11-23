@@ -190,7 +190,8 @@ public class ClientComm extends Thread {
                                     
                 case CheckInType.COLLECTION : 
                                     JSONObject paperBundle = new JSONObject(json.getJSONObject(InfoType.PAPERBUNDLE_JSON));
-                                    this.getStaff().verifyForCollector(json.getString(InfoType.COLLECTOR), paperBundle.getString(PaperBundle.BUNDLE_ID));
+                                    boolean verifyResult = this.getStaff().verifyForCollector(json.getString(InfoType.COLLECTOR), paperBundle.getString(PaperBundle.BUNDLE_ID));
+                                    sendMessage(booleanToJson(verifyResult, CheckInType.COLLECTION).toString());
                                     break;
                     
                 case CheckInType.CDDPAPERS : 
@@ -199,7 +200,7 @@ public class ClientComm extends Thread {
                     
                 case CheckInType.ATTDLIST : 
                                     downloadCddData(json.getJSONArray(InfoType.ATTENDANCE_LIST));
-                                    sendMessage(booleanToJson(true).toString());
+                                    sendMessage(booleanToJson(true, CheckInType.ATTDLIST).toString());
                                     break;
                                   
                 case CheckInType.PAPERS:      
@@ -213,7 +214,7 @@ public class ClientComm extends Thread {
             
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            sendMessage(booleanToJson(false).toString());
+            sendMessage(booleanToJson(false, "Error").toString());
         }
         }
     }
@@ -476,11 +477,11 @@ public class ClientComm extends Thread {
     * @return   boolean in JSONObject format
     * @throws   JSONException 
     */
-    private JSONObject booleanToJson(boolean b) throws JSONException{
+    private JSONObject booleanToJson(boolean b, String type) throws JSONException{
         JSONObject bool = new JSONObject();
         
         bool.put(InfoType.RESULT, b);
-        bool.put(InfoType.TYPE, "Ack");
+        bool.put(InfoType.TYPE, type);
         
         return bool;
     }

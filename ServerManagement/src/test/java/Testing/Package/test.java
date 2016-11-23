@@ -219,6 +219,7 @@ public class test {
                     chief.getCddAttdList("M",1),
                     chief.getCddInfoList("M"),
                     chief.getChAndReList("M"),
+                    chief.getCollectorList(),
                     chief.getInvigilatorList("M"),
                     chief.getPaperList("M",1),
                     chief.getPaperInfoList("M"),
