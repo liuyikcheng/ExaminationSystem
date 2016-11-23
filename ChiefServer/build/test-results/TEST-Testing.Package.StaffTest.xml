@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Testing.Package.StaffTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2016-11-21T07:47:37" hostname="DESKTOP-LBC9K4R" time="0.241">
+<testsuite name="Testing.Package.StaffTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2016-11-23T08:36:19" hostname="DESKTOP-LBC9K4R" time="0.108">
   <properties/>
-  <testcase name="testVerifyForCollector2" classname="Testing.Package.StaffTest" time="0.154"/>
-  <testcase name="testVerifyForCollector3" classname="Testing.Package.StaffTest" time="0.001"/>
+  <testcase name="testVerifyForCollector2" classname="Testing.Package.StaffTest" time="0.001"/>
   <testcase name="testVerifyForCollector" classname="Testing.Package.StaffTest" time="0.001"/>
-  <testcase name="testHmac" classname="Testing.Package.StaffTest" time="0.085"/>
+  <testcase name="testVerifyForCollector3" classname="Testing.Package.StaffTest" time="0.001"/>
+  <testcase name="testHmac" classname="Testing.Package.StaffTest" time="0.105"/>
   <system-out><![CDATA[CXTfyy84BfM0iMC/Pr3kNiuqyJz85ZilYr8m/I11/tw=
 
 ]]></system-out>

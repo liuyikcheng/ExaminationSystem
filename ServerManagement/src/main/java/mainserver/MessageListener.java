@@ -42,7 +42,9 @@ public class MessageListener extends Thread{
     public MessageListener(int port){
         try {
             server = new ServerSocket(port);
+            chief = new ChiefData();
             this.start();
+            
         } catch (IOException ex) {
             Logger.getLogger(MessageListener.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -92,9 +94,7 @@ public class MessageListener extends Thread{
                 case CheckInType.CHIEF_LOGIN: String id = json.getString(InfoType.ID_NO);
                                     String ps = json.getString(InfoType.PASSWORD);          //Need to be change
                                     String block = json.getString(InfoType.BLOCK);
-                                    String randomMsg = json.getString(InfoType.RANDOM_MSG); //Need to be chagne
-                                    
-                                    chief = new ChiefData();
+                                    String randomMsg = json.getString(InfoType.RANDOM_MSG); //Need to be change
                                     
                                     // if id is valid staff and status is CHIEF
                                     if((chief.verifyStaff(id, ps, randomMsg))&&(chief.getStatus(id, block).equals("CHIEF"))){ 
@@ -114,7 +114,8 @@ public class MessageListener extends Thread{
                 case CheckInType.STAFF_LOGIN:    
                                     if(new ChiefData().verifyStaff(json.getString(InfoType.ID_NO), json.getString(InfoType.PASSWORD), json.getString(InfoType.RANDOM_MSG))){
                                         sendMessage(loginReply(json, true).toString());
-                                        chief.setChiefSignInTime(json.getString(InfoType.ID_NO));
+                                        System.out.println("Staff "+json.getString(InfoType.ID_NO)+" was logged in");
+                                        chief.setInvSignInTime(json.getString(InfoType.ID_NO));
                                     }
                                     else
                                         sendMessage(loginReply(json, false).toString());
@@ -182,7 +183,7 @@ public class MessageListener extends Thread{
             System.out.println(jsonReceived.toString());
             json.put(InfoType.RESULT, bool);
             
-            if(InfoType.TYPE.equals(CheckInType.STAFF_LOGIN))
+            if(jsonReceived.getString(InfoType.TYPE).equals(CheckInType.STAFF_LOGIN))
                 json.put(InfoType.THREAD_ID, jsonReceived.getInt(InfoType.THREAD_ID));
 
             json.put(InfoType.TYPE, jsonReceived.getString(InfoType.TYPE));

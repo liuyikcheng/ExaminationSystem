@@ -74,6 +74,15 @@ public class ClientComm extends Thread {
          }
         });
     
+    private Thread connectionThread = new Thread(new Runnable(){
+       public void run()
+       {
+           while(true){
+           getConnectionFromStaff();
+           }
+       }
+    });
+    
     public ClientComm() {
     }
     
@@ -102,8 +111,8 @@ public class ClientComm extends Thread {
                 try {
                     
                     this.serverSocket.setSoTimeout(100000);
-                   
-//                    getConnectionFromStaff();
+                   queueThread.start(); // create a queue with the serverComm
+                  //  getConnectionFromStaff();
                     
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());
@@ -116,16 +125,11 @@ public class ClientComm extends Thread {
             
     public void getConnectionFromStaff(){
         
-        queueThread.start(); // create a queue with the serverComm
-
-        while(true){
-                        
             try{
                 System.out.println("Socket "+this.serverSocket.getLocalPort()+" is accepting....");
                 setClient(this.serverSocket.accept());
 
                 System.out.println("connected to "+ getClient().getRemoteSocketAddress());
-
                 while(getClient().isClosed() != true){
 
                                     System.out.println(getClient().isClosed());
@@ -143,7 +147,6 @@ public class ClientComm extends Thread {
                                 System.out.println("ClientComm run() error : " + ex.getMessage());
                             }
                         
-                    }
     }
 
     
@@ -207,7 +210,6 @@ public class ClientComm extends Thread {
                                     if(isSignedIn()){
                                         JSONObject jsonMsg = this.getStaff().prepareInvExamList(json.getString(JSONKey.VENUE));
                                     }
-                
                                     break;
                 default: break;
             }
@@ -229,7 +231,7 @@ public class ClientComm extends Thread {
             JSONObject json;
             
             ThreadMessage tm = this.getServerComm().getReceiveQueue(this.getThreadId());
-            System.out.println("Staff sign in : " + tm.getMessage());
+            System.out.println("ClientComm queue packet received : " + tm.getMessage());
             json = new JSONObject(tm.getMessage());
             
             String type = json.getString(InfoType.TYPE);
@@ -239,6 +241,9 @@ public class ClientComm extends Thread {
                                         this.setStaff(new Staff(json.getString(InfoType.ID_NO)));
                                         this.setSignIn(tm.getResultKey());
                                         message = this.getStaff().toJson(true).toString();
+                                        
+                                        // add staff info to the chief GUI staffInfoTable
+                                        this.chiefControl.addStaffInfoToGuiTable(this.staff);
                                     }
                                     else
                                         message = json.toString();
@@ -253,12 +258,10 @@ public class ClientComm extends Thread {
                                     
                 case CheckInType.GEN_RANDOM_MSG:
                                     regenerateQRInterface(json.getString(InfoType.VALUE));
-                                    getConnectionFromStaff();
-                                    break;
-                                    
-                    
+                                    connectionThread.start();
+                                    break;                   
+             
             }
-            
         } catch (IOException ex) {
             Logger.getLogger(ServerComm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {

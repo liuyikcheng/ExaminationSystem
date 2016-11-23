@@ -22,6 +22,7 @@ import chiefinvigilator.InfoData;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseListener;
 import java.sql.Array;
@@ -29,8 +30,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -72,6 +75,8 @@ public class ChiefGui extends javax.swing.JFrame {
         prepareComboBox();
         
         staffInfoTable.getColumn("Log Out").setCellRenderer(new LogOutButtonRenderer());
+        staffInfoTable.getColumn("Log Out").setCellEditor(new CustomButtonEditor(new JCheckBox()));
+//        staffInfoTable(new Object());
         
         candidateTableModel = (DefaultTableModel) candidateTable.getModel();
         candidateTable.setDefaultRenderer(Object.class, new CandidateTableCellRenderer());
@@ -147,7 +152,7 @@ public class ChiefGui extends javax.swing.JFrame {
 
         staffInfoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null, null}
             },
             new String [] {
                 "Staff ID", "Staff Name", "Venue", "Status", "Log Out"
@@ -453,8 +458,11 @@ public class ChiefGui extends javax.swing.JFrame {
         qrGenPanel.repaint();
     }
     
-    
-    public void addStaffInfoToRow(Staff staff){
+    /**
+     * @brief   Add a staff object to the table
+     * @param staff 
+     */
+    public void addStaffToStaffInfoTable(Staff staff){
         staffInfoTableModel = (DefaultTableModel) staffInfoTable.getModel();
         staffInfoTableModel.addRow(new Object[]{staff.getID(),staff.getName(),
                                                 staff.getVenue(),staff.getStatus()});
@@ -559,17 +567,81 @@ public class ChiefGui extends javax.swing.JFrame {
     /**
      * @brief "Log Out" custom table cell renderer for candidateTable
      */
-    class LogOutButtonRenderer extends JPanel implements TableCellRenderer {
+    class LogOutButtonRenderer extends JPanel implements TableCellRenderer{
 
+        public LogOutButtonRenderer() {
+            setOpaque(true);
+        }
+        
         public Component getTableCellRendererComponent(
                                 final JTable table, Object value,
                                 boolean isSelected, boolean hasFocus,
                                 int row, int column) {
-                    this.add( new JButton("Log Out"));
+                    
+            this.setLayout(new FlowLayout());
+            JButton logoutButton = new JButton("Log Out");
+            logoutButton.setSize(new Dimension(80,20));
+                    this.add(logoutButton);
+//                    this.add(new JTextArea("Check"));
+                    System.out.print("afad");
                     return this;
             }
     }
     
+    class CustomButtonEditor extends DefaultCellEditor {
+
+    protected JButton button;
+    private String label;
+    private boolean isPushed;
+
+    public CustomButtonEditor(JCheckBox checkBox) {
+        super(checkBox);
+        button = new JButton();
+        button.setOpaque(true);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+            }
+        });
+    }
+
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object value,
+            boolean isSelected, int row, int column) {
+        if (isSelected) {
+            button.setForeground(table.getSelectionForeground());
+            button.setBackground(table.getSelectionBackground());
+        } else {
+            button.setForeground(table.getForeground());
+            button.setBackground(table.getBackground());
+        }
+        label = (value == null) ? "" : value.toString();
+        button.setText(label);
+        isPushed = true;
+        return button;
+    }
+
+    @Override
+    public Object getCellEditorValue() {
+        if (isPushed) {
+            JOptionPane.showMessageDialog(button, label + ": Ouch!");
+        }
+        isPushed = false;
+        return label;
+    }
+
+    @Override
+    public boolean stopCellEditing() {
+        isPushed = false;
+        return super.stopCellEditing();
+    }
+
+    @Override
+    protected void fireEditingStopped() {
+        super.fireEditingStopped();
+    }
+}
     /**
      * @brief   set or update the number in the summary panel
      * @param totalCdd

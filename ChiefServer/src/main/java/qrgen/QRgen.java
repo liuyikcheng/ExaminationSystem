@@ -96,12 +96,13 @@ public class QRgen extends JPanel {
     
     public String localIp(int port) throws Exception {
       InetAddress addr = InetAddress.getLocalHost();
-      System.out.println("Local HostAddress:"+addr.getHostAddress());
+//      System.out.println("Local HostAddress:"+addr.getHostAddress());
+//      System.out.println("Local HostAddress:"+addr.getCanonicalHostName());
       String hostname = addr.getHostName();
       System.out.println("Local host name: "+hostname);
 
       System.out.println("listening on port: " + port);
-      return addr.getHostAddress()+":"+port;
+      return "192.168.235.1"+":"+port;
    }   
     
     public void paintComponent (Graphics graphics){

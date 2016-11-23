@@ -241,6 +241,10 @@ public class ChiefControl {
         }
     }
     
+    public void addStaffInfoToGuiTable(Staff staff){
+        chiefGui.addStaffToStaffInfoTable(staff);
+    }
+    
     
     protected String generateRandomString() {
         String seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+Long.toString(System.nanoTime());

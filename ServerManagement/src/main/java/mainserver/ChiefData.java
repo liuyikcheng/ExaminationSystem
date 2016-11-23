@@ -86,6 +86,22 @@ public class ChiefData {
         
     }
     
+    public void setInvSignInTime(String id) throws SQLException{
+        Connection conn = new ConnectDB("ExamDataBase.db").connect();
+        String sql = "UPDATE InvigilatorAndAssistant "
+                + "SET SignInTime = ? "
+                + "WHERE StaffID = ? ;";
+        
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, new CurrentTime().getCurrentTime().toString());
+        ps.setString(2, id);
+        ps.executeUpdate();
+        
+        ps.close();
+        conn.close();
+        
+    }
+    
     public Integer getSession_id(){
         Integer session_id = null;
         return 1;

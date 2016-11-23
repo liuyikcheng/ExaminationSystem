@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Testing.Package.GetDataTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2016-11-20T08:03:12" hostname="Kriss" time="0.01">
+<testsuite name="Testing.Package.GetDataTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2016-11-23T05:09:23" hostname="DESKTOP-LBC9K4R" time="0.003">
   <properties/>
-  <testcase name="testGetDataAll" classname="Testing.Package.GetDataTest" time="0.01"/>
+  <testcase name="testGetDataAll" classname="Testing.Package.GetDataTest" time="0.003"/>
   <system-out><![CDATA[Oslo
 Adlas
 Liu

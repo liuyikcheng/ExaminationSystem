@@ -209,9 +209,9 @@ public class ServerComm extends Thread implements Runnable{
                                     break;
                                     
                 case CheckInType.STAFF_LOGIN:    
-                                    if(json.getBoolean(InfoType.RESULT))
-                                        setInvigilatorSignInTime(json.getString(InfoType.ID_NO));
-                                            
+//                                    if(json.getBoolean(InfoType.RESULT))
+//                                        setInvigilatorSignInTime(json.getString(InfoType.ID_NO));
+//                                            
                                     putQueue(json.getLong(InfoType.THREAD_ID), message);
                                     break;
                 
@@ -265,6 +265,7 @@ public class ServerComm extends Thread implements Runnable{
         LinkedList list = (LinkedList)(this.clientQueueList.get(threadId));
         list.add(new ThreadMessage(threadId, message));
         this.clientQueueList.replace(threadId, list);
+        
     }
     
     /**
