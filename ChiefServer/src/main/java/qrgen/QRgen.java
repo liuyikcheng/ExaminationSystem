@@ -100,9 +100,9 @@ public class QRgen extends JPanel {
 //      System.out.println("Local HostAddress:"+addr.getCanonicalHostName());
       String hostname = addr.getHostName();
       System.out.println("Local host name: "+hostname);
-
+      System.out.println("Local host ip: "+addr.getHostAddress());
       System.out.println("listening on port: " + port);
-      return "192.168.235.1"+":"+port;
+      return "192.168.133.173"+":"+port;
    }   
     
     public void paintComponent (Graphics graphics){

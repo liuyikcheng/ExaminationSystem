@@ -12,6 +12,7 @@ package globalvariable;
 public class CheckInType { //ServerManagement
     public static final String STAFF_LOGIN = "Identification";
     public static final String CHIEF_LOGIN = "ChiefSignIn";
+    public static final String STAFF_LOGIN_FROM_CHIEF_SERVER = "StaffSignIn";
     public static final String STAFF_RECONNECT = "Reconnection";
     public static final String CHIEF_DATABASE = "ChiefDatabase";
     public static final String EXAM_INFO_LIST = "VenueInfo";

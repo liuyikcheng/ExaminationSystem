@@ -5,6 +5,7 @@
  */
 package chiefinvigilator;
 
+import globalvariable.CheckInType;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -85,7 +86,11 @@ public class ChiefControl {
         chiefGui.addSignInButtonListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 try {
+                    String id = ChiefControl.this.chiefGui.getIdField();
+                    String ps = ChiefControl.this.chiefGui.getPsField();
+                    String venue = ChiefControl.this.chiefGui.getVenueField();
                     
+                    ChiefControl.this.serverComm.signInToServer(id, ps, venue, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER);
                 } catch (Exception ex) {
                     Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -129,7 +134,17 @@ public class ChiefControl {
             }
         });
         
-        
+    }
+    
+    /**
+     * @brief   To record staff that sign in using the chief server
+     */
+    public void staffSignInRecord(Staff staff){
+        chiefGui.addStaffToStaffInfoTable(staff);
+    }
+    
+    public void addInvSignOutActionListener(ActionListener al){
+        chiefGui.addInvSignOutActionListener(al);
     }
     
     /**
@@ -140,7 +155,7 @@ public class ChiefControl {
      * @throws Exception 
      */
     public void chiefSignIn(String id, String password, String block) throws Exception{
-        serverComm.loginToServer(id,password,block);
+        serverComm.signInToServer(id,password,block,CheckInType.CHIEF_LOGIN);
     }
     
     public void displayConnectivity(String status){

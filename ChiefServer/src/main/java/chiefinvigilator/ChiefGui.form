@@ -91,7 +91,7 @@
                           <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                           <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="blockTextField" min="-2" pref="78" max="-2" attributes="0"/>
+                          <Component id="venueTextField" min="-2" pref="78" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="signInButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="238" max="-2" attributes="0"/>
@@ -109,7 +109,7 @@
                               <Component id="signInButton" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="passwordField" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="blockTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="venueTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="jPanel2" max="32767" attributes="0"/>
@@ -148,12 +148,12 @@
                         <Component class="javax.swing.JTable" name="staffInfoTable">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="5" rowCount="1">
+                              <Table columnCount="5" rowCount="3">
                                 <Column editable="false" title="Staff ID" type="java.lang.Object"/>
                                 <Column editable="false" title="Staff Name" type="java.lang.Object"/>
                                 <Column editable="false" title="Venue" type="java.lang.Object"/>
                                 <Column editable="false" title="Status" type="java.lang.Object"/>
-                                <Column editable="false" title="Log Out" type="java.lang.Object"/>
+                                <Column editable="true" title="Log Out" type="java.lang.Object"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -213,10 +213,10 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel8">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Block:"/>
+                    <Property name="text" type="java.lang.String" value="Venue:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="blockTextField">
+                <Component class="javax.swing.JTextField" name="venueTextField">
                 </Component>
               </SubComponents>
             </Container>

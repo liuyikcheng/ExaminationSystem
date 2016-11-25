@@ -56,6 +56,7 @@ public class ServerComm extends Thread implements Runnable{
     Socket socket;
     boolean signIn = false;
     ChiefData chief;
+    ChiefControl chiefControl;
     Queue serverQueue = new LinkedList();
     HashMap clientQueueList = new HashMap();
     
@@ -80,7 +81,7 @@ public class ServerComm extends Thread implements Runnable{
     }
     
     public void connectToServer(String hostName, int port) throws IOException{
-            socket = new Socket(hostName, port);
+        socket = new Socket(hostName, port);
 //            this.start();
        
     }
@@ -146,21 +147,23 @@ public class ServerComm extends Thread implements Runnable{
         }
     }
     
-    public void loginToServer(String id, String password, String block) throws Exception{
-        sendMessage(identityInToJson(id,password,block));
+    public void signInToServer(String id, String password, String value, String type) throws Exception{
+        sendMessage(identityInToJson(id,password,value,type));
     }
     
-    public String identityInToJson(String id, String password, String block) throws JSONException, Exception{
+    public String identityInToJson(String id, String password, String value, String type) throws JSONException, Exception{
         JSONObject json = new JSONObject();
         Hmac hmac = new Hmac();
         String randomMessage = hmac.generateRandomString();
         
         
-        json.put(InfoType.TYPE,CheckInType.CHIEF_LOGIN);
+        json.put(InfoType.TYPE,type);
         json.put(InfoType.ID_NO,id);
         json.put(InfoType.RANDOM_MSG,randomMessage);
         json.put(InfoType.HASHCODE,hmac.encode(password, randomMessage));
-        json.put(InfoType.BLOCK,block);
+        
+        if(type.equals(CheckInType.CHIEF_LOGIN))
+            json.put(InfoType.BLOCK,value);
 //        json.put(InfoType.THREAD_ID,"fff");
         
         return json.toString();
@@ -197,8 +200,19 @@ public class ServerComm extends Thread implements Runnable{
             System.out.println("ServerComm: " +json.getString(InfoType.TYPE));
             
             switch(json.getString(InfoType.TYPE)){
-                case CheckInType.CHIEF_LOGIN: if(json.getBoolean(InfoType.RESULT))
+                case CheckInType.CHIEF_LOGIN: 
+                                    if(json.getBoolean(InfoType.RESULT))
                                         this.signIn = true;
+                                    else
+                                        ChiefGui.showSignInErrorMsg();
+                                    break;
+                                    
+                case CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER:
+                                    if(json.getBoolean(InfoType.RESULT)){
+                                        String id = json.getString(InfoType.ID_NO);
+                                        Staff staff = new Staff(id);
+                                        staff.setInvInfo(id);
+                                    }
                                     else
                                         ChiefGui.showSignInErrorMsg();
                                     break;
@@ -229,7 +243,7 @@ public class ServerComm extends Thread implements Runnable{
         }
     }
     
-    private void setInvigilatorSignInTime(String staffId) throws SQLException{
+    private void setInviSignInTime(String staffId) throws SQLException{
         
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         
@@ -249,6 +263,10 @@ public class ServerComm extends Thread implements Runnable{
         
         ps.executeUpdate();
         ps.close();
+    }
+    
+    public void invSignIn(String id, String ps){
+        
     }
     
     public void getSendQueue(ThreadMessage tm){

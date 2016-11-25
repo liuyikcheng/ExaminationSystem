@@ -89,12 +89,19 @@ public class MessageListener extends Thread{
             JSONObject json = new JSONObject(message);
             System.out.println(json.getString(InfoType.TYPE));
             
+            String id = null;
+            String ps = null;
+            String block = null;
+            String randomMsg = null;
+            Integer threadId = null;
+                                    
             switch(json.getString(InfoType.TYPE)){
                 
-                case CheckInType.CHIEF_LOGIN: String id = json.getString(InfoType.ID_NO);
-                                    String ps = json.getString(InfoType.PASSWORD);          //Need to be change
-                                    String block = json.getString(InfoType.BLOCK);
-                                    String randomMsg = json.getString(InfoType.RANDOM_MSG); //Need to be change
+                case CheckInType.CHIEF_LOGIN: 
+                                    id = json.getString(InfoType.ID_NO);
+                                    ps = json.getString(InfoType.PASSWORD);
+                                    block = json.getString(InfoType.BLOCK);
+                                    randomMsg = json.getString(InfoType.RANDOM_MSG);
                                     
                                     // if id is valid staff and status is CHIEF
                                     if((chief.verifyStaff(id, ps, randomMsg))&&(chief.getStatus(id, block).equals("CHIEF"))){ 
@@ -112,13 +119,42 @@ public class MessageListener extends Thread{
                                     break;
                         
                 case CheckInType.STAFF_LOGIN:    
-                                    if(new ChiefData().verifyStaff(json.getString(InfoType.ID_NO), json.getString(InfoType.PASSWORD), json.getString(InfoType.RANDOM_MSG))){
-                                        sendMessage(loginReply(json, true).toString());
-                                        System.out.println("Staff "+json.getString(InfoType.ID_NO)+" was logged in");
-                                        chief.setInvSignInTime(json.getString(InfoType.ID_NO));
+                                    
+                                    try{
+                                        id = json.getString(InfoType.ID_NO);
+                                        ps = json.getString(InfoType.PASSWORD);
+                                        randomMsg = json.getString(InfoType.RANDOM_MSG);
+                                        threadId = json.getInt(InfoType.THREAD_ID);
+
+                                        if(new ChiefData().verifyStaff(id, ps, randomMsg)){
+                                            sendMessage(staffSignInReply(id,threadId, CheckInType.STAFF_LOGIN, true).toString());
+                                            System.out.println("Staff "+json.getString(InfoType.ID_NO)+" was signed in");
+                                            chief.setInvSignInTime(json.getString(InfoType.ID_NO));
+                                        }
+                                        else
+                                            sendMessage(staffSignInReply(id, threadId, CheckInType.STAFF_LOGIN, false).toString());
+                                    }catch(SQLException ex){
+                                        sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false).toString());
                                     }
-                                    else
-                                        sendMessage(loginReply(json, false).toString());
+                                    break;
+                                    
+                case CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER:
+                    
+                                    try{
+                                        id = json.getString(InfoType.ID_NO);
+                                        ps = json.getString(InfoType.PASSWORD);
+                                        randomMsg = json.getString(InfoType.RANDOM_MSG);
+                                    
+                                        if(new ChiefData().verifyStaff(id, ps, randomMsg)){
+                                            sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, true).toString());
+                                            System.out.println("Staff "+json.getString(InfoType.ID_NO)+" was signed in from ChiefServer");
+                                            chief.setInvSignInTime(json.getString(InfoType.ID_NO));
+                                        }
+                                        else
+                                            sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false).toString());
+                                    }catch(SQLException ex){
+                                        sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false).toString());
+                                    }
                                     break;
                                     
                 case CheckInType.CDDPAPERS:   
@@ -130,16 +166,12 @@ public class MessageListener extends Thread{
                                     break;
                                     
                 case CheckInType.ATTDLIST:
-                                    updateDB();
+                                    break;
             }
         } catch (Exception ex) {
             Logger.getLogger(MessageListener.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-    }
-    
-    public void updateDB(){
         
     }
     
@@ -176,20 +208,19 @@ public class MessageListener extends Thread{
         return bool;
     }
     
-    private JSONObject loginReply(JSONObject jsonReceived, boolean bool){
+    private JSONObject staffSignInReply(String id, Integer threadId, String type, boolean bool){
         JSONObject json = new JSONObject();
         
         try {
-            System.out.println(jsonReceived.toString());
             json.put(InfoType.RESULT, bool);
             
-            if(jsonReceived.getString(InfoType.TYPE).equals(CheckInType.STAFF_LOGIN))
-                json.put(InfoType.THREAD_ID, jsonReceived.getInt(InfoType.THREAD_ID));
+            if(type.equals(CheckInType.STAFF_LOGIN))
+                json.put(InfoType.THREAD_ID, threadId);
 
-            json.put(InfoType.TYPE, jsonReceived.getString(InfoType.TYPE));
-            json.put(InfoType.ID_NO, jsonReceived.getString(InfoType.ID_NO));
+            json.put(InfoType.TYPE, type);
+            json.put(InfoType.ID_NO, id);
             
-                    } catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(MessageListener.class.getName()).log(Level.SEVERE, null, ex);
         }
         return json;

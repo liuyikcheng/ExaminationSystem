@@ -23,6 +23,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseListener;
 import java.sql.Array;
@@ -30,6 +32,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -57,6 +60,8 @@ public class ChiefGui extends javax.swing.JFrame {
     DefaultComboBoxModel  venueBoxModel = new DefaultComboBoxModel();
     DefaultComboBoxModel  statusBoxModel = new DefaultComboBoxModel();
     
+    InvLogOutButtonEditor invLogOutButtonEditor = new InvLogOutButtonEditor(new JTextField());
+    
     JLabel qrLabel = new JLabel("Scan the QR Code to sign in.");
     Color presetColor;
     
@@ -74,8 +79,8 @@ public class ChiefGui extends javax.swing.JFrame {
         initComponents();
         prepareComboBox();
         
-        staffInfoTable.getColumn("Log Out").setCellRenderer(new LogOutButtonRenderer());
-        staffInfoTable.getColumn("Log Out").setCellEditor(new CustomButtonEditor(new JCheckBox()));
+        staffInfoTable.getColumnModel().getColumn(4).setCellRenderer(new InvLogOutButtonRenderer());
+        staffInfoTable.getColumnModel().getColumn(4).setCellEditor(new InvLogOutButtonEditor(new JTextField()));
 //        staffInfoTable(new Object());
         
         candidateTableModel = (DefaultTableModel) candidateTable.getModel();
@@ -106,7 +111,7 @@ public class ChiefGui extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
         jLabel8 = new javax.swing.JLabel();
-        blockTextField = new javax.swing.JTextField();
+        venueTextField = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         qrGenPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -152,6 +157,8 @@ public class ChiefGui extends javax.swing.JFrame {
 
         staffInfoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
                 {null, null, null, null, null}
             },
             new String [] {
@@ -159,7 +166,7 @@ public class ChiefGui extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -183,7 +190,7 @@ public class ChiefGui extends javax.swing.JFrame {
 
         jLabel2.setText("Password:");
 
-        jLabel8.setText("Block:");
+        jLabel8.setText("Venue:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -202,7 +209,7 @@ public class ChiefGui extends javax.swing.JFrame {
                 .addGap(58, 58, 58)
                 .addComponent(jLabel8)
                 .addGap(32, 32, 32)
-                .addComponent(blockTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(venueTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(signInButton)
                 .addGap(238, 238, 238))
@@ -221,7 +228,7 @@ public class ChiefGui extends javax.swing.JFrame {
                     .addComponent(signInButton)
                     .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(blockTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(venueTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -452,8 +459,27 @@ public class ChiefGui extends javax.swing.JFrame {
     }
     
     public void addQRPanel(QRgen s){
+        JLabel qrLabel = new JLabel("Scan to sign in.");
+        
+        qrLabel.setFont(new Font("Serif", Font.BOLD, 12));
+        
         qrGenPanel.removeAll();
-        qrGenPanel.add(s);
+//        qrGenPanel.setLayout(new BoxLayout(qrGenPanel, BoxLayout.Y_AXIS));
+        qrGenPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.fill = GridBagConstraints.HORIZONTAL;
+	c.gridx = 0;
+	c.gridy = 0;
+	qrGenPanel.add(qrLabel, c);
+        
+        c.fill = GridBagConstraints.HORIZONTAL;
+	c.weightx = 0.5;
+	c.gridx = 1;
+	c.gridy = 0;
+        qrGenPanel.add(s, c);
         qrGenPanel.revalidate(); 
         qrGenPanel.repaint();
     }
@@ -471,14 +497,15 @@ public class ChiefGui extends javax.swing.JFrame {
     }
     
     public void removeStaffInfoFromRow(Staff staff) {
-    for (int i = staffInfoTableModel.getRowCount() - 1; i >= 0; --i) {
- 
-            if (staffInfoTableModel.getValueAt(i, 0).equals(staff.getID())) {
-                // what if value is not unique?
-                staffInfoTableModel.removeRow(i);
-            }
+        for (int i = staffInfoTableModel.getRowCount() - 1; i >= 0; --i) {
+
+                if (staffInfoTableModel.getValueAt(i, 0).equals(staff.getID())) {
+                    // what if value is not unique?
+                    staffInfoTableModel.removeRow(i);
+                }
+        }
     }
- }
+    
     public static void activateChiefTabbedPane(){
         chiefTabbedPane.setEnabled(true);
     }
@@ -567,9 +594,9 @@ public class ChiefGui extends javax.swing.JFrame {
     /**
      * @brief "Log Out" custom table cell renderer for candidateTable
      */
-    class LogOutButtonRenderer extends JPanel implements TableCellRenderer{
+    class InvLogOutButtonRenderer extends JButton implements TableCellRenderer{
 
-        public LogOutButtonRenderer() {
+        public InvLogOutButtonRenderer() {
             setOpaque(true);
         }
         
@@ -578,70 +605,89 @@ public class ChiefGui extends javax.swing.JFrame {
                                 boolean isSelected, boolean hasFocus,
                                 int row, int column) {
                     
-            this.setLayout(new FlowLayout());
-            JButton logoutButton = new JButton("Log Out");
-            logoutButton.setSize(new Dimension(80,20));
-                    this.add(logoutButton);
+            setText("LogOut");
+//            this.setLayout(new FlowLayout());
+//            JButton logoutButton = new JButton("Log Out");
+//            logoutButton.setSize(new Dimension(80,20));
+//                    this.add(logoutButton);
 //                    this.add(new JTextArea("Check"));
-                    System.out.print("afad");
+//                    System.out.print("afad");
                     return this;
             }
     }
     
-    class CustomButtonEditor extends DefaultCellEditor {
+    class InvLogOutButtonEditor extends DefaultCellEditor{
+    
+        JButton logoutButton;
+        Boolean clicked;
+        Integer content;
 
-    protected JButton button;
-    private String label;
-    private boolean isPushed;
+        public InvLogOutButtonEditor(JTextField textField) {
+            super(textField);
+            logoutButton = new JButton();
+            logoutButton.setOpaque(true);
+            
+            logoutButton.addActionListener(new ActionListener(){
 
-    public CustomButtonEditor(JCheckBox checkBox) {
-        super(checkBox);
-        button = new JButton();
-        button.setOpaque(true);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-            }
-        });
-    }
-
-    @Override
-    public Component getTableCellEditorComponent(JTable table, Object value,
-            boolean isSelected, int row, int column) {
-        if (isSelected) {
-            button.setForeground(table.getSelectionForeground());
-            button.setBackground(table.getSelectionBackground());
-        } else {
-            button.setForeground(table.getForeground());
-            button.setBackground(table.getBackground());
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("button clicked");
+                    System.out.println("content:" + content);
+                    
+                    fireEditingStopped();
+                }
+            });
+            
         }
-        label = (value == null) ? "" : value.toString();
-        button.setText(label);
-        isPushed = true;
-        return button;
-    }
-
-    @Override
-    public Object getCellEditorValue() {
-        if (isPushed) {
-            JOptionPane.showMessageDialog(button, label + ": Ouch!");
+        
+        public void addActionListenerLogOutButton(ActionListener al){
+            this.logoutButton.addActionListener(al);
         }
-        isPushed = false;
-        return label;
-    }
+        
+        @Override
+	public Component getTableCellEditorComponent(JTable table, Object obj,
+			boolean selected, int row, int col) {
+                        
+            content = row;
+            logoutButton.setText("Log Out");
+            clicked=true;
+            return logoutButton;
+	}
+        
+        @Override
+        public Object getCellEditorValue() {
 
-    @Override
-    public boolean stopCellEditing() {
-        isPushed = false;
-        return super.stopCellEditing();
-    }
+		 if(clicked)
+			{
+			//SHOW US SOME MESSAGE
+//				JOptionPane.showMessageDialog(" Clicked");
+			}
+		//SET IT TO FALSE NOW THAT ITS CLICKED
+		clicked=false;
+	  return new String("button click");
+	}
 
-    @Override
-    protected void fireEditingStopped() {
-        super.fireEditingStopped();
+        @Override
+	public boolean stopCellEditing() {
+
+	       //SET CLICKED TO FALSE FIRST
+			clicked=false;
+		return super.stopCellEditing();
+	}
+	 
+	 @Override
+	protected void fireEditingStopped() {
+		// TODO Auto-generated method stub
+		super.fireEditingStopped();
+	}
+        
+
+    }   
+    
+    public void addInvSignOutActionListener(ActionListener al){
+        invLogOutButtonEditor.addActionListenerLogOutButton(al);
     }
-}
+    
     /**
      * @brief   set or update the number in the summary panel
      * @param totalCdd
@@ -705,8 +751,8 @@ public class ChiefGui extends javax.swing.JFrame {
         return new String(passwordField.getPassword());
     }
     
-    public String getBlockField(){
-        return blockTextField.getText();
+    public String getVenueField(){
+        return venueTextField.getText();
     }
     
     public String getVenueComboBox(){
@@ -732,7 +778,6 @@ public class ChiefGui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel absCddLabel;
     private javax.swing.JComboBox<String> attendanceComboBox;
-    private javax.swing.JTextField blockTextField;
     private javax.swing.JButton candSearch;
     private static javax.swing.JTable candidateTable;
     public static javax.swing.JTabbedPane chiefTabbedPane;
@@ -771,5 +816,6 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JTextField tableNumTextField;
     private javax.swing.JLabel totalCddLabel;
     private javax.swing.JComboBox<String> venueComboBox;
+    private javax.swing.JTextField venueTextField;
     // End of variables declaration//GEN-END:variables
 }

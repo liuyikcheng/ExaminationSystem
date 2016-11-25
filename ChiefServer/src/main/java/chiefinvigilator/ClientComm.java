@@ -178,8 +178,9 @@ public class ClientComm extends Thread {
             
             switch(checkIn){
                 case CheckInType.STAFF_LOGIN : 
-                                    this.setStaff(new Staff(json.getString(InfoType.ID_NO)));
-                                    this.getStaff().setInvInfo();
+                                    String id = json.getString(InfoType.ID_NO);
+                                    this.setStaff(new Staff(id));
+                                    this.getStaff().setInvInfo(id);
                                     this.getServerComm().getSendQueue(new ThreadMessage(this.getThreadId(),message,this.challengeMsg)); // send to main server
                                     break;
                                     
