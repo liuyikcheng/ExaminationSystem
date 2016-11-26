@@ -73,7 +73,7 @@ public class ChiefControl {
 //                    ChiefControl.this.displayConnectivity("Not connected");
                 }
                 
-                if(ChiefControl.this.serverComm.isSocketAliveUitlitybyCrunchify(ChiefControl.this.mainServerHostName, ChiefControl.this.mainServerPortNum)){
+                if(ChiefControl.this.serverIsConnected()){
                     ChiefControl.this.displayConnectivity("Connected");
                     ChiefControl.this.serverComm.start();
                 }
@@ -85,12 +85,19 @@ public class ChiefControl {
         
         chiefGui.addSignInButtonListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                
                 try {
-                    String id = ChiefControl.this.chiefGui.getIdField();
-                    String ps = ChiefControl.this.chiefGui.getPsField();
-                    String venue = ChiefControl.this.chiefGui.getVenueField();
                     
-                    ChiefControl.this.serverComm.signInToServer(id, ps, venue, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER);
+                    if(ChiefControl.this.serverIsConnected()){
+                        String id = ChiefControl.this.chiefGui.getIdField();
+                        String ps = ChiefControl.this.chiefGui.getPsField();
+                        
+                        if(ChiefControl.this.serverComm.invIsAssigned(id))
+                            ChiefControl.this.serverComm.signInToServer(id, ps, "", CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER);
+                    }
+                    else
+                        ChiefControl.this.chiefGui.popUpErrorPane("Server is not connected");
+                        
                 } catch (Exception ex) {
                     Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -134,6 +141,10 @@ public class ChiefControl {
             }
         });
         
+    }
+    
+    public boolean serverIsConnected(){
+        return ChiefControl.this.serverComm.isSocketAliveUitlitybyCrunchify(ChiefControl.this.mainServerHostName, ChiefControl.this.mainServerPortNum);
     }
     
     /**

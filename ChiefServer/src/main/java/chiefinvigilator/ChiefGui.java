@@ -110,8 +110,6 @@ public class ChiefGui extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
-        jLabel8 = new javax.swing.JLabel();
-        venueTextField = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         qrGenPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -190,8 +188,6 @@ public class ChiefGui extends javax.swing.JFrame {
 
         jLabel2.setText("Password:");
 
-        jLabel8.setText("Venue:");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -206,10 +202,6 @@ public class ChiefGui extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addComponent(jLabel8)
-                .addGap(32, 32, 32)
-                .addComponent(venueTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(signInButton)
                 .addGap(238, 238, 238))
@@ -226,9 +218,7 @@ public class ChiefGui extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(signInButton)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(venueTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -723,6 +713,10 @@ public class ChiefGui extends javax.swing.JFrame {
         }
     }
     
+    public void popUpErrorPane(String message){
+        JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
     protected String getChiefId(){
         return this.chiefId;
     }
@@ -749,10 +743,6 @@ public class ChiefGui extends javax.swing.JFrame {
     
     public String getPsField(){
         return new String(passwordField.getPassword());
-    }
-    
-    public String getVenueField(){
-        return venueTextField.getText();
     }
     
     public String getVenueComboBox(){
@@ -791,7 +781,6 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -816,6 +805,5 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JTextField tableNumTextField;
     private javax.swing.JLabel totalCddLabel;
     private javax.swing.JComboBox<String> venueComboBox;
-    private javax.swing.JTextField venueTextField;
     // End of variables declaration//GEN-END:variables
 }

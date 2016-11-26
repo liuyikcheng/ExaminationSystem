@@ -21,6 +21,7 @@ import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
@@ -223,9 +224,6 @@ public class ServerComm extends Thread implements Runnable{
                                     break;
                                     
                 case CheckInType.STAFF_LOGIN:    
-//                                    if(json.getBoolean(InfoType.RESULT))
-//                                        setInvigilatorSignInTime(json.getString(InfoType.ID_NO));
-//                                            
                                     putQueue(json.getLong(InfoType.THREAD_ID), message);
                                     break;
                 
@@ -243,12 +241,10 @@ public class ServerComm extends Thread implements Runnable{
         }
     }
     
-    private void setInviSignInTime(String staffId) throws SQLException{
+    private void setInviSignInTime(String id) throws SQLException{
         
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        
         Calendar cal = Calendar.getInstance();
-
         Connection conn = new ConnectDB().connect();
         
         String sql = "UPDATE InvigilatorAndAssistant "
@@ -259,15 +255,37 @@ public class ServerComm extends Thread implements Runnable{
         
         ps.setString(1, dateFormat.format(cal.getTime()));
         ps.setString(2, "PRESENT");
-        ps.setString(3, staffId);
+        ps.setString(3, id);
         
         ps.executeUpdate();
         ps.close();
     }
     
-    public void invSignIn(String id, String ps){
+    public boolean invIsAssigned(String id) throws SQLException{
+        boolean assign = false;
+        Connection conn = new ConnectDB().connect();
         
+        String sql = "SELECT Status FROM InvigilatorAndAssistant "
+                + "WHERE StaffID = ? ";
+//                + "AND Session_id = (SELECT Session_id FROM SessionAndDate WHERE Session = ? AND Date =?) ";
+        
+        PreparedStatement ps = conn.prepareStatement(sql);
+        
+        ps.setString(1, id);
+//        ps.setString(2, session);
+//        ps.setString(3, date);
+        
+        ResultSet result = ps.executeQuery();
+        
+        assign = result.next();
+                
+        result.close();
+        ps.close();
+        conn.close();
+        
+        return assign;
     }
+    
     
     public void getSendQueue(ThreadMessage tm){
         this.serverQueue.add(tm);

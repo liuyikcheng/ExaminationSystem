@@ -277,4 +277,17 @@ public class test {
     }
     
 */
+    @Test
+    public void testInvIsAssigned(){
+        ServerComm serverComm = new ServerComm();
+        boolean result = false;
+        
+        try {
+            result = serverComm.invIsAssigned("staff1");
+        } catch (SQLException ex) {
+            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(result, true);
+    }
 }
