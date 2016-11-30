@@ -29,7 +29,7 @@ public class ExamDataControl {
     
     public ExamDataControl(ExamDataGUI examDataGUI){
         this.examDataGUI = examDataGUI;
-        
+        addGuiListener(this.examDataGUI);
     }
     
     public void addGuiListener(ExamDataGUI examDataGUI){
@@ -48,7 +48,6 @@ public class ExamDataControl {
                 ArrayList<GetData> list = null;
 
                 examDataGUI.setExamTableRow(0);
-
                 try {
                     list = getData.getDataFromTable();
                     int i = 0;

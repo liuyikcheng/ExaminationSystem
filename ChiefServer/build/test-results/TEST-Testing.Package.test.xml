@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Testing.Package.test" tests="1" skipped="0" failures="0" errors="0" timestamp="2016-11-26T11:23:41" hostname="DESKTOP-LBC9K4R" time="0.129">
+<testsuite name="Testing.Package.test" tests="1" skipped="0" failures="0" errors="0" timestamp="2016-11-28T10:35:53" hostname="Kriss" time="0.373">
   <properties/>
-  <testcase name="testInvIsAssigned" classname="Testing.Package.test" time="0.129"/>
+  <testcase name="testInvIsAssigned" classname="Testing.Package.test" time="0.373"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

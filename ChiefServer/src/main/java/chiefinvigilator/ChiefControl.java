@@ -56,7 +56,7 @@ public class ChiefControl {
         this.invNum = 0;
         this.chiefGui = chiefGui;
         this.chiefGui.setVisible(true);
-        serverComm = new ServerComm();
+        serverComm = new ServerComm(this);
         chief = new ChiefServer();
         
         generateQRInterface();
@@ -91,9 +91,11 @@ public class ChiefControl {
                     if(ChiefControl.this.serverIsConnected()){
                         String id = ChiefControl.this.chiefGui.getIdField();
                         String ps = ChiefControl.this.chiefGui.getPsField();
-                        
+                       
                         if(ChiefControl.this.serverComm.invIsAssigned(id))
                             ChiefControl.this.serverComm.signInToServer(id, ps, "", CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER);
+                        else
+                            ChiefControl.this.chiefGui.popUpErrorPane("Wrong ID/PASSWORD");
                     }
                     else
                         ChiefControl.this.chiefGui.popUpErrorPane("Server is not connected");

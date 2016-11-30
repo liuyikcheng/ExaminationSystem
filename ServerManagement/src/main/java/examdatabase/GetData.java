@@ -168,6 +168,7 @@ public class GetData {
                 + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
                 + " LEFT OUTER JOIN PaperInfo ON Paper.PI_id = PaperInfo.PI_id "
                 + " LEFT OUTER JOIN Venue ON Paper.Venue_id = Venue.Venue_id "
+                + " LEFT OUTER JOIN SessionAndDate ON Session.Session_id = Venue.Venue_id "
                 + " WHERE CandidateInfo.IC " + checkInput(this.ic)
                 + " AND CandidateInfo.Name " + checkInput(this.name)
                 + " AND CandidateInfo.RegNum "+ checkInput(this.regNum)
@@ -176,7 +177,7 @@ public class GetData {
                 + " AND CandidateAttendance.TableNumber "+ checkInput(this.tableNum)
                 + " AND ProgName "+ checkInput(this.progName)
                 + " AND Programme.Faculty "+ checkInput(this.faculty)
-//                + " AND Paper.Session_id "+ checkInput(this.session)
+                + " AND Paper.Session_id "+ checkInput(this.session)
 //                + " AND PaperInfo.PaperCode = * "//+ checkInput(this.paperCode)
 //                + " AND VenueName = * "//+ checkInput(this.venueName)     
                 ;
@@ -190,34 +191,21 @@ public class GetData {
             
             // loop through the result set
             while (rs.next()) {
-
-//                info = new GetData( rs.getString("IC"), 
-//                                        rs.getString("Name"),
-//                                        rs.getString("RegNum"),
-//                                        rs.getString("Status"),
-//                                        rs.getString("Attendance"),
-//                                        rs.getString("TableNumber"),
-//                                        rs.getString("ProgName"),
-//                                        rs.getString("Faculty"),
-//                                        rs.getString("Session"),
-//                                        rs.getString("PaperCode"),
-//                                        rs.getString("PaperDescription"),
-//                );
                 
                 info = new GetData();
                 info.setIc(rs.getString("IC"));
                 info.setName(rs.getString("Name"));
                 info.setRegNum(rs.getString("RegNum"));
-//                info.setStatus(rs.getString("Status"));
-//                info.setAttendance(rs.getString("Attendance"));
-//                info.setTableNum(rs.getString("TableNumber"));
-//                info.setProgName(rs.getString("ProgName"));
-//                info.setFaculty(rs.getString("Faculty"));
-//                info.setSession(rs.getString("Session"));
+                info.setStatus(rs.getString("Status"));
+                info.setAttendance(rs.getString("Attendance"));
+                info.setTableNum(rs.getString("TableNumber"));
+                info.setProgName(rs.getString("ProgName"));
+                info.setFaculty(rs.getString("Faculty"));
+                info.setSession(rs.getString("Session"));
 //                info.setPaperCode(rs.getString("PaperCode"));
 //                info.setPaperDesc(rs.getString("PaperDescription"));
                 
-                System.out.println(info.getName());
+//                System.out.println(info.getName());
                 
                 list.add(info);
             }

@@ -137,6 +137,7 @@ public class ChiefGui extends javax.swing.JFrame {
         statusPanel = new javax.swing.JPanel();
         connectivityTextField = new javax.swing.JLabel();
         connectButton = new javax.swing.JButton();
+        submitButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -393,6 +394,8 @@ public class ChiefGui extends javax.swing.JFrame {
 
         connectButton.setText("Connect");
 
+        submitButton.setText("Submit");
+
         javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
@@ -402,7 +405,9 @@ public class ChiefGui extends javax.swing.JFrame {
                 .addComponent(connectivityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(connectButton)
-                .addContainerGap(873, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 762, Short.MAX_VALUE)
+                .addComponent(submitButton)
+                .addGap(38, 38, 38))
         );
         statusPanelLayout.setVerticalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -410,7 +415,8 @@ public class ChiefGui extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(connectivityTextField)
-                    .addComponent(connectButton))
+                    .addComponent(connectButton)
+                    .addComponent(submitButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -678,6 +684,10 @@ public class ChiefGui extends javax.swing.JFrame {
         invLogOutButtonEditor.addActionListenerLogOutButton(al);
     }
     
+    public void addSubmitActionListener(ActionListener al){
+        submitButton.addActionListener(al);
+    }
+    
     /**
      * @brief   set or update the number in the summary panel
      * @param totalCdd
@@ -802,6 +812,7 @@ public class ChiefGui extends javax.swing.JFrame {
     private static javax.swing.JTable staffInfoTable;
     private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JButton submitButton;
     private javax.swing.JTextField tableNumTextField;
     private javax.swing.JLabel totalCddLabel;
     private javax.swing.JComboBox<String> venueComboBox;

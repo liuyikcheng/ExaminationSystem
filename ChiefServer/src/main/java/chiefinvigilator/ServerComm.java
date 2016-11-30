@@ -77,6 +77,13 @@ public class ServerComm extends Thread implements Runnable{
         clientQueueList = new HashMap();
     }
     
+    public ServerComm(ChiefControl chiefControl){
+        chief = new ChiefData();
+        serverQueue = new LinkedList();
+        clientQueueList = new HashMap();
+        this.chiefControl = chiefControl;
+    }
+    
     public boolean getSignIn(){
         return this.signIn;
     }
@@ -170,8 +177,6 @@ public class ServerComm extends Thread implements Runnable{
         return json.toString();
     }
     
-    
-    
     private String receiveMessage() throws IOException{
 //        System.out.println(socket.getLocalPort());
         InputStream  ir = socket.getInputStream();
@@ -213,6 +218,7 @@ public class ServerComm extends Thread implements Runnable{
                                         String id = json.getString(InfoType.ID_NO);
                                         Staff staff = new Staff(id);
                                         staff.setInvInfo(id);
+                                        this.chiefControl.addStaffInfoToGuiTable(staff);
                                     }
                                     else
                                         ChiefGui.showSignInErrorMsg();
