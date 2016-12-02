@@ -229,7 +229,7 @@ public class ChiefData {
     }
     
     
-    public ArrayList<CandidateAttendance> getCddAttdList() throws SQLException{
+    public ArrayList<CandidateAttendance> getCddAttdList(String block) throws SQLException{
         ArrayList<CandidateAttendance> cddAttdList = new ArrayList<>();
 
         Connection conn = new ConnectDB().connect();
@@ -237,11 +237,10 @@ public class ChiefData {
                 + "FROM CandidateAttendance "
                 + "LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.Paper_id "
                 + "LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
-                + "WHERE Block = ? AND Session_id = ?";
+                + "WHERE Block = ? ";
         
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, this.block);
-        ps.setInt(2, getSession_id());
+        ps.setString(1, block);
 
         ResultSet result = ps.executeQuery();
         
@@ -254,6 +253,7 @@ public class ChiefData {
                                         result.getString("Attendance"),
                                         result.getInt("TableNumber")
                                     ));
+            System.out.println("CandidateInfoIC: " + result.getString("CandidateInfoIC"));
         }
         
         result.close();
@@ -263,7 +263,7 @@ public class ChiefData {
         return cddAttdList;
     }
     
-    public ArrayList<CandidateInfo> getCddInfoList() throws SQLException{
+    public ArrayList<CandidateInfo> getCddInfoList(String block) throws SQLException{
         ArrayList<CandidateInfo> cddInfoList = new ArrayList<>();
 
         Connection conn = new ConnectDB().connect();
@@ -272,15 +272,10 @@ public class ChiefData {
                 + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CandidateInfoIC = CandidateInfo.IC "
                 + "LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.Paper_id "
                 + "LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
-                + "WHERE Block = ? AND Session_id = ?";
-//                + "WHERE IC = "
-//                + "(SELECT CandidateInfoIC FROM CandidateAttendance WHERE Paper_id = "
-//                + "(SELECT Paper_id FROM Paper WHERE Venue_id = ? AND Session_id = ?) "
-//                + ")";
+                + "WHERE Block = ? ";
         
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, this.block);
-        ps.setInt(2, getSession_id());
+        ps.setString(1, block);
 
         ResultSet result = ps.executeQuery();
         
@@ -307,10 +302,9 @@ public class ChiefData {
         ArrayList<ChiefAndRelief> chAndReList = new ArrayList<>();
         
         Connection conn = new ConnectDB().connect();
-        String sql = "SELECT * FROM ChiefAndRelief WHERE Session_id = ? AND Block = ? ";
+        String sql = "SELECT * FROM ChiefAndRelief WHERE Block = ? ";
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, getSession_id());
-        ps.setString(2, this.block);
+        ps.setString(1,block);
 
         ResultSet result = ps.executeQuery();
         

@@ -71,7 +71,7 @@ public class ChiefData {
 //    }
     
     public void setChiefSignInTime(String id) throws SQLException{
-        Connection conn = new ConnectDB("ExamDataBase.db").connect();
+        Connection conn = new ConnectDB().connect();
         String sql = "UPDATE ChiefAndRelief "
                 + "SET SignInTime = ? "
                 + "WHERE SI_id = (SELECT SI_id FROM StaffInfo WHERE StaffID = ?);";
@@ -342,6 +342,11 @@ public class ChiefData {
         return cddAttdList;
     }
     
+    /**
+     * @Brief   To get the list of CandidateInfo list from database
+     * @return Arraylist of CandidateAttendance object
+     * @throws SQLException 
+     */
     public ArrayList<CandidateInfo> getCddInfoList(String block) throws SQLException{
         ArrayList<CandidateInfo> cddInfoList = new ArrayList<>();
 
@@ -381,7 +386,11 @@ public class ChiefData {
         return cddInfoList;
     }
     
-    
+    /**
+     * @Brief   To get the list of Chief and Relief list from database
+     * @return Arraylist of CandidateAttendance object
+     * @throws SQLException 
+     */
     public ArrayList<ChiefAndRelief> getChAndReList(String block) throws SQLException{
         ArrayList<ChiefAndRelief> chAndReList = new ArrayList<>();
         
@@ -411,6 +420,11 @@ public class ChiefData {
         return chAndReList;
     }
     
+    /**
+     * @Brief   To get the list of Collector list from database
+     * @return Arraylist of CandidateAttendance object
+     * @throws SQLException 
+     */
     public ArrayList<Collector> getCollectorList() throws SQLException{
         ArrayList<Collector> collectorList = new ArrayList<>();
         
@@ -435,6 +449,11 @@ public class ChiefData {
         return collectorList;
     }
     
+    /**
+     * @Brief   To get the list of Invigilator list from database
+     * @return Arraylist of CandidateAttendance object
+     * @throws SQLException 
+     */
     public ArrayList<Invigilator> getInvigilatorList(String block) throws SQLException{
         ArrayList<Invigilator> invigilatorList = new ArrayList<>();
 
@@ -466,6 +485,11 @@ public class ChiefData {
         return invigilatorList;
     }
     
+    /**
+     * @Brief   To get the list of Paper Info list from database
+     * @return Arraylist of CandidateAttendance object
+     * @throws SQLException 
+     */
     public ArrayList<PaperInfo> getPaperInfoList(String block) throws SQLException{
         ArrayList<PaperInfo> paperInfoList = new ArrayList<>();
 
@@ -494,6 +518,11 @@ public class ChiefData {
         return paperInfoList;
     }
     
+    /**
+     * @Brief   To get the list of Programme list from database
+     * @return Arraylist of CandidateAttendance object
+     * @throws SQLException 
+     */
     public ArrayList<Programme> getProgrammeList() throws SQLException{
         ArrayList<Programme> programmeList = new ArrayList<>();
 
@@ -525,6 +554,11 @@ public class ChiefData {
         return programmeList;
     }
     
+    /**
+     * @Brief   To get the list of Staff Info list from database
+     * @return Arraylist of CandidateAttendance object
+     * @throws SQLException 
+     */
     public ArrayList<StaffInfo> getStaffInfoList(String block, Integer sessionId) throws SQLException{
         ArrayList<StaffInfo> staffInfoList = new ArrayList<>();
         
@@ -556,34 +590,12 @@ public class ChiefData {
         conn.close();
         return staffInfoList;
     }
-
-    public boolean invVerify(String id, String password){
-        
-        boolean match = false;
-        try {
-            
-            Connection conn = new ConnectDB("StaffDatabase.db").connect();
-            String sql = "SELECT Username, Password FROM User where Username=? and Password=?";
-            
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1,id);
-            ps.setString(2,password);
-            ResultSet result = ps.executeQuery();
-            
-            match = result.next();
-            
-            System.out.println(id+password+match);
-            result.close();
-            ps.close();
-            conn.close();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(ChiefData.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return match;
-    }
     
+    /**
+     * @Brief   To get the list of Candidate Paper list from database
+     * @return Arraylist of CandidateAttendance object
+     * @throws SQLException 
+     */
     public ArrayList<CddPaper> getCddPaperList(String regNum) throws SQLException{
         ArrayList<CddPaper> cddPaperList = new ArrayList<>();
         Connection conn = new ConnectDB().connect();
@@ -613,6 +625,53 @@ public class ChiefData {
         return cddPaperList;
     }
     
+    public boolean invVerify(String id, String password){
+        
+        boolean match = false;
+        try {
+            
+            Connection conn = new ConnectDB("StaffDatabase.db").connect();
+            String sql = "SELECT Username, Password FROM User where Username=? and Password=?";
+            
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,id);
+            ps.setString(2,password);
+            ResultSet result = ps.executeQuery();
+            
+            match = result.next();
+            
+            System.out.println(id+password+match);
+            result.close();
+            ps.close();
+            conn.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ChiefData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return match;
+    }
+    
+    public void updateCddAttdList(ArrayList<CandidateAttendance> cddAttdList) throws SQLException{
+        Connection conn = new ConnectDB().connect();
+        for(int i=0; i<cddAttdList.size(); i++){
+            String sql = "INSERT OR REPLACE INTO CandidateAttendance VALUES"
+                   + "(?,?,?,?,?,?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, cddAttdList.get(i).getCa_id());
+            ps.setString(2, cddAttdList.get(i).getIc());
+            ps.setInt(3, cddAttdList.get(i).getPaper_id());
+            ps.setString(4, cddAttdList.get(i).getStatus());
+            ps.setString(5, cddAttdList.get(i).getAttendance());
+            ps.setInt(6, cddAttdList.get(i).getTableNo());
+
+            ps.executeUpdate();
+            ps.close();
+           
+       }
+        conn.close();
+   }
+        
     public Integer getSessionId(){
         return 1;
     }

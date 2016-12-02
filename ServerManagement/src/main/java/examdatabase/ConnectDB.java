@@ -35,7 +35,7 @@ public class ConnectDB {
     public static Connection connect() {
         // SQLite connection string
         
-        String url = "jdbc:sqlite:ExamDataBase.db";
+        String url = "jdbc:sqlite:FEB_MAR_2016.db";
         
         Connection conn = null;
         try {

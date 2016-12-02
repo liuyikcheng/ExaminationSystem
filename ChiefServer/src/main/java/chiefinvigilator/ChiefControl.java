@@ -6,12 +6,15 @@
 package chiefinvigilator;
 
 import globalvariable.CheckInType;
+import globalvariable.InfoType;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.sql.SQLException;
@@ -20,10 +23,15 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import qrgen.QRgen;
+import serverquerylist.ExamDataList;
 
 /**
  *
@@ -34,11 +42,17 @@ public class ChiefControl {
     private final static String BARRED = "BARRED";
     private final static String EXEMPTED = "EXEMPTED";
     
+    String id = null;
+    String block = null;
+    
+    ImageIcon connectedIcon;
+    ImageIcon disconnectedIcon;
+
     
     ChiefGui chiefGui;
     ServerComm serverComm;
     ClientComm currentClientComm;
-    ChiefServer chief;
+    ChiefServer chiefServer;
     QRgen qrgen;
     
     String mainServerHostName = "localhost";
@@ -49,36 +63,49 @@ public class ChiefControl {
     
     HashMap invMap = new HashMap();
     Integer invNum;
-//    ChiefControl(){}
-    
     
     ChiefControl(ChiefGui chiefGui) throws Exception{
+        
         this.invNum = 0;
         this.chiefGui = chiefGui;
         this.chiefGui.setVisible(true);
-        serverComm = new ServerComm(this);
-        chief = new ChiefServer();
+        this.serverComm = new ServerComm(this);
+        this.chiefServer = new ChiefServer();
         
         generateQRInterface();
+        
+        //initialize icon image
+        this.connectedIcon = new ImageIcon(new ImageIcon("icons\\connected.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        this.disconnectedIcon = new ImageIcon(new ImageIcon("icons\\disconnected.png").getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+        
+        chiefGui.setConnectButtonIcon(disconnectedIcon);
         
         chiefGui.addConnectListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 try {
+                    
+                    ChiefControl.this.chiefGui.popUpChiefSignInJOptionPane();
+                    
+                    ChiefControl.this.id = chiefGui.getChiefId();
+                    ChiefControl.this.block = chiefGui.getChiefBlock();
                     ChiefControl.this.serverComm.connectToServer(ChiefControl.this.mainServerHostName, ChiefControl.this.mainServerPortNum);
-//                    ChiefControl.this.chiefGui.popUpChiefSignInJOptionPane();
-//                    chiefSignIn(chiefGui.getChiefId(),chiefGui.getChiefPs(),chiefGui.getChiefBlock());
-//                    ChiefControl.this.displayConnectivity("Connected");
+                    chiefSignIn(ChiefControl.this.id, chiefGui.getChiefPs(),ChiefControl.this.block);
+                    ChiefControl.this.displayConnectivity("Connected");
+                    chiefGui.setConnectButtonIcon(connectedIcon);
                 } catch (Exception ex) {
                     System.out.println("Warning: "+ex.toString());
-//                    ChiefControl.this.displayConnectivity("Not connected");
+                    ChiefControl.this.displayConnectivity("Not connected");
+                    chiefGui.setConnectButtonIcon(disconnectedIcon);
                 }
                 
                 if(ChiefControl.this.serverIsConnected()){
                     ChiefControl.this.displayConnectivity("Connected");
+                    chiefGui.setConnectButtonIcon(connectedIcon);
                     ChiefControl.this.serverComm.start();
                 }
                 else{
                     ChiefControl.this.displayConnectivity("Not connected");
+                    chiefGui.setConnectButtonIcon(disconnectedIcon);
                 }
             }
         });
@@ -99,6 +126,48 @@ public class ChiefControl {
                     }
                     else
                         ChiefControl.this.chiefGui.popUpErrorPane("Server is not connected");
+                        
+                } catch (Exception ex) {
+                    Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        chiefGui.addSubmitActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                
+                try {
+                    if(ChiefControl.this.serverIsConnected()){
+                        ChiefControl.this.displayConnectivity("Connected");
+                        chiefGui.setConnectButtonIcon(connectedIcon);
+                        ChiefControl.this.serverComm.submitDB(id, block);
+                    
+                    }
+                    else{
+                        ChiefControl.this.displayConnectivity("Not connected");
+                        chiefGui.setConnectButtonIcon(disconnectedIcon);
+                }
+                        
+                } catch (Exception ex) {
+                    Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        chiefGui.addDownloadListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                
+                try {
+                    if(ChiefControl.this.serverIsConnected()){
+                        ChiefControl.this.displayConnectivity("Connected");
+                        chiefGui.setConnectButtonIcon(connectedIcon);
+                        ChiefControl.this.serverComm.downloadDB(id, block);
+                    
+                    }
+                    else{
+                        ChiefControl.this.displayConnectivity("Not connected");
+                        chiefGui.setConnectButtonIcon(disconnectedIcon);
+                }
                         
                 } catch (Exception ex) {
                     Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -207,11 +276,11 @@ public class ChiefControl {
         ServerSocket socket = new ServerSocket();
             
         String randomString = this.generateRandomString();
-        chief.setPort();
-        socket = this.chief.getServerSocket();
+        chiefServer.setPort();
+        socket = this.chiefServer.getServerSocket();
         System.out.println(randomString);
         System.out.println("new clientComm created");
-        this.currentClientComm = new ClientComm(socket, this.serverComm, this.chief, this.qrgen, this);
+        this.currentClientComm = new ClientComm(socket, this.serverComm, this.chiefServer, this.qrgen, this);
         (this.currentClientComm).start();
         regenerateCurrentQRInterface();
         
@@ -273,6 +342,10 @@ public class ChiefControl {
         chiefGui.addStaffToStaffInfoTable(staff);
     }
     
+    public void updateGuiLoggedChief(){
+        chiefGui.setLoggedChief(id);
+        chiefGui.setLoggedBlock(block);
+    }
     
     protected String generateRandomString() {
         String seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+Long.toString(System.nanoTime());
@@ -296,5 +369,7 @@ public class ChiefControl {
             
       }
     }
+    
+    
     
 }

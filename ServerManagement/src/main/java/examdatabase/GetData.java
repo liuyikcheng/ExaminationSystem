@@ -162,13 +162,20 @@ public class GetData {
                 + ", Paper.Session_id"
                 + ", PaperInfo.PaperCode, PaperInfo.PaperDescription "
                 + ", Venue.Name AS VenueName, Venue.Size "
-                + " FROM CandidateInfo "
-                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
+                + ", SessionAndDate.Session AS SessionType "
+                + " FROM CandidateAttendance "
+                + " LEFT OUTER JOIN CandidateInfo ON CandidateAttendance.CandidateInfoIC = CandidateInfo.IC "
                 + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
                 + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
                 + " LEFT OUTER JOIN PaperInfo ON Paper.PI_id = PaperInfo.PI_id "
                 + " LEFT OUTER JOIN Venue ON Paper.Venue_id = Venue.Venue_id "
-                + " LEFT OUTER JOIN SessionAndDate ON Session.Session_id = Venue.Venue_id "
+                + " LEFT OUTER JOIN SessionAndDate ON SessionAndDate.Session_id = Paper.Session_id "
+//                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
+//                + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
+//                + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
+//                + " LEFT OUTER JOIN PaperInfo ON Paper.PI_id = PaperInfo.PI_id "
+//                + " LEFT OUTER JOIN Venue ON Paper.Venue_id = Venue.Venue_id "
+//                + " LEFT OUTER JOIN SessionAndDate ON SessionAndDate.Session_id = Paper.Session_id "
                 + " WHERE CandidateInfo.IC " + checkInput(this.ic)
                 + " AND CandidateInfo.Name " + checkInput(this.name)
                 + " AND CandidateInfo.RegNum "+ checkInput(this.regNum)
@@ -177,7 +184,7 @@ public class GetData {
                 + " AND CandidateAttendance.TableNumber "+ checkInput(this.tableNum)
                 + " AND ProgName "+ checkInput(this.progName)
                 + " AND Programme.Faculty "+ checkInput(this.faculty)
-                + " AND Paper.Session_id "+ checkInput(this.session)
+                + " AND SessionAndDate.Session "+ checkInput(this.session)
 //                + " AND PaperInfo.PaperCode = * "//+ checkInput(this.paperCode)
 //                + " AND VenueName = * "//+ checkInput(this.venueName)     
                 ;
@@ -195,15 +202,16 @@ public class GetData {
                 info = new GetData();
                 info.setIc(rs.getString("IC"));
                 info.setName(rs.getString("Name"));
-                info.setRegNum(rs.getString("RegNum"));
+                info.setRegNum(rs.getString("RegNum")); 
                 info.setStatus(rs.getString("Status"));
                 info.setAttendance(rs.getString("Attendance"));
                 info.setTableNum(rs.getString("TableNumber"));
                 info.setProgName(rs.getString("ProgName"));
                 info.setFaculty(rs.getString("Faculty"));
-                info.setSession(rs.getString("Session"));
-//                info.setPaperCode(rs.getString("PaperCode"));
-//                info.setPaperDesc(rs.getString("PaperDescription"));
+                info.setSession(rs.getString("SessionType"));
+                info.setPaperCode(rs.getString("PaperCode"));
+                info.setPaperDesc(rs.getString("PaperDescription"));
+                info.setVenueName(rs.getString("VenueName"));
                 
 //                System.out.println(info.getName());
                 

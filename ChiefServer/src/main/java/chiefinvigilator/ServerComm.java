@@ -56,7 +56,7 @@ public class ServerComm extends Thread implements Runnable{
 
     Socket socket;
     boolean signIn = false;
-    ChiefData chief;
+    ChiefData chiefData;
     ChiefControl chiefControl;
     Queue serverQueue = new LinkedList();
     HashMap clientQueueList = new HashMap();
@@ -72,13 +72,13 @@ public class ServerComm extends Thread implements Runnable{
         });
     
     public ServerComm(){
-        chief = new ChiefData();
+        chiefData = new ChiefData();
         serverQueue = new LinkedList();
         clientQueueList = new HashMap();
     }
     
     public ServerComm(ChiefControl chiefControl){
-        chief = new ChiefData();
+        chiefData = new ChiefData();
         serverQueue = new LinkedList();
         clientQueueList = new HashMap();
         this.chiefControl = chiefControl;
@@ -94,6 +94,12 @@ public class ServerComm extends Thread implements Runnable{
        
     }
     
+    /**
+     * 
+     * @param hostName
+     * @param port
+     * @return 
+     */
     public boolean isSocketAliveUitlitybyCrunchify(String hostName, int port) {
 		boolean isAlive = false;
  
@@ -207,10 +213,12 @@ public class ServerComm extends Thread implements Runnable{
             
             switch(json.getString(InfoType.TYPE)){
                 case CheckInType.CHIEF_LOGIN: 
-                                    if(json.getBoolean(InfoType.RESULT))
+                                    if(json.getBoolean(InfoType.RESULT)){
                                         this.signIn = true;
+                                        this.chiefControl.updateGuiLoggedChief();
+                                    }
                                     else
-                                        ChiefGui.showSignInErrorMsg();
+                                        this.chiefControl.chiefGui.popUpErrorPane("Chief Sign in : Wrong ID/PASSWORD");
                                     break;
                                     
                 case CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER:
@@ -221,10 +229,10 @@ public class ServerComm extends Thread implements Runnable{
                                         this.chiefControl.addStaffInfoToGuiTable(staff);
                                     }
                                     else
-                                        ChiefGui.showSignInErrorMsg();
+                                        this.chiefControl.chiefGui.popUpErrorPane("Staff Sign in : Wrong ID/PASSWORD");
                                     break;
                                     
-                case CheckInType.EXAM_SESSION_DATA:    
+                case CheckInType.EXAM_DATA_DOWNLOAD:    
                                     System.out.println(json.getJSONObject(InfoType.VALUE).toString());
                                     updateDB(json.getJSONObject(InfoType.VALUE).toString());
                                     break;
@@ -239,6 +247,13 @@ public class ServerComm extends Thread implements Runnable{
                                     
                 case CheckInType.GEN_RANDOM_MSG:
                                     putQueue(json.getLong(InfoType.THREAD_ID), message);
+                                    break;
+                
+                case CheckInType.EXAM_DATA_SUBMIT:
+//                                    String id = json.getString(InfoType.ID_NO);
+//                                    String block = json.getString(InfoType.BLOCK);
+//                                    
+//                                    sendMessage(dbToJson(id, block));
                                     break;
                                     
             }
@@ -338,6 +353,43 @@ public class ServerComm extends Thread implements Runnable{
         chief.updateProgramme(examDataList.getProgramme());
         chief.updateStaffInfo(examDataList.getStaffInfo());
         chief.updateVenue(examDataList.getVenue());
+    }
+    
+    public void downloadDB(String id, String block) throws IOException{
+        JSONObject json = new JSONObject();
+        json.put(InfoType.TYPE, CheckInType.EXAM_DATA_DOWNLOAD);
+        json.put(InfoType.ID_NO, id);
+        json.put(InfoType.BLOCK, block);
+        
+        this.sendMessage(json.toString());
+        
+    }
+    
+    public void submitDB(String id, String block) throws IOException{
+        this.sendMessage(dbToJson(id, block));
+    }
+    
+    private String dbToJson(String id, String block){
+        String jsonString = null;
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject json = new JSONObject();
+        
+        try {
+            ExamDataList examDataList = new ExamDataList(
+                    chiefData.getCddAttdList(block)
+            );
+            System.out.println("check");
+            jsonString = mapper.writeValueAsString(examDataList);
+            JSONObject jsonData = new JSONObject(jsonString);
+            json.put(InfoType.TYPE, CheckInType.EXAM_DATA_SUBMIT);
+            json.put(InfoType.VALUE, jsonData);
+        } catch (SQLException ex) {
+            Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        return json.toString();
     }
     
 

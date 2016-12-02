@@ -26,6 +26,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseListener;
 import java.sql.Array;
 import java.sql.SQLException;
@@ -35,6 +36,8 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
@@ -110,6 +113,8 @@ public class ChiefGui extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
+        loggedChief = new javax.swing.JLabel();
+        loggedBlock = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         qrGenPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -138,6 +143,7 @@ public class ChiefGui extends javax.swing.JFrame {
         connectivityTextField = new javax.swing.JLabel();
         connectButton = new javax.swing.JButton();
         submitButton = new javax.swing.JButton();
+        downloadButton = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -189,6 +195,10 @@ public class ChiefGui extends javax.swing.JFrame {
 
         jLabel2.setText("Password:");
 
+        loggedChief.setText("Chief :");
+
+        loggedBlock.setText("Block:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -203,9 +213,13 @@ public class ChiefGui extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(51, 51, 51)
                 .addComponent(signInButton)
-                .addGap(238, 238, 238))
+                .addGap(94, 94, 94)
+                .addComponent(loggedChief)
+                .addGap(116, 116, 116)
+                .addComponent(loggedBlock)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {idTextField, passwordField});
@@ -213,13 +227,17 @@ public class ChiefGui extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(signInButton)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)
+                        .addComponent(signInButton)
+                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(loggedChief, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(loggedBlock)))
                 .addGap(26, 26, 26)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -390,11 +408,9 @@ public class ChiefGui extends javax.swing.JFrame {
 
         chiefTabbedPane.addTab("tab3", jScrollPane4);
 
-        connectivityTextField.setText("jLabel9");
-
-        connectButton.setText("Connect");
-
         submitButton.setText("Submit");
+
+        downloadButton.setText("Download");
 
         javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
         statusPanel.setLayout(statusPanelLayout);
@@ -405,7 +421,9 @@ public class ChiefGui extends javax.swing.JFrame {
                 .addComponent(connectivityTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(connectButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 762, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 648, Short.MAX_VALUE)
+                .addComponent(downloadButton)
+                .addGap(41, 41, 41)
                 .addComponent(submitButton)
                 .addGap(38, 38, 38))
         );
@@ -416,7 +434,8 @@ public class ChiefGui extends javax.swing.JFrame {
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(connectivityTextField)
                     .addComponent(connectButton)
-                    .addComponent(submitButton))
+                    .addComponent(submitButton)
+                    .addComponent(downloadButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -452,6 +471,10 @@ public class ChiefGui extends javax.swing.JFrame {
     
     public void addConnectListener(ActionListener al){
         this.connectButton.addActionListener(al);
+    }
+    
+    public void addDownloadListener(ActionListener al){
+        this.downloadButton.addActionListener(al);
     }
     
     public void addQRPanel(QRgen s){
@@ -506,10 +529,6 @@ public class ChiefGui extends javax.swing.JFrame {
         chiefTabbedPane.setEnabled(true);
     }
     
-    public static void showSignInErrorMsg(){
-        JOptionPane.showMessageDialog (null, "Wrong ID or Password", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    
     public void prepareComboBox(){
         ArrayList<String> list = new InfoData().getList("Venue", "Name");
        
@@ -553,6 +572,18 @@ public class ChiefGui extends javax.swing.JFrame {
     
     public void setStatusForConnectivityTextField(String text){
         this.connectivityTextField.setText(text);
+    }
+    
+    public void setConnectButtonIcon(ImageIcon img){
+        this.connectButton.setIcon(img);
+    }
+    
+    public void setLoggedChief(String text){
+        this.loggedChief.setText(text);
+    }
+    
+    public void setLoggedBlock(String text){
+        this.loggedBlock.setText(text);
     }
     
     /**
@@ -783,6 +814,7 @@ public class ChiefGui extends javax.swing.JFrame {
     public static javax.swing.JTabbedPane chiefTabbedPane;
     private javax.swing.JButton connectButton;
     private javax.swing.JLabel connectivityTextField;
+    private javax.swing.JButton downloadButton;
     private javax.swing.JTextField idTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -804,6 +836,8 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JLabel loggedBlock;
+    private javax.swing.JLabel loggedChief;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel preCddLabel;
     private javax.swing.JPanel qrGenPanel;

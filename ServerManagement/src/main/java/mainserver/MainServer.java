@@ -22,10 +22,10 @@ public class MainServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ExamDataGUI gui = new ExamDataGUI();
-        gui.setVisible(true);
-        new ExamDataControl(gui);
-        //MessageListener ml = new MessageListener(5006);
+//        ExamDataGUI gui = new ExamDataGUI();
+//        gui.setVisible(true);
+//        new ExamDataControl(gui);
+        MessageListener ml = new MessageListener(5006);
         
     }
     

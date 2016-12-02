@@ -24,6 +24,10 @@ public class ExamDataList {
     
     public ExamDataList(){}
     
+    public ExamDataList(ArrayList<CandidateAttendance> cddAttd){
+        this.cddAttd = cddAttd;
+    }
+    
     public ExamDataList(ArrayList<CandidateAttendance> cddAttd,
                         ArrayList<CandidateInfo> cddInfo,
                         ArrayList<ChiefAndRelief> chAndRe,

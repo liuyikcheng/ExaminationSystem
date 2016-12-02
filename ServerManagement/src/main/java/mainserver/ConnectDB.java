@@ -20,7 +20,7 @@ public class ConnectDB {
     static String name;
     
     public ConnectDB(){
-        this.name = "ExamDatabase.db";
+        this.name = "FEB_MAR_2016.db";
     }
     
     public ConnectDB(String name){

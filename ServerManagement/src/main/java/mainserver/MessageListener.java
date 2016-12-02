@@ -114,7 +114,7 @@ public class MessageListener extends Thread{
                                     }
                                     break;
                                     
-                case CheckInType.CHIEF_DATABASE:
+                case CheckInType.EXAM_DATA_DOWNLOAD:
                                     sendMessage(dbToJson(json.getString(InfoType.ID_NO), json.getString(InfoType.BLOCK)));
                                     break;
                         
@@ -165,7 +165,8 @@ public class MessageListener extends Thread{
                                     sendMessage(challengMsgToJson(json, generateRandomString()).toString());
                                     break;
                                     
-                case CheckInType.ATTDLIST:
+                case CheckInType.EXAM_DATA_SUBMIT:
+                                    updateDB();
                                     break;
             }
         } catch (Exception ex) {
@@ -175,24 +176,13 @@ public class MessageListener extends Thread{
         
     }
     
-    public void updateCddAttdList(ArrayList<CandidateAttendance> cddAttdList) throws SQLException{
-        Connection conn = new ConnectDB().connect();
+   public void updateDB(String data) throws IOException, SQLException{
         
-        for(int i=0; i<cddAttdList.size(); i++){
-            String sql = "UPDATE CandidateAttendance "
-                    + "SET Attendance = ?, TableNum = ? "
-                    + "Where CA_id = ? ";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, cddAttdList.get(i).getAttendance());
-            ps.setInt(2, cddAttdList.get(i).getTableNo());
-            ps.setInt(3, cddAttdList.get(i).getCa_id());
-
-            ps.executeUpdate();
-            ps.close();
-           
-       }
-        conn.close();
-   }
+        ObjectMapper mapper = new ObjectMapper();
+        ChiefData chief = new ChiefData();
+        ExamDataList examDataList = mapper.readValue(data, ExamDataList.class);
+        chief.updateCddAttdList(examDataList.getCddAttd());
+    }
     
     /**
     * @brief    To convert a boolean into JSON object
