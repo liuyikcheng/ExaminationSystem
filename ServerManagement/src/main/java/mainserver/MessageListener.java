@@ -166,7 +166,12 @@ public class MessageListener extends Thread{
                                     break;
                                     
                 case CheckInType.EXAM_DATA_SUBMIT:
-                                    updateDB();
+                                    try{
+                                        updateDB(json.getJSONObject(InfoType.VALUE).toString());
+                                        sendMessage(booleanToJson(true,CheckInType.EXAM_DATA_SUBMIT).toString());
+                                    }catch(Exception ex){
+                                        sendMessage(booleanToJson(false,CheckInType.EXAM_DATA_SUBMIT).toString());
+                                    }
                                     break;
             }
         } catch (Exception ex) {

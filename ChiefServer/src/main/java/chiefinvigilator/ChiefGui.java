@@ -758,6 +758,10 @@ public class ChiefGui extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
+    public void popUpInfoPane(String message){
+        JOptionPane.showMessageDialog(null, message, "Notice", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     protected String getChiefId(){
         return this.chiefId;
     }

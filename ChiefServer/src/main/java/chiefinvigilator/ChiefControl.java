@@ -93,7 +93,7 @@ public class ChiefControl {
                     ChiefControl.this.displayConnectivity("Connected");
                     chiefGui.setConnectButtonIcon(connectedIcon);
                 } catch (Exception ex) {
-                    System.out.println("Warning: "+ex.toString());
+                    Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
                     ChiefControl.this.displayConnectivity("Not connected");
                     chiefGui.setConnectButtonIcon(disconnectedIcon);
                 }

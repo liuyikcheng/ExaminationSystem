@@ -250,10 +250,10 @@ public class ServerComm extends Thread implements Runnable{
                                     break;
                 
                 case CheckInType.EXAM_DATA_SUBMIT:
-//                                    String id = json.getString(InfoType.ID_NO);
-//                                    String block = json.getString(InfoType.BLOCK);
-//                                    
-//                                    sendMessage(dbToJson(id, block));
+                                    if(json.getBoolean(InfoType.RESULT))
+                                        this.chiefControl.chiefGui.popUpInfoPane("Atttendance list submitted.");
+                                    else
+                                        this.chiefControl.chiefGui.popUpErrorPane("Failed to submitted.");
                                     break;
                                     
             }
