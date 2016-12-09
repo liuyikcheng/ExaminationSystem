@@ -15,6 +15,9 @@ if (!hasProperty('mainClass')) {
 }
 
 repositories {
+    flatDir {
+       dirs 'libs'
+    }
     mavenCentral()
     // You may define additional repositories, or even remove "mavenCentral()".
     // Read more about repositories here:
@@ -27,8 +30,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
     compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.8.11.2'
     
-    compile 'org.mockito:mockito-core:1.10.19'
-    
     // https://mvnrepository.com/artifact/org.jooq/jooq
     compile group: 'org.jooq', name: 'jooq', version: '3.8.4'
     
@@ -40,8 +41,10 @@ dependencies {
     
     // https://mvnrepository.com/artifact/org.swinglabs.swingx/swingx-all
     compile group: 'org.swinglabs.swingx', name: 'swingx-all', version: '1.6.4'
-
+    
+    compile name: 'twaver'
     // You can read more about how to add dependency here:
     //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
     testCompile group: 'junit', name: 'junit', version: '4.10'
+    
 }

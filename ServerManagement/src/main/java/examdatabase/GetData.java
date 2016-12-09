@@ -263,34 +263,34 @@ public class GetData {
         GetData info;
         ArrayList<GetData> list = new ArrayList<>();
         
-//        try {
-//            Connection conn = new ConnectDB().connect();
-//            Statement stmt  = conn.createStatement();
-//            ResultSet rs    = stmt.executeQuery(sql);
-//            // loop through the result set
-//            while (rs.next()) {
-//
-//                info = new GetData(     rs.getString("IC"), 
-//                                        rs.getString("Name"),
-//                                        rs.getString("RegNum"),
-//                                        rs.getString("ProgName"),
-//                                        rs.getString("Faculty"),
-//                                        rs.getString("Date"),
-//                                        rs.getString("PaperCode"),
-//                                        rs.getString("PaperDescription"),
-//                                        rs.getInt("Coursework"),
-//                                        rs.getInt("Practical")
-//                );
-//                   list.add(info);
-//            }
-//            
-//            rs.close();
-//            stmt.close();
-//            conn.close();
-//
-//        } catch (SQLException e) {
-//            System.out.println(e.getMessage());
-//        }
+        try {
+            Connection conn = new ConnectDB().connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+            // loop through the result set
+            while (rs.next()) {
+
+                info = new GetData(     rs.getString("IC"), 
+                                        rs.getString("Name"),
+                                        rs.getString("RegNum"),
+                                        rs.getString("ProgName"),
+                                        rs.getString("Faculty"),
+                                        rs.getString("Date"),
+                                        rs.getString("PaperCode"),
+                                        rs.getString("PaperDescription"),
+                                        rs.getInt("Coursework"),
+                                        rs.getInt("Practical")
+                );
+                   list.add(info);
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
         if(list.isEmpty())
             throw new Exception("No data found.");
         else
