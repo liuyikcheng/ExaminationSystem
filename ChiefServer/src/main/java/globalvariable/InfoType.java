@@ -16,6 +16,7 @@ public class InfoType {
     public static final String RESULT = "Result";
     public static final String DUEL_MSG = "DuelMsg";
     public static final String TYPE = "Type";
+    public static final String ROLE = "Role";
     public static final String CHECK_IN = "CheckIn";
     public static final String HASHCODE = "HashPass";
     public static final String RANDOM_MSG = "RandomMessage";

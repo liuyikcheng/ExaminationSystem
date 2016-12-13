@@ -1,21 +1,0 @@
-Oslo
-Adlas
-Liu
-	Ben Dan
-	Ah Ming
-Lolo
-
-student1
-
-student2
-
-student3
-student101
-student102
-11
-
-ñUnrecognized field "paper" (Class querylist.Collector), not marked as ignorable
- at [Source: java.io.StringReader@7b7139b2; line: 1, column: 3124] (through reference chain: querylist.ExamDataList["collector"]->querylist.Collector["paper"])
-	MPU3123
-
-BABE2203

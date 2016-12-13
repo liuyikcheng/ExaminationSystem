@@ -744,7 +744,7 @@ public class ChiefGui extends javax.swing.JFrame {
         panel.add(new JLabel("Block: "));
         panel.add(chiefBlockField);
         
-        int result = JOptionPane.showConfirmDialog(null, panel, "Test",
+        int result = JOptionPane.showConfirmDialog(null, panel, "Chief Sign In",
             JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {

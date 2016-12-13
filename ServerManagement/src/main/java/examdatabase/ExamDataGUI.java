@@ -95,6 +95,8 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         paperCodeBox = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         examTable = new javax.swing.JTable();
+        addCandidateButton = new javax.swing.JButton();
+        deleteCandidateButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -138,6 +140,8 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         addPaperButton = new javax.swing.JButton();
         deletePaperButton = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         yearBox = new javax.swing.JComboBox<>();
@@ -369,23 +373,37 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(examTable);
 
+        addCandidateButton.setText("Add");
+
+        deleteCandidateButton.setText("Delete");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(114, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addCandidateButton)
+                .addGap(27, 27, 27)
+                .addComponent(deleteCandidateButton)
+                .addGap(57, 57, 57))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addCandidateButton)
+                    .addComponent(deleteCandidateButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jScrollPane1.setViewportView(jPanel2);
@@ -714,6 +732,11 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         jPanel7Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {facultyField, lecturerField, paperCodeField, paperNameField, tutorField});
 
         addPaperButton.setText("Add");
+        addPaperButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPaperButtonActionPerformed(evt);
+            }
+        });
 
         deletePaperButton.setText("Delete");
 
@@ -751,15 +774,33 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("tab3", jScrollPane5);
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(jTable1);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 876, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(184, 184, 184)
+                .addComponent(jScrollPane6)
+                .addGap(240, 240, 240))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 559, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addGap(94, 94, 94)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab4", jPanel8);
@@ -1004,6 +1045,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private void paperCodeFieldActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paperCodeFieldActionPerformed1
         // TODO add your handling code here:
     }//GEN-LAST:event_paperCodeFieldActionPerformed1
+
+    private void addPaperButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPaperButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addPaperButtonActionPerformed
     
     
     public void prepareComboBox(){
@@ -1062,6 +1107,14 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     
     public void addDeletePaperButtonListener(ActionListener al){
         this.deletePaperButton.addActionListener(al);
+    }
+    
+    public void addDeleteCandidateButtonListener(ActionListener al){
+        this.deleteCandidateButton.addActionListener(al);
+    }
+    
+    public void addAddCandidateButtonListener(ActionListener al){
+        this.addCandidateButton.addActionListener(al);
     }
     
     
@@ -1141,9 +1194,11 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addCandidateButton;
     private javax.swing.JButton addPaperButton;
     private javax.swing.JComboBox<String> attendanceBox;
     private javax.swing.JTextField dateField;
+    private javax.swing.JButton deleteCandidateButton;
     private javax.swing.JButton deletePaperButton;
     private javax.swing.JTable examTable;
     private javax.swing.JComboBox<String> facultyBox;
@@ -1192,8 +1247,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField lecturerField;
     private javax.swing.JTable markTable;

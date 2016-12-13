@@ -236,13 +236,19 @@ public class ClientComm extends Thread {
             json = new JSONObject(tm.getMessage());
             
             String type = json.getString(InfoType.TYPE);
+            
             switch(type){
                 case CheckInType.STAFF_LOGIN:        
-                                    if(json.getBoolean(InfoType.RESULT)){
-                                        this.setStaff(new Staff(json.getString(InfoType.ID_NO)));
+                                    
+                                    String id = json.getString(InfoType.ID_NO);
+                                    Boolean result = json.getBoolean(InfoType.RESULT);
+                                    String role = staff.getStaffRole(json.getString(InfoType.ID_NO));
+                    
+                                    if((result) && (role != null)){
+                                        this.setStaff(new Staff(id));
                                         this.setSignIn(tm.getResultKey());
                                         message = this.getStaff().toJson(true).toString();
-                                        
+                                        json.put(InfoType.ROLE, role);
                                         // add staff info to the chief GUI staffInfoTable
                                         this.chiefControl.addStaffInfoToGuiTable(this.staff);
                                     }

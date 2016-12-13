@@ -5,14 +5,19 @@
  */
 package examdatabase;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -170,6 +175,81 @@ public class ExamDataControl {
 
                 }
         }});
+        
+        examDataGUI.addAddPaperButtonListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                    JTextField paperCodeField = new JTextField();
+                    JTextField paperNameField = new JTextField();
+                    JTextField lecturerField = new JTextField();
+                    JTextField tutorField = new JTextField();
+                    JTextField facultyField = new JTextField();
+
+                    panel.add(new JLabel("Paper Code: "));
+                    panel.add(paperCodeField);
+                    panel.add(new JLabel("Paper Name: "));
+                    panel.add(paperNameField);
+                    panel.add(new JLabel("Lecturer: "));
+                    panel.add(lecturerField);
+                    panel.add(new JLabel("Tutor: "));
+                    panel.add(tutorField);
+                    panel.add(new JLabel("Faculty: "));
+                    panel.add(facultyField);
+
+                    int result = JOptionPane.showConfirmDialog(null, panel, "Add",
+                        JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                    if (result == JOptionPane.OK_OPTION) {
+                    }
+                
+              }
+            
+        });
+        
+        examDataGUI.addAddCandidateButtonListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                    JTextField studentIDField = new JTextField();
+                    JTextField studentNameField = new JTextField();
+                    JTextField studentICField = new JTextField();
+                    JTextField examIDField = new JTextField();
+                    JTextField ProgrammeNameField = new JTextField();
+                    JTextField ProgrammeGroupField = new JTextField();
+
+                    panel.add(new JLabel("Register Number: "));
+                    panel.add(studentIDField);
+                    panel.add(new JLabel("Name: "));
+                    panel.add(studentNameField);
+                    panel.add(new JLabel("IC number: "));
+                    panel.add(studentICField);
+                    panel.add(new JLabel("Exam ID: "));
+                    panel.add(examIDField);
+                    panel.add(new JLabel("Programme Name: "));
+                    panel.add(ProgrammeNameField);
+                    panel.add(new JLabel("Programme Group: "));
+                    panel.add(ProgrammeGroupField);
+
+                    int result = JOptionPane.showConfirmDialog(null, panel, "Add",
+                        JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                    if (result == JOptionPane.OK_OPTION) {
+                    try {
+                        new DataWriter().insertCandidate(studentICField.getText(), studentNameField.getText(),
+                                studentIDField.getText(), ProgrammeNameField.getText(),
+                                ProgrammeGroupField.getText(), examIDField.getText());
+                    } catch (Exception ex) {
+                        Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                        int error = JOptionPane.showConfirmDialog(null, ex.getMessage(), "ERROR", 
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                        System.out.println("check");
+                    }
+                    }
+                
+              }
+            
+        });
     }
     
     

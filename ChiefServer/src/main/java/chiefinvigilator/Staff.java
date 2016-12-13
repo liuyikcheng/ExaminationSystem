@@ -457,6 +457,34 @@ public class Staff {
         
         return valid;
     }
+    
+    /**
+     * @brief   To get the role of staff in current session and venue
+     * @param staffId
+     * @return
+     * @throws SQLException 
+     */
+    public String getStaffRole(String staffId) throws SQLException{
+        String role = null;
+        Connection conn = new ConnectDB().connect();
+        String sql = "SELECT Status FROM InvigilatorAndAssistant "
+                + " WHERE StaffID = ? AND BundleID = ? ";
+        
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, staffId);
+        
+        ResultSet result = ps.executeQuery();
+        
+        if(result.next()){
+            role = result.getString("Status");
+        }
+        
+        result.close();
+        ps.close();
+        conn.close();
+        
+        return role;
+    }
 
    /**
     * @brief    To convert a boolean into JSON object
