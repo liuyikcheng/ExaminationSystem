@@ -248,7 +248,7 @@ public class ClientComm extends Thread {
                                         this.setStaff(new Staff(id));
                                         this.setSignIn(tm.getResultKey());
                                         message = this.getStaff().toJson(true).toString();
-                                        json.put(InfoType.ROLE, role);
+//                                        json.put(InfoType.ROLE, role);
                                         // add staff info to the chief GUI staffInfoTable
                                         this.chiefControl.addStaffInfoToGuiTable(this.staff);
                                     }

@@ -162,9 +162,7 @@ public class ChiefGui extends javax.swing.JFrame {
 
         staffInfoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Staff ID", "Staff Name", "Venue", "Status", "Log Out"

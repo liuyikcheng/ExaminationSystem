@@ -145,7 +145,7 @@ public class Staff {
                 json.put("Name", getName());
                 json.put("Venue", getVenue());
                 json.put("IdNo", getID());
-                json.put("Status", getStatus());
+                json.put("Role", getStatus());
 //                json.put("CddList", attdListToJson(ServerComm.getAttdList(getVenue())));
 //                json.put("PaperMap", attdListToJson(ServerComm.getAttdList(getVenue())));
             }
@@ -468,7 +468,7 @@ public class Staff {
         String role = null;
         Connection conn = new ConnectDB().connect();
         String sql = "SELECT Status FROM InvigilatorAndAssistant "
-                + " WHERE StaffID = ? AND BundleID = ? ";
+                + " WHERE StaffID = ?";
         
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, staffId);

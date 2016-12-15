@@ -60,7 +60,7 @@ public class QRgen extends JPanel {
         
             try {
                 
-                this.qrCode = "$CHIEF:"+localIp(socket.getLocalPort())+":"+randomString+":$";
+                this.qrCode = localIp(socket.getLocalPort())+":"+randomString+":$";
             } catch (Exception ex) {
                 Logger.getLogger(QRgen.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -80,7 +80,7 @@ public class QRgen extends JPanel {
             try {
                 
 //                this.qrCode = "$CHIEF:"+localIp(socket.getLocalPort())+":"+randomString+":$";
-                this.qrCode = "$CHIEF:"+localIp(socket.getLocalPort())+":"+randomString+":$";
+                this.qrCode = localIp(socket.getLocalPort())+":"+randomString+":$";
             } catch (Exception ex) {
                 Logger.getLogger(QRgen.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -102,7 +102,7 @@ public class QRgen extends JPanel {
       System.out.println("Local host name: "+hostname);
       System.out.println("Local host ip: "+addr.getHostAddress());
       System.out.println("listening on port: " + port);
-      return "192.168.235.1"+":"+port;
+      return "$CHIEF:"+addr.getHostAddress()+":"+port;
    }   
     
     public void paintComponent (Graphics graphics){
