@@ -59,6 +59,9 @@ public class GetData {
     private Integer coursework;
     private Integer practical;
     
+    private String lecturer = "";
+    private String tutor = "";
+    
     private int day; private int month; private int year;
     
     public GetData(){
@@ -241,7 +244,6 @@ public class GetData {
     public ArrayList<GetData> getDataCheckMark() throws Exception{
         String sql =    "SELECT CandidateInfo.IC, CandidateInfo.Name, CandidateInfo.RegNum "
                 + ", Programme.Name AS ProgName, Programme.Faculty "
-                + ", Paper.Date, Paper.Session "
                 + ", StudentMark.Coursework, StudentMark.Practical"
                 + ", PaperInfo.PaperCode, PaperInfo.PaperDescription "
                 + " FROM StudentMark "
@@ -256,11 +258,10 @@ public class GetData {
                 + " AND CandidateInfo.RegNum "+ checkInput(this.getRegNum())
                 + " AND ProgName "+ checkInput(this.getProgName())
                 + " AND Programme.Faculty "+ checkInput(this.getFaculty())
-                + " AND Paper.Date "+ checkInput(this.getDate())
                 + " AND PaperInfo.PaperCode "+ checkInput(this.getPaperCode())  
                 ;
 
-        GetData info;
+        
         ArrayList<GetData> list = new ArrayList<>();
         
         try {
@@ -269,19 +270,18 @@ public class GetData {
             ResultSet rs    = stmt.executeQuery(sql);
             // loop through the result set
             while (rs.next()) {
-
-                info = new GetData(     rs.getString("IC"), 
-                                        rs.getString("Name"),
-                                        rs.getString("RegNum"),
-                                        rs.getString("ProgName"),
-                                        rs.getString("Faculty"),
-                                        rs.getString("Date"),
-                                        rs.getString("PaperCode"),
-                                        rs.getString("PaperDescription"),
-                                        rs.getInt("Coursework"),
-                                        rs.getInt("Practical")
-                );
-                   list.add(info);
+                GetData info = new GetData();
+                info.setIc(rs.getString("IC"));
+                info.setName(rs.getString("Name"));
+                info.setRegNum(rs.getString("RegNum"));
+                info.setProgName(rs.getString("ProgName"));
+                info.setFaculty(rs.getString("Faculty"));
+                info.setPaperCode(rs.getString("PaperCode"));
+                info.setPaperDesc(rs.getString("PaperDescription"));
+                info.setCoursework(rs.getInt("Coursework"));
+                info.setPractical(rs.getInt("Practical"));                        
+                
+                list.add(info);
             }
             
             rs.close();
@@ -653,6 +653,20 @@ public class GetData {
      */
     public void setYear(int year) {
         this.year = year;
+    }
+
+    /**
+     * @param lecturer the lecturer to set
+     */
+    public void setLecturer(String lecturer) {
+        this.lecturer = lecturer;
+    }
+
+    /**
+     * @param tutor the tutor to set
+     */
+    public void setTutor(String tutor) {
+        this.tutor = tutor;
     }
  
 }

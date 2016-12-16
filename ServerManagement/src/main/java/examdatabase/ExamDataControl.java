@@ -79,26 +79,26 @@ public class ExamDataControl {
                                         "",""
                                         );
         
-        examDataGUI.setStatusMessage("");
-        ArrayList<GetData> list = null;
-        
-        examDataGUI.setMarkTableRowCount(0);
-        
-        try {
-            list = getData.getDataCheckMark();
-            
-            int i = 0;
-            for(i = 0; i<list.size(); i++){
-                examDataGUI.addMarkTable(new Object[]{list.get(i).getName(), list.get(i).getRegNum(), list.get(i).getIc(), list.get(i).getProgName(), list.get(i).getFaculty(), list.get(i).getPaperCode(), list.get(i).getPractical(), list.get(i).getCoursework()});
+            examDataGUI.setStatusMessage("");
+            ArrayList<GetData> list = null;
+
+            examDataGUI.setMarkTableRowCount(0);
+
+            try {
+                list = getData.getDataCheckMark();
+                int i = 0;
+                for(i = 0; i<list.size(); i++){
+                    examDataGUI.addMarkTable(new Object[]{list.get(i).getName(), list.get(i).getRegNum(), list.get(i).getIc(), list.get(i).getProgName(), list.get(i).getFaculty(), list.get(i).getPaperCode(), list.get(i).getPractical(), list.get(i).getCoursework()});
+                }
+
+            } catch (Exception ex) {
+                String message = ex.getMessage();
+                examDataGUI.setStatusMessage(message);
             }
-        
-        } catch (Exception ex) {
-            String message = ex.getMessage();
-            examDataGUI.setStatusMessage(message);
-        }
-            
             
         }});
+        
+        
         
         //add Save Button Action Listener in Tab 2
         examDataGUI.addSaveButtonListener(new ActionListener(){
@@ -250,6 +250,35 @@ public class ExamDataControl {
               }
             
         });
+        
+        //add Search Button Action Listener in Tab 3
+        examDataGUI.addSearchButtonTab3Listener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                GetData getData = new GetData();
+                
+                getData.setLecturer(examDataGUI.getLecturerField3().getText());
+                getData.setTutor(examDataGUI.getTutorField3().getText());
+                getData.setPaperCode(examDataGUI.getPaperCodeField3().getText());
+                getData.setPaperDesc(examDataGUI.getPaperNameField3().getText());
+        
+            examDataGUI.setStatusMessage("");
+            ArrayList<GetData> list = null;
+
+            examDataGUI.setMarkTableRowCount(0);
+
+            try {
+                list = getData.getDataCheckMark();
+                int i = 0;
+                for(i = 0; i<list.size(); i++){
+                    examDataGUI.addMarkTable(new Object[]{list.get(i).getName(), list.get(i).getRegNum(), list.get(i).getIc(), list.get(i).getProgName(), list.get(i).getFaculty(), list.get(i).getPaperCode(), list.get(i).getPractical(), list.get(i).getCoursework()});
+                }
+
+            } catch (Exception ex) {
+                String message = ex.getMessage();
+                examDataGUI.setStatusMessage(message);
+            }
+            
+        }});
     }
     
     

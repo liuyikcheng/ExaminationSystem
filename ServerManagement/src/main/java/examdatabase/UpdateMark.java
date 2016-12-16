@@ -43,7 +43,7 @@ public class UpdateMark {
     public void setMark(){
         String sql = "UPDATE StudentMark "
                 + "SET Coursework = ?, Practical = ? "
-                + "WHERE RegNum = ? AND PIIndex = (SELECT PIIndex FROM PaperInfo WHERE PaperCode = ? );";
+                + "WHERE RegNum = ? AND PI_id = (SELECT PI_id FROM PaperInfo WHERE PaperCode = ? );";
         
         try (Connection conn = new ConnectDB().connect();
                 ){

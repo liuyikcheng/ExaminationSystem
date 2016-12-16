@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * @author Krissy
  */
 public class ChiefServer {
-    ServerSocket s ;
+    ServerSocket serverSocket;
     int localPort;
     
     public ChiefServer(){
@@ -31,12 +31,12 @@ public class ChiefServer {
     
     public void setPort() throws IOException{
         
-        this.s = new ServerSocket(0);
-        this.localPort = s.getLocalPort();
+        this.serverSocket = new ServerSocket(0);
+        this.localPort = serverSocket.getLocalPort();
     }
     
     public ServerSocket getServerSocket(){
-        return s;
+        return serverSocket;
     }
     
     public int getPort(){
@@ -44,8 +44,8 @@ public class ChiefServer {
     }
     
     public void boardCast() throws Exception{
-        s.setSoTimeout(10000);
-        Socket server = s.accept();
+        serverSocket.setSoTimeout(10000);
+        Socket server = serverSocket.accept();
             System.out.println("Just connected to "
                   + server.getRemoteSocketAddress());
             DataInputStream in =
@@ -56,7 +56,7 @@ public class ChiefServer {
             out.writeUTF("Thank you for connecting to "
               + server.getLocalSocketAddress() + "\nGoodbye!");
             server.close();
-        s.setSoTimeout(10);
+        serverSocket.setSoTimeout(10);
     }
     
 }
