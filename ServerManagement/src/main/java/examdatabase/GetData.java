@@ -32,6 +32,7 @@ public class GetData {
     
     //Programme
     private String progName = "";
+    private String progGroup = "";
     private String faculty = "";
     
     //Paper
@@ -58,6 +59,9 @@ public class GetData {
     //StudentMark
     private Integer coursework;
     private Integer practical;
+    
+    private Integer examWeight = 0;
+    private Integer courseworkWeight = 0;
     
     private String lecturer = "";
     private String tutor = "";
@@ -296,6 +300,59 @@ public class GetData {
         else
             return list;
     }
+    
+    /**
+     * Get the info of a course structure from the connected database
+     * @return list     The arraylist contain the info of the candidate
+     */
+    public ArrayList<GetData> getCourseStructure() throws Exception{
+        String sql =    "SELECT *, Programme.Name AS ProgrammeName, Programme.Programme_Group AS ProgrammeGroup "
+                + " FROM CourseStructure "
+                + " LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = CourseStructure.Course "
+                + " LEFT OUTER JOIN Programme ON Programme.Programme_id = CourseStructure.Programme_id "
+                + " WHERE Lecturer " + checkInput(this.getLecturer())
+                + " AND Tutor "+ checkInput(this.getTutor())
+                + " AND PaperInfo.PaperCode "+ checkInput(this.getPaperCode())
+                + " AND PaperInfo.PaperDescription "+ checkInput(this.getPaperDesc())  
+                + " AND Programme.Name "+ checkInput(this.getProgName())  
+//                + " AND Programme.Group "+ checkInput(this.getProgGroup()) 
+                ;
+
+        
+        ArrayList<GetData> list = new ArrayList<>();
+        
+        try {
+            Connection conn = new ConnectDB().connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+            // loop through the result set
+            while (rs.next()) {
+                GetData info = new GetData();
+                info.setLecturer(rs.getString("Lecturer"));
+                info.setTutor(rs.getString("Tutor"));
+                info.setPaperCode(rs.getString("PaperCode"));
+                info.setPaperDesc(rs.getString("PaperDescription"));                
+                info.setExamWeight(rs.getInt("ExamWeight"));                
+                info.setCourseworkWeight(rs.getInt("CourseworkWeight"));                
+                info.setProgName(rs.getString("ProgrammeName"));                
+                info.setProgGroup(rs.getString("ProgrammeGroup"));                
+                
+                list.add(info);
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        if(list.isEmpty())
+            throw new Exception("No data found.");
+        else
+            return list;
+    }
+    
     
     public ArrayList<String> getList(String table, String data){
         ArrayList<String> list = new ArrayList<>();
@@ -667,6 +724,62 @@ public class GetData {
      */
     public void setTutor(String tutor) {
         this.tutor = tutor;
+    }
+
+    /**
+     * @param examWeight the examWeight to set
+     */
+    public void setExamWeight(Integer examWeight) {
+        this.examWeight = examWeight;
+    }
+
+    /**
+     * @param courseworkWeight the courseworkWeight to set
+     */
+    public void setCourseworkWeight(Integer courseworkWeight) {
+        this.courseworkWeight = courseworkWeight;
+    }
+
+    /**
+     * @return the examWeight
+     */
+    public Integer getExamWeight() {
+        return examWeight;
+    }
+
+    /**
+     * @return the courseworkWeight
+     */
+    public Integer getCourseworkWeight() {
+        return courseworkWeight;
+    }
+
+    /**
+     * @return the lecturer
+     */
+    public String getLecturer() {
+        return lecturer;
+    }
+
+    /**
+     * @return the tutor
+     */
+    public String getTutor() {
+        return tutor;
+    }
+
+    /**
+     * @return the progGroup
+     */
+    public String getProgGroup() {
+        return progGroup;
+    }
+
+    /**
+     * @param progGroup the progGroup to set
+     */
+    public void setProgGroup(String progGroup) {
+        this.progGroup = progGroup;
     }
  
 }

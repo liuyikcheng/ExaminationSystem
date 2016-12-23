@@ -943,15 +943,16 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="jTable2">
+                    <Component class="javax.swing.JTable" name="paperTable3">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="8" rowCount="4">
+                          <Table columnCount="9" rowCount="4">
                             <Column editable="true" title="Paper Code" type="java.lang.Object"/>
                             <Column editable="true" title="Paper Name" type="java.lang.Object"/>
                             <Column editable="true" title="Lecturer" type="java.lang.Object"/>
                             <Column editable="true" title="Tutor" type="java.lang.Object"/>
-                            <Column editable="true" title="Faculty" type="java.lang.Object"/>
+                            <Column editable="true" title="Programme" type="java.lang.Object"/>
+                            <Column editable="true" title="Group" type="java.lang.Object"/>
                             <Column editable="true" title="Exam Weightage (%)" type="java.lang.Object"/>
                             <Column editable="true" title="Coursework Weightage (%)" type="java.lang.Object"/>
                             <Column editable="true" title="Practical Weightage (%)" type="java.lang.Object"/>
@@ -979,7 +980,12 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                               <Title/>
                               <Editor/>
                               <Renderer/>
@@ -1051,7 +1057,7 @@
                                   <Group type="102" attributes="0">
                                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="facultyBox3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="programmeBox3" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="searchButton3" min="-2" max="-2" attributes="0"/>
@@ -1070,7 +1076,7 @@
                                   <Component id="paperCodeField3" linkSize="12" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="lecturerField3" linkSize="12" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="facultyBox3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="programmeBox3" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -1122,7 +1128,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel9">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Faculty:"/>
+                        <Property name="text" type="java.lang.String" value="Programme:"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JButton" name="searchButton3">
@@ -1133,10 +1139,10 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchButton3ActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="facultyBox3">
+                    <Component class="javax.swing.JComboBox" name="programmeBox3">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="facultyBox3Model" type="code"/>
+                          <Connection code="programmeBox3Model" type="code"/>
                         </Property>
                       </Properties>
                       <AuxValues>

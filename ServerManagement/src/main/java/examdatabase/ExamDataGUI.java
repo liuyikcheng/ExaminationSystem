@@ -36,7 +36,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     DefaultComboBoxModel  programmeBoxModel = new DefaultComboBoxModel();
     DefaultComboBoxModel  paperCodeBoxModel = new DefaultComboBoxModel();
     DefaultComboBoxModel  facultyBoxModel = new DefaultComboBoxModel();
-    DefaultComboBoxModel  facultyBox3Model = new DefaultComboBoxModel();
+    DefaultComboBoxModel  programmeBox3Model = new DefaultComboBoxModel();
     DefaultTableModel tableModel = new DefaultTableModel();
     /**
      * Creates new form GUIapp
@@ -125,7 +125,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        paperTable3 = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -137,7 +137,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         tutorField3 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         searchButton3 = new javax.swing.JButton();
-        facultyBox3 = new javax.swing.JComboBox<>();
+        programmeBox3 = new javax.swing.JComboBox<>();
         addPaperButton = new javax.swing.JButton();
         deletePaperButton = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
@@ -635,18 +635,22 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("tab2", jScrollPane3);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        paperTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Paper Code", "Paper Name", "Lecturer", "Tutor", "Faculty", "Exam Weightage (%)", "Coursework Weightage (%)", "Practical Weightage (%)"
+                "Paper Code", "Paper Name", "Lecturer", "Tutor", "Programme", "Group", "Exam Weightage (%)", "Coursework Weightage (%)", "Practical Weightage (%)"
             }
         ));
-        jScrollPane7.setViewportView(jTable2);
+        jScrollPane7.setViewportView(paperTable3);
+        if (paperTable3.getColumnModel().getColumnCount() > 0) {
+            paperTable3.getColumnModel().getColumn(4).setResizable(false);
+            paperTable3.getColumnModel().getColumn(5).setResizable(false);
+        }
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -664,7 +668,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel9.setText("Faculty:");
+        jLabel9.setText("Programme:");
 
         searchButton3.setText("Search");
         searchButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -673,7 +677,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
             }
         });
 
-        facultyBox3.setModel(facultyBox3Model);
+        programmeBox3.setModel(programmeBox3Model);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -704,7 +708,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
-                        .addComponent(facultyBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(programmeBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40))
                     .addComponent(searchButton3))
                 .addContainerGap(103, Short.MAX_VALUE))
@@ -722,7 +726,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                     .addComponent(paperCodeField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lecturerField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(facultyBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(programmeBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -955,6 +959,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         tableModel.setRowCount(i);
     }
     
+    public void setPaperTable3RowCount(Integer i){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) paperTable3.getModel();
+        tableModel.setRowCount(i);
+    }
+    
     public Integer getMarkTableRowCount(){
         return markTable.getRowCount(); 
     }
@@ -968,6 +978,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     public void addMarkTable(Object[] obj){
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel = (DefaultTableModel) markTable.getModel();
+        tableModel.addRow(obj);
+    }
+    
+    public void addPaperToPaperTable3(Object[] obj){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) paperTable3.getModel();
         tableModel.addRow(obj);
     }
     
@@ -1082,17 +1098,16 @@ public final class ExamDataGUI extends javax.swing.JFrame {
        
        new AutoCompletion(facultyBox).enable(facultyBox);
        
-       //
-       list = new GetData().getList("Programme", "Faculty");
-       facultyBox3Model.addElement("");
+       list = new GetData().getList("Programme", "Name");
+       programmeBox3Model.addElement("");
        for(int i = 0; i<list.size(); i++){
-           facultyBox3Model.addElement(list.get(i));
+           programmeBox3Model.addElement(list.get(i));
        }
     }
     
     public void setAutoFillToTextField(){
         AutoFillTextField.setupAutoComplete(getPaperCodeField3(),new GetData().getList(ExamDatabase.TABLE_PAPER_INFO, ExamDatabase.PaperInfo.PAPER_CODE));
-        AutoFillTextField.setupAutoComplete(getPaperNameField3(),new GetData().getList(ExamDatabase.TABLE_PAPER_INFO, ExamDatabase.PaperInfo.PAPER_DESCRIPTION));
+//        AutoFillTextField.setupAutoComplete(getPaperNameField3(),new GetData().getList(ExamDatabase.TABLE_PAPER_INFO, ExamDatabase.PaperInfo.PAPER_DESCRIPTION));
     }
     
     public void addSearchButtonListener(ActionListener al){
@@ -1217,7 +1232,6 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JTable examTable;
     private javax.swing.JComboBox<String> facultyBox;
     private javax.swing.JComboBox<String> facultyBox2;
-    private javax.swing.JComboBox<String> facultyBox3;
     private javax.swing.JTextField icField;
     private javax.swing.JTextField icField1;
     private javax.swing.JTextField idField;
@@ -1264,7 +1278,6 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField lecturerField3;
     private javax.swing.JTable markTable;
     private javax.swing.JTextField nameField;
@@ -1275,8 +1288,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> paperCodeBox2;
     private javax.swing.JTextField paperCodeField3;
     private javax.swing.JTextField paperNameField3;
+    private javax.swing.JTable paperTable3;
     private javax.swing.JComboBox<String> programmeBox;
     private javax.swing.JComboBox<String> programmeBox2;
+    private javax.swing.JComboBox<String> programmeBox3;
     private javax.swing.JButton restoreButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JButton searchButton2;
@@ -1294,12 +1309,6 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> yearBox;
     // End of variables declaration//GEN-END:variables
 
-    /**
-     * @return the facultyBox3
-     */
-    public javax.swing.JComboBox<String> getFacultyBox3() {
-        return facultyBox3;
-    }
 
     /**
      * @return the lecturerField3
@@ -1334,5 +1343,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
      */
     public javax.swing.JTextField getPaperCodeField3() {
         return paperCodeField3;
+    }
+
+    /**
+     * @return the programmeBox3
+     */
+    public javax.swing.JComboBox<String> getProgrammeBox3() {
+        return programmeBox3;
     }
 }

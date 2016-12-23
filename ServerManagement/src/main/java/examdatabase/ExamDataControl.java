@@ -258,19 +258,20 @@ public class ExamDataControl {
                 
                 getData.setLecturer(examDataGUI.getLecturerField3().getText());
                 getData.setTutor(examDataGUI.getTutorField3().getText());
+                getData.setProgName(examDataGUI.getProgrammeBox3().getSelectedItem().toString());
                 getData.setPaperCode(examDataGUI.getPaperCodeField3().getText());
                 getData.setPaperDesc(examDataGUI.getPaperNameField3().getText());
         
             examDataGUI.setStatusMessage("");
             ArrayList<GetData> list = null;
 
-            examDataGUI.setMarkTableRowCount(0);
+            examDataGUI.setPaperTable3RowCount(0);
 
             try {
-                list = getData.getDataCheckMark();
+                list = getData.getCourseStructure();
                 int i = 0;
                 for(i = 0; i<list.size(); i++){
-                    examDataGUI.addMarkTable(new Object[]{list.get(i).getName(), list.get(i).getRegNum(), list.get(i).getIc(), list.get(i).getProgName(), list.get(i).getFaculty(), list.get(i).getPaperCode(), list.get(i).getPractical(), list.get(i).getCoursework()});
+                    examDataGUI.addPaperToPaperTable3(new Object[]{list.get(i).getPaperCode(), list.get(i).getPaperDesc(), list.get(i).getLecturer(), list.get(i).getTutor(), list.get(i).getProgName(), list.get(i).getProgGroup(), list.get(i).getExamWeight(), list.get(i).getCourseworkWeight()});
                 }
 
             } catch (Exception ex) {
