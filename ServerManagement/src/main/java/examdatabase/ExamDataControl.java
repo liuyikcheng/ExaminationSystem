@@ -176,10 +176,10 @@ public class ExamDataControl {
                 }
         }});
         
-        examDataGUI.addAddPaperButtonListener(new ActionListener(){
+        examDataGUI.addAddPaperTab3ButtonListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                JPanel panel = new JPanel(new GridLayout(0, 1));
+                    JPanel panel = new JPanel(new GridLayout(0, 1));
                     JTextField paperCodeField = new JTextField();
                     JTextField paperNameField = new JTextField();
                     JTextField lecturerField = new JTextField();
@@ -210,13 +210,14 @@ public class ExamDataControl {
         examDataGUI.addAddCandidateButtonListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                   
                 JPanel panel = new JPanel(new GridLayout(0, 1));
-                    JTextField studentIDField = new JTextField();
-                    JTextField studentNameField = new JTextField();
-                    JTextField studentICField = new JTextField();
-                    JTextField examIDField = new JTextField();
-                    JTextField ProgrammeNameField = new JTextField();
-                    JTextField ProgrammeGroupField = new JTextField();
+                JTextField studentIDField = new JTextField();
+                JTextField studentNameField = new JTextField();
+                JTextField studentICField = new JTextField();
+                JTextField examIDField = new JTextField();
+                JTextField ProgrammeNameField = new JTextField();
+                JTextField ProgrammeGroupField = new JTextField();
 
                     panel.add(new JLabel("Register Number: "));
                     panel.add(studentIDField);

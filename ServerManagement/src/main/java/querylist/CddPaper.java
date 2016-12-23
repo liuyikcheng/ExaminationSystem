@@ -10,6 +10,8 @@ package querylist;
  * @author Krissy
  */
 public class CddPaper {
+    
+    
     private String paperCode;
     private String paperDesc;
     private String date;

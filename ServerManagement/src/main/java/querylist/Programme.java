@@ -10,6 +10,13 @@ package querylist;
  * @author Krissy
  */
 public class Programme {
+    
+    public final static String TABLE = "Programme";
+    public final static String ID = "Programme_id";
+    public final static String NAME = "Name";
+    public final static String FACULTY = "Faculty";
+    public final static String GROUP = "Programme_Group";
+    
     Integer programme_id;
     String name;
     String faculty;

@@ -8,6 +8,8 @@ package examdatabase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -353,12 +355,16 @@ public class GetData {
             return list;
     }
     
-    
+    /**
+     * 
+     * @param table
+     * @param data
+     * @return 
+     */
     public ArrayList<String> getList(String table, String data){
         ArrayList<String> list = new ArrayList<>();
         
         String sql = "SELECT DISTINCT " + data + " From " + table;
-        
         
         try (Connection conn = new ConnectDB().connect();
             Statement stmt  = conn.createStatement();
@@ -367,10 +373,50 @@ public class GetData {
             // loop through the result set
             while (rs.next()) {
                    list.add(rs.getString(data));
-//                   System.out.println(rs.getString("Name"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+        
+        return list; 
+    }
+    
+    /**
+     * 
+     * @param table
+     * @param condColumn
+     * @param cond
+     * @param column
+     * @param data
+     * @return 
+     */
+    public ArrayList<String> getListWithOneCond(String table, String condColumn, String cond, String data){
+        ArrayList<String> list = new ArrayList<>();
+        
+        String sql = "SELECT DISTINCT " + data + 
+                        " From " + table +
+                        " WHERE " + condColumn + " = ?";
+        
+        try {
+            Connection conn = new ConnectDB().connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            
+            if(cond.isEmpty())
+               pstmt.setString(1,"null");
+            else
+               pstmt.setString(1,cond);
+            
+            ResultSet rs    = pstmt.executeQuery();
+            // loop through the result set
+            while (rs.next()) {
+                   list.add(rs.getString(data));
+            }
+            
+            rs.close();
+            pstmt.close();
+            conn.close();
+        } catch (SQLException ex) { 
+            Logger.getLogger(GetData.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return list; 

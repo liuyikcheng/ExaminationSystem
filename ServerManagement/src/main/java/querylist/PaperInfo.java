@@ -10,6 +10,13 @@ package querylist;
  * @author Krissy
  */
 public class PaperInfo {
+        public final static String TABLE = "PaperInfo";
+        public final static String ID = "PI_id";
+        public final static String PAPER_CODE = "PaperCode";
+        public final static String PAPER_DESCRIPTION = "PaperDescription";
+        public final static String EXAM_WEIGHT = "ExamWeight";
+        public final static String COURSEWORK_WEIGHT = "CourseworkWeight";
+        
     Integer pi_id;
     String paperCode;
     String paperDescrip;

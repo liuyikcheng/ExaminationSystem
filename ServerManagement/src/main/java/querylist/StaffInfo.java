@@ -11,6 +11,11 @@ package querylist;
  */
 public class StaffInfo {
     
+    public final static String TABLE = "StaffInfo";
+    public final static String SI_ID = "Si_id";
+    public final static String STAFFID = "StaffID";
+    public final static String NAME = "Name";
+    
     Integer si_id;
     String staffId;
     String name;

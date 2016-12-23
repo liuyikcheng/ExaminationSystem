@@ -10,6 +10,14 @@ package querylist;
  * @author Krissy
  */
 public class ChiefAndRelief {
+    
+        public final static String TABLE = "ChiefAndRelief";
+        public final static String ID = "CR_id";
+        public final static String BLOCK = "BLOCK";
+        public final static String STATUS = "Status";
+        public final static String ATTENDANCE = "Attandance";
+        public final static String SIGN_IN_TIME = "SignInTime";
+        
     Integer cr_id;
     Integer si_id;
     String block;

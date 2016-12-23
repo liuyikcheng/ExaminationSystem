@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.*;
 import static org.junit.Assert.*;
+import querylist.Programme;
     
 /**
  *
@@ -76,6 +77,22 @@ public class GetDataTest {
 //        CustomAssertion.assertDataEqual(adlas,list.get(1));
 //        CustomAssertion.assertDataEqual(liu,list.get(2));
         
+    }
+    
+    @Test
+    public void testGetListWithOneCond() {
+        GetData getData = new GetData("","","","","","","","","","","","","","");
+        
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            list = getData.getListWithOneCond(Programme.TABLE, Programme.NAME, "RMB3", Programme.GROUP);
+//            System.out.println(list.get(0).getName());
+            System.out.println(list.size());
+        } catch (Exception ex) {
+            Logger.getLogger(GetDataTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(1, list.size());
     }
 /*
     @Test

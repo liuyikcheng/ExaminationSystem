@@ -10,6 +10,13 @@ package querylist;
  * @author Krissy
  */
 public class CandidateInfo {
+        public final static String TABLE = "CandidateInfo";
+        public final static String ID = "CI_id";
+        public final static String CANDIDATE_INFO_IC = "IC";
+        public final static String NAME = "Name";
+        public final static String REGISTER_NUMBER = "RegNum";
+        public final static String EXAM_ID = "ExamID";
+        
     Integer ci_id;
     String ic;
     String name;
