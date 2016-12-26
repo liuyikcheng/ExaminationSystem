@@ -10,6 +10,16 @@ package querylist;
  * @author Krissy
  */
 public class Invigilator {
+    
+    public final static String TABLE = "InvigilatorAndAssistant";
+    public final static String ID = "IA_id";
+    public final static String STAFFID = "StaffID";
+    public final static String STATUS = "Status";
+    public final static String ATTENDANCE = "Attendance";
+    public final static String SIGNINTIME = "SignInTime";
+    public final static String VENUE_ID = "Venue_id";
+    public final static String SESSION_ID = "Session_id";
+    
     Integer ia_id;
     String staffId;
     String status;

@@ -10,7 +10,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import querylist.PaperInfo;
+import querylist.Programme;
+import querylist.SessionAndDate;
+import querylist.StaffInfo;
+import querylist.Invigilator;
+import querylist.Venue;
 
 
 /**
@@ -48,6 +53,7 @@ public class GetData {
     //Venue
     private String venueName = "";
     private String venueSize = "";
+    private String block = "";
    
     //Invigilator And Assistant
     private String invStatus = "";
@@ -311,6 +317,60 @@ public class GetData {
         String sql =    "SELECT *, Programme.Name AS ProgrammeName, Programme.Programme_Group AS ProgrammeGroup "
                 + " FROM CourseStructure "
                 + " LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = CourseStructure.Course "
+                + " LEFT OUTER JOIN Programme ON Programme.Programme_id = CourseStructure.Programme_id "
+                + " WHERE Lecturer " + checkInput(this.getLecturer())
+                + " AND Tutor "+ checkInput(this.getTutor())
+                + " AND PaperInfo.PaperCode "+ checkInput(this.getPaperCode())
+                + " AND PaperInfo.PaperDescription "+ checkInput(this.getPaperDesc())  
+                + " AND Programme.Name "+ checkInput(this.getProgName())  
+//                + " AND Programme.Group "+ checkInput(this.getProgGroup()) 
+                ;
+
+        
+        ArrayList<GetData> list = new ArrayList<>();
+        
+        try {
+            Connection conn = new ConnectDB().connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+            // loop through the result set
+            while (rs.next()) {
+                GetData info = new GetData();
+                info.setLecturer(rs.getString("Lecturer"));
+                info.setTutor(rs.getString("Tutor"));
+                info.setPaperCode(rs.getString("PaperCode"));
+                info.setPaperDesc(rs.getString("PaperDescription"));                
+                info.setExamWeight(rs.getInt("ExamWeight"));                
+                info.setCourseworkWeight(rs.getInt("CourseworkWeight"));                
+                info.setProgName(rs.getString("ProgrammeName"));                
+                info.setProgGroup(rs.getString("ProgrammeGroup"));                
+                
+                list.add(info);
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        if(list.isEmpty())
+            throw new Exception("No data found.");
+        else
+            return list;
+    }
+    
+     /**
+     * Get the info of a Invigilators and Assistants info from the connected database
+     * @return list     The arraylist contain the info of the candidate
+     */
+    public ArrayList<GetData> getInvigilatorInfo(String date, String session, String block,
+                                                String venue, String invStatus, String staffID) throws Exception{
+        
+        String sql =    "SELECT * "
+                + " FROM " + Invigilator.TABLE 
+                + " LEFT OUTER JOIN " + Venue.TABLE + " ON " + Venue.ID + " = " + Invigilator.VENUE_ID 
                 + " LEFT OUTER JOIN Programme ON Programme.Programme_id = CourseStructure.Programme_id "
                 + " WHERE Lecturer " + checkInput(this.getLecturer())
                 + " AND Tutor "+ checkInput(this.getTutor())
@@ -826,6 +886,20 @@ public class GetData {
      */
     public void setProgGroup(String progGroup) {
         this.progGroup = progGroup;
+    }
+
+    /**
+     * @return the block
+     */
+    public String getBlock() {
+        return block;
+    }
+
+    /**
+     * @param block the block to set
+     */
+    public void setBlock(String block) {
+        this.block = block;
     }
  
 }

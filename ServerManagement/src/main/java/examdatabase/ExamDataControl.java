@@ -113,7 +113,7 @@ public class ExamDataControl {
 
                 for(int i = 0; i < examDataGUI.getMarkTableRowCount(); i++){
 
-                    new UpdateMark( (String)examDataGUI.getMarkTableCell(i,1),
+                    new UpdateData( (String)examDataGUI.getMarkTableCell(i,1),
                                     (String)examDataGUI.getMarkTableCell(i,5),
                                     (Integer)examDataGUI.getMarkTableCell(i,6),
                                     (Integer)examDataGUI.getMarkTableCell(i,7)
@@ -281,6 +281,72 @@ public class ExamDataControl {
             }
             
         }});
+        
+        examDataGUI.addSaveButtonTab3Listener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                int confirm = JOptionPane.showConfirmDialog(examDataGUI
+                        , "Confirm to save?"
+                        ,"Save"
+                        ,JOptionPane.OK_CANCEL_OPTION);
+                GregorianCalendar calendar = new GregorianCalendar();
+
+                if(confirm == JOptionPane.OK_OPTION){
+
+                for(int i = 0; i < examDataGUI.getMarkTableRowCount(); i++){
+
+                    new UpdateData( (String)examDataGUI.getMarkTableCell(i,1),
+                                    (String)examDataGUI.getMarkTableCell(i,5),
+                                    (Integer)examDataGUI.getMarkTableCell(i,6),
+                                    (Integer)examDataGUI.getMarkTableCell(i,7)
+                                    ).setMark();
+
+
+
+                }
+                examDataGUI.setStatusMessage("Recent updated on "
+                                        + calendar.get(Calendar.HOUR)+":"
+                                        + calendar.get(Calendar.MINUTE)+":"
+                                        + calendar.get(Calendar.SECOND)+"  "
+                                        + calendar.get(Calendar.DATE) + " "
+                                        + months[calendar.get(Calendar.MONTH)]+ " "
+                                        + calendar.get(Calendar.YEAR)
+                                        + ""
+                                        );
+                }
+            }
+        });
+        
+        //add Search Button Action Listener in Tab 3
+        examDataGUI.addSearchButtonTab4Listener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                GetData getData = new GetData();
+                
+                getData.setDate((String) examDataGUI.getDateBox4().getSelectedItem());
+                getData.setSession((String) examDataGUI.getSessionBox4().getSelectedItem());
+                getData.setBlock((String) examDataGUI.getBlockBox4().getSelectedItem());
+                getData.setVenueName((String) examDataGUI.getVenueBox4().getSelectedItem());
+                getData.setInvStatus((String) examDataGUI.getStatusBox4().getSelectedItem());
+                getData.setStaffID(examDataGUI.getStaffIDField4().getText());
+        
+            examDataGUI.setStatusMessage("");
+            ArrayList<GetData> list = null;
+
+            examDataGUI.setPaperTable3RowCount(0);
+
+            try {
+                list = getData.getCourseStructure();
+                int i = 0;
+                for(i = 0; i<list.size(); i++){
+                    examDataGUI.addPaperToPaperTable3(new Object[]{list.get(i).getPaperCode(), list.get(i).getPaperDesc(), list.get(i).getLecturer(), list.get(i).getTutor(), list.get(i).getProgName(), list.get(i).getProgGroup(), list.get(i).getExamWeight(), list.get(i).getCourseworkWeight()});
+                }
+
+            } catch (Exception ex) {
+                String message = ex.getMessage();
+                examDataGUI.setStatusMessage(message);
+            }
+            
+        }});
+        
     }
     
     

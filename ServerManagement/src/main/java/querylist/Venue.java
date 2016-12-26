@@ -10,6 +10,14 @@ package querylist;
  * @author Krissy
  */
 public class Venue {
+    
+    public final static String TABLE = "Venue";
+    public final static String ID = "Venue_id";
+    public final static String BLOCK = "Block";
+    public final static String NAME = "Name";
+    public final static String SIZE = "Size";
+    
+    
     Integer venue_id;
     String block;
     String name;

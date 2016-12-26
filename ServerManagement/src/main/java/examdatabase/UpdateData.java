@@ -10,7 +10,7 @@ import java.sql.*;
  *
  * @author Krissy
  */
-public class UpdateMark {
+public class UpdateData {
     
      //CandidateInfo
     public String ic = ""; 
@@ -31,7 +31,11 @@ public class UpdateMark {
     public Integer coursework ;
     public Integer practical;
     
-    public UpdateMark(  String regNum, String paperCode,
+    public UpdateData(){
+        
+    }
+    
+    public UpdateData(  String regNum, String paperCode,
                         Integer practical, Integer coursework){
       
         this.regNum = regNum;
@@ -69,6 +73,30 @@ public class UpdateMark {
           System.out.println(e.getMessage());
           System.exit(0);
         }
+        
+    }
+    
+    public void setPaperToStaff(String paperCode, String lecturer, String tutor,
+            String programme, String programmeGroup, String examWeightage, 
+            String programmeWeightage, String practicalWeightage){
+//        
+//        String sql = "SELECT CandidateInfo.IC, CandidateInfo.Name, CandidateInfo.RegNum "
+//                + ", Programme.Name AS ProgName, Programme.Faculty "
+//                + ", StudentMark.Coursework, StudentMark.Practical"
+//                + ", PaperInfo.PaperCode, PaperInfo.PaperDescription "
+//                + " FROM StudentMark "
+//                + " LEFT OUTER JOIN CandidateInfo ON StudentMark.RegNum = CandidateInfo.RegNum "
+//                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
+//                + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
+//                + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
+//                + " LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = StudentMark.PI_id "
+//                + " LEFT OUTER JOIN Venue ON Paper.Venue_id = Venue.Venue_id "
+//                + " WHERE CandidateInfo.IC " + checkInput(this.getIc())
+//                + " AND CandidateInfo.Name " + checkInput(this.getName())
+//                + " AND CandidateInfo.RegNum "+ checkInput(this.getRegNum())
+//                + " AND ProgName "+ checkInput(this.getProgName())
+//                + " AND Programme.Faculty "+ checkInput(this.getFaculty())
+//                + " AND PaperInfo.PaperCode "+ checkInput(this.getPaperCode())  ;
         
     }
 }
