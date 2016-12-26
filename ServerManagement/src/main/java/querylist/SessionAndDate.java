@@ -16,6 +16,14 @@ public class SessionAndDate {
     public final static String SESSION = "Session";
     public final static String DATE = "Date";
     
+    public class TableCol{
+        
+        public final static String ID = "SessionAndDate.Session_id";
+        public final static String SESSION = "SessionAndDate.Session";
+        public final static String DATE = "SessionAndDate.Date";
+        
+    }
+    
     Integer session_id;
     String session;
     String date;

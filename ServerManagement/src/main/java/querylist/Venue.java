@@ -11,12 +11,20 @@ package querylist;
  */
 public class Venue {
     
+    public final static String TABLE_SUB = "Venue.";
     public final static String TABLE = "Venue";
     public final static String ID = "Venue_id";
     public final static String BLOCK = "Block";
     public final static String NAME = "Name";
     public final static String SIZE = "Size";
     
+    public class TableCol{
+        
+        public final static String ID = "Venue.Venue_id";
+        public final static String BLOCK = "Venue.Block";
+        public final static String NAME = "Venue.Name";
+        public final static String SIZE = "Venue.Size";
+    }
     
     Integer venue_id;
     String block;

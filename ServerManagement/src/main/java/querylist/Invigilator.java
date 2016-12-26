@@ -20,6 +20,17 @@ public class Invigilator {
     public final static String VENUE_ID = "Venue_id";
     public final static String SESSION_ID = "Session_id";
     
+    public class TableCol{
+    
+        public final static String ID = "InvigilatorAndAssistant.IA_id";
+        public final static String STAFFID = "InvigilatorAndAssistant.StaffID";
+        public final static String STATUS = "InvigilatorAndAssistant.Status";
+        public final static String ATTENDANCE = "InvigilatorAndAssistant.Attendance";
+        public final static String SIGNINTIME = "InvigilatorAndAssistant.SignInTime";
+        public final static String VENUE_ID = "InvigilatorAndAssistant.Venue_id";
+        public final static String SESSION_ID = "InvigilatorAndAssistant.Session_id";
+    }
+    
     Integer ia_id;
     String staffId;
     String status;

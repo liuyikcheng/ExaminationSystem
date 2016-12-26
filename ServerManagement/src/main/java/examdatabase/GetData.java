@@ -366,21 +366,20 @@ public class GetData {
      * @return list     The arraylist contain the info of the candidate
      */
     public ArrayList<GetData> getInvigilatorInfo(String date, String session, String block,
-                                                String venue, String invStatus, String staffID) throws Exception{
+                                                String venue, String staffID, String invStatus) throws Exception{
         
-        String sql =    "SELECT * "
+        String sql =  "SELECT * "
                 + " FROM " + Invigilator.TABLE 
-                + " LEFT OUTER JOIN " + Venue.TABLE + " ON " + Venue.ID + " = " + Invigilator.VENUE_ID 
-                + " LEFT OUTER JOIN Programme ON Programme.Programme_id = CourseStructure.Programme_id "
-                + " WHERE Lecturer " + checkInput(this.getLecturer())
-                + " AND Tutor "+ checkInput(this.getTutor())
-                + " AND PaperInfo.PaperCode "+ checkInput(this.getPaperCode())
-                + " AND PaperInfo.PaperDescription "+ checkInput(this.getPaperDesc())  
-                + " AND Programme.Name "+ checkInput(this.getProgName())  
-//                + " AND Programme.Group "+ checkInput(this.getProgGroup()) 
+                + " LEFT OUTER JOIN " + Venue.TABLE + " ON " + Venue.TableCol.ID + " = " + Invigilator.TableCol.VENUE_ID 
+                + " LEFT OUTER JOIN " + SessionAndDate.TABLE + " ON " + SessionAndDate.TableCol.ID + " = " + Invigilator.TableCol.SESSION_ID
+                + " WHERE " + Invigilator.STAFFID + " " + checkInput(staffID)
+                + " AND " + SessionAndDate.DATE + " " + checkInput(date)
+                + " AND " + SessionAndDate.SESSION + " " +  checkInput(session)
+                + " AND " + Venue.BLOCK + " " +  checkInput(block)  
+                + " AND " + Venue.NAME + " " +  checkInput(venue)  
+                + " AND " + Invigilator.STATUS + " " +  checkInput(invStatus)
                 ;
 
-        
         ArrayList<GetData> list = new ArrayList<>();
         
         try {
@@ -390,14 +389,13 @@ public class GetData {
             // loop through the result set
             while (rs.next()) {
                 GetData info = new GetData();
-                info.setLecturer(rs.getString("Lecturer"));
-                info.setTutor(rs.getString("Tutor"));
-                info.setPaperCode(rs.getString("PaperCode"));
-                info.setPaperDesc(rs.getString("PaperDescription"));                
-                info.setExamWeight(rs.getInt("ExamWeight"));                
-                info.setCourseworkWeight(rs.getInt("CourseworkWeight"));                
-                info.setProgName(rs.getString("ProgrammeName"));                
-                info.setProgGroup(rs.getString("ProgrammeGroup"));                
+                info.setStaffID(rs.getString(Invigilator.STAFFID));
+                info.setDate(rs.getString(SessionAndDate.DATE));
+                info.setSession(rs.getString(SessionAndDate.SESSION));
+                info.setBlock(rs.getString(Venue.BLOCK));
+                info.setVenueName(rs.getString(Venue.NAME));
+                info.setInvStatus(rs.getString(Invigilator.STATUS));
+                
                 
                 list.add(info);
             }

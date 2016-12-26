@@ -75,6 +75,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         facultyBox.setEditable(true);
         examTable.setAutoCreateRowSorter(true);
         markTable.setAutoCreateRowSorter(true);
+        this.invigilatorTableTab4.setAutoCreateRowSorter(true);
 //        programmeBox3.setEditable(true);
 //        paperCodeField3;
         
@@ -176,7 +177,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         saveButton3 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        invigilatorTableTab4 = new javax.swing.JTable();
         jPanel9 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -191,6 +192,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         staffIDField4 = new javax.swing.JTextField();
         statusBox4 = new javax.swing.JComboBox<>();
         searchButton4 = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel11 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         yearBox = new javax.swing.JComboBox<>();
@@ -845,7 +850,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("tab3", jScrollPane5);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        invigilatorTableTab4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -856,7 +861,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                 "Date", "Session", "Block", "Venue", "StaffID", "Status"
             }
         ));
-        jScrollPane6.setViewportView(jTable1);
+        jScrollPane6.setViewportView(invigilatorTableTab4);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
 
@@ -867,8 +872,6 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         jLabel21.setText("Block:");
 
         jLabel28.setText("Venue:");
-
-        dateBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         sessionBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AM", "PM", "VM" }));
         sessionBox4.setSelectedIndex(-1);
@@ -955,11 +958,58 @@ public final class ExamDataGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jTabbedPane1.addTab("tab4", jPanel8);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(jTable1);
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 785, Short.MAX_VALUE)
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane8)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(116, 116, 116)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(116, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane1.addTab("tab5", jPanel10);
 
         jLabel4.setText("Exam Database Semester:");
 
@@ -1112,6 +1162,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         tableModel.setRowCount(i);
     }
     
+    public void setInvTable4RowCount(Integer i){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) this.invigilatorTableTab4.getModel();
+        tableModel.setRowCount(i);
+    }
+    
     public Integer getMarkTableRowCount(){
         return markTable.getRowCount(); 
     }
@@ -1131,6 +1187,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     public void addPaperToPaperTable3(Object[] obj){
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel = (DefaultTableModel) paperTableTab3.getModel();
+        tableModel.addRow(obj);
+    }
+    
+    public void addInvigilatorTable4(Object[] obj){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) this.invigilatorTableTab4.getModel();
         tableModel.addRow(obj);
     }
     
@@ -1273,6 +1335,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     public void setAutoFillToTextField(){
         AutoFillTextField.setupAutoComplete(getPaperCodeField3(),new GetData().getList(PaperInfo.TABLE, PaperInfo.PAPER_CODE));
 //        AutoFillTextField.setupAutoComplete(getPaperNameField3(),new GetData().getList(ExamDatabase.TABLE_PAPER_INFO, ExamDatabase.PaperInfo.PAPER_DESCRIPTION));
+    }
+    
+    public void customCandTableTab1Editor(){
+        examTable.getColumnModel().getColumn(9).setCellEditor(new CustomCellEditor(customComboBox(new GetData().getList(Programme.TABLE, Programme.NAME))));
     }
     
     public void customPaperTableTab3Editor(){
@@ -1552,6 +1618,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JTextField icField1;
     private javax.swing.JTextField idField;
     private javax.swing.JTextField idField1;
+    private javax.swing.JTable invigilatorTableTab4;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1584,6 +1651,8 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1599,6 +1668,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField lecturerField3;

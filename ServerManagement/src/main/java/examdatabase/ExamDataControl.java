@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import querylist.Invigilator;
 
 /**
  *
@@ -321,29 +322,33 @@ public class ExamDataControl {
             public void actionPerformed(ActionEvent e){
                 GetData getData = new GetData();
                 
-                getData.setDate((String) examDataGUI.getDateBox4().getSelectedItem());
-                getData.setSession((String) examDataGUI.getSessionBox4().getSelectedItem());
-                getData.setBlock((String) examDataGUI.getBlockBox4().getSelectedItem());
-                getData.setVenueName((String) examDataGUI.getVenueBox4().getSelectedItem());
-                getData.setInvStatus((String) examDataGUI.getStatusBox4().getSelectedItem());
-                getData.setStaffID(examDataGUI.getStaffIDField4().getText());
+                getData.setLecturer(examDataGUI.getLecturerField3().getText());
+                getData.setTutor(examDataGUI.getTutorField3().getText());
+                getData.setProgName(examDataGUI.getProgrammeBox3().getSelectedItem().toString());
+                getData.setPaperCode(examDataGUI.getPaperCodeField3().getText());
+                getData.setPaperDesc(examDataGUI.getPaperNameField3().getText());
         
-            examDataGUI.setStatusMessage("");
-            ArrayList<GetData> list = null;
+                examDataGUI.setStatusMessage("");
+                ArrayList<GetData> list = null;
 
-            examDataGUI.setPaperTable3RowCount(0);
+                examDataGUI.setInvTable4RowCount(0);
 
-            try {
-                list = getData.getCourseStructure();
-                int i = 0;
-                for(i = 0; i<list.size(); i++){
-                    examDataGUI.addPaperToPaperTable3(new Object[]{list.get(i).getPaperCode(), list.get(i).getPaperDesc(), list.get(i).getLecturer(), list.get(i).getTutor(), list.get(i).getProgName(), list.get(i).getProgGroup(), list.get(i).getExamWeight(), list.get(i).getCourseworkWeight()});
+                try {
+                    list = getData.getInvigilatorInfo(  (String)examDataGUI.getDateBox4().getSelectedItem(),
+                                                        (String)examDataGUI.getSessionBox4().getSelectedItem(),
+                                                        (String)examDataGUI.getBlockBox4().getSelectedItem(),
+                                                        (String)examDataGUI.getVenueBox4().getSelectedItem(),
+                                                        examDataGUI.getStaffIDField4().getText(),
+                                                        (String)examDataGUI.getStatusBox4().getSelectedItem());
+                    int i = 0;
+                    for(i = 0; i<list.size(); i++){
+                        System.out.println(list.get(i).getDate());
+                        examDataGUI.addInvigilatorTable4(new Object[]{list.get(i).getDate(), list.get(i).getSession(), list.get(i).getBlock(), list.get(i).getVenueName(), list.get(i).getStaffID(), list.get(i).getInvStatus()});
+                    }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-            } catch (Exception ex) {
-                String message = ex.getMessage();
-                examDataGUI.setStatusMessage(message);
-            }
             
         }});
         
