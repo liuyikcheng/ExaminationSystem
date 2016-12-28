@@ -17,6 +17,14 @@ public class PaperInfo {
         public final static String EXAM_WEIGHT = "ExamWeight";
         public final static String COURSEWORK_WEIGHT = "CourseworkWeight";
         
+        
+        public class TableCol{
+            public final static String ID = "PaperInfo.PI_id";
+            public final static String PAPER_CODE = "PaperInfo.PaperCode";
+            public final static String PAPER_DESCRIPTION = "PaperInfo.PaperDescription";
+            public final static String EXAM_WEIGHT = "PaperInfo.ExamWeight";
+            public final static String COURSEWORK_WEIGHT = "PaperInfo.CourseworkWeight";
+        }
     Integer pi_id;
     String paperCode;
     String paperDescrip;

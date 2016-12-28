@@ -8,6 +8,10 @@ package examdatabase;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,6 +31,8 @@ import querylist.Invigilator;
 public class ExamDataControl {
     
     ExamDataGUI examDataGUI;
+    ArrayList<GetData> availablePaper5List = new ArrayList<>();
+    ArrayList<GetData> selectedPaper5List = new ArrayList<>();
     
     String months[] = {
       "Jan", "Feb", "Mar", "Apr",
@@ -35,7 +41,9 @@ public class ExamDataControl {
     
     public ExamDataControl(ExamDataGUI examDataGUI){
         this.examDataGUI = examDataGUI;
+        availablePaper5List = new GetData().getUnassignedVenuePaper();
         addGuiListener(this.examDataGUI);
+        
     }
     
     public void addGuiListener(ExamDataGUI examDataGUI){
@@ -245,7 +253,6 @@ public class ExamDataControl {
                         Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
                         int error = JOptionPane.showConfirmDialog(null, ex.getMessage(), "ERROR", 
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-                        System.out.println("check");
                     }
                     }
                 
@@ -317,7 +324,7 @@ public class ExamDataControl {
             }
         });
         
-        //add Search Button Action Listener in Tab 3
+        //add Search Button Action Listener in Tab 4
         examDataGUI.addSearchButtonTab4Listener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 GetData getData = new GetData();
@@ -330,7 +337,7 @@ public class ExamDataControl {
         
                 examDataGUI.setStatusMessage("");
                 ArrayList<GetData> list = null;
-
+                availablePaper5List = new GetData().getUnassignedVenuePaper();
                 examDataGUI.setInvTable4RowCount(0);
 
                 try {
@@ -342,7 +349,6 @@ public class ExamDataControl {
                                                         (String)examDataGUI.getStatusBox4().getSelectedItem());
                     int i = 0;
                     for(i = 0; i<list.size(); i++){
-                        System.out.println(list.get(i).getDate());
                         examDataGUI.addInvigilatorTable4(new Object[]{list.get(i).getDate(), list.get(i).getSession(), list.get(i).getBlock(), list.get(i).getVenueName(), list.get(i).getStaffID(), list.get(i).getInvStatus()});
                     }
 
@@ -352,7 +358,65 @@ public class ExamDataControl {
             
         }});
         
+        examDataGUI.getVenueBox5().addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                
+                examDataGUI.getAvailableSizeLabel().setText(new GetData().getVenueSize(examDataGUI.getVenueBox5().getSelectedItem().toString()));
+                examDataGUI.setAvailablePapers5RowCount(0);
+                try {
+                    
+                    int i = 0;
+                    for(i = 0; i<availablePaper5List.size(); i++){
+                        examDataGUI.addAvailablePapers5(new Object[]{availablePaper5List.get(i).getPaperCode(), availablePaper5List.get(i).getProgName(), availablePaper5List.get(i).getProgGroup(), availablePaper5List.get(i).getNumOfCand()});
+                        }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        });
+        
+        ItemListener selectedPaperChange = new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                
+                examDataGUI.getAvailableSizeLabel().setText(new GetData().getVenueSize(examDataGUI.getVenueBox5().getSelectedItem().toString()));
+                examDataGUI.getOccupiedSizeLabel().setText(calculateTotalOccupiedCandidate(selectedPaper5List).toString());
+                examDataGUI.setSelectedPapers5RowCount(0);
+                
+                selectedPaper5List = new GetData().getAssignedVenuePaper((String)examDataGUI.getVenueBox5().getSelectedItem(), (String)examDataGUI.getDateBox5().getSelectedItem(), (String)examDataGUI.getSessionBox5().getSelectedItem());
+                try {
+                    
+                    int i = 0;
+                    for(i = 0; i< selectedPaper5List.size(); i++){
+                        examDataGUI.addSelectedPapers5(new Object[]{selectedPaper5List.get(i).getPaperCode(), selectedPaper5List.get(i).getProgName(), selectedPaper5List.get(i).getProgGroup(), selectedPaper5List.get(i).getNumOfCand(), selectedPaper5List.get(i).getStartingNum()});
+                        }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        };
+        
+        examDataGUI.getSessionBox5().addItemListener(selectedPaperChange);
+        examDataGUI.getVenueBox5().addItemListener(selectedPaperChange);
+        examDataGUI.getDateBox5().addItemListener(selectedPaperChange);
+        
+        
+        
+        
+        
     }
     
-    
+    public Integer calculateTotalOccupiedCandidate(ArrayList<GetData> list){
+        int total = 0;
+        int i = 0;
+        for(i = 0; i< list.size(); i++){
+            total = total + list.get(i).getNumOfCand();
+        }
+        return total;
+    }
 }

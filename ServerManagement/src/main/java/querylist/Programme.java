@@ -17,6 +17,14 @@ public class Programme {
     public final static String FACULTY = "Faculty";
     public final static String GROUP = "Programme_Group";
     
+    public class TableCol{
+        
+        public final static String ID = "Programme.Programme_id";
+        public final static String NAME = "Programme.Name";
+        public final static String FACULTY = "Programme.Faculty";
+        public final static String GROUP = "Programme.Programme_Group";
+    }
+    
     Integer programme_id;
     String name;
     String faculty;

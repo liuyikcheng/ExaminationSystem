@@ -57,6 +57,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     DefaultComboBoxModel  paperCodeBoxModel = new DefaultComboBoxModel();
     DefaultComboBoxModel  facultyBoxModel = new DefaultComboBoxModel();
     DefaultComboBoxModel  programmeBox3Model = new DefaultComboBoxModel();
+    DefaultComboBoxModel  venueBoxModel = new DefaultComboBoxModel();
     DefaultTableModel tableModel = new DefaultTableModel();
     
             
@@ -193,9 +194,25 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         statusBox4 = new javax.swing.JComboBox<>();
         searchButton4 = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jPanel11 = new javax.swing.JPanel();
+        jLabel32 = new javax.swing.JLabel();
+        venueBox5 = new javax.swing.JComboBox<>();
+        occupiedSizeLabel = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        availableSizeLabel = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        dateBox5 = new javax.swing.JComboBox<>();
+        jLabel37 = new javax.swing.JLabel();
+        sessionBox5 = new javax.swing.JComboBox<>();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        availablePapersTable5 = new javax.swing.JTable();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        selectedPapersTable5 = new javax.swing.JTable();
+        selectButton5 = new javax.swing.JButton();
+        removeButton5 = new javax.swing.JButton();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         yearBox = new javax.swing.JComboBox<>();
@@ -964,7 +981,85 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("tab4", jPanel8);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Venue"));
+
+        jLabel32.setText("Venue:");
+
+        venueBox5.setModel(venueBoxModel);
+
+        occupiedSizeLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        occupiedSizeLabel.setText("0");
+
+        jLabel34.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel34.setText("Size:");
+
+        jLabel35.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel35.setText("/");
+
+        availableSizeLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        availableSizeLabel.setText("0");
+
+        jLabel31.setText("Date:");
+
+        dateBox5.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                dateBox5ItemStateChanged(evt);
+            }
+        });
+
+        jLabel37.setText("Session:");
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel31)
+                    .addComponent(jLabel32))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(venueBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(359, 359, 359)
+                        .addComponent(jLabel34)
+                        .addGap(18, 18, 18)
+                        .addComponent(occupiedSizeLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel35)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(availableSizeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(169, 169, 169))
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(dateBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(jLabel37)
+                        .addGap(18, 18, 18)
+                        .addComponent(sessionBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(venueBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(occupiedSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(availableSizeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31)
+                    .addComponent(dateBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel37)
+                    .addComponent(sessionBox5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        availablePapersTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -972,41 +1067,78 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Paper Code", "Programme", "Group", "Total Candidate"
             }
         ));
-        jScrollPane8.setViewportView(jTable1);
+        jScrollPane9.setViewportView(availablePapersTable5);
 
-        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
+        selectedPapersTable5.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Paper Code", "Programme", "Group", "Total Candidate", "Starting Seat No."
+            }
+        ));
+        jScrollPane10.setViewportView(selectedPapersTable5);
 
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 785, Short.MAX_VALUE)
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        selectButton5.setText(">>");
+
+        removeButton5.setText("<<");
+
+        jLabel33.setText("Available Papers");
+
+        jLabel36.setText("Selected Papers");
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane8)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addGap(116, 116, 116)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(116, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(selectButton5)
+                    .addComponent(removeButton5))
+                .addGap(51, 51, 51)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(135, 135, 135)
+                .addComponent(jLabel33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel36)
+                .addGap(335, 335, 335))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel33)
+                            .addComponent(jLabel36))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addGap(180, 180, 180)
+                        .addComponent(selectButton5)
+                        .addGap(51, 51, 51)
+                        .addComponent(removeButton5)))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab5", jPanel10);
@@ -1168,6 +1300,18 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         tableModel.setRowCount(i);
     }
     
+    public void setAvailablePapers5RowCount(Integer i){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) this.availablePapersTable5.getModel();
+        tableModel.setRowCount(i);
+    }
+    
+    public void setSelectedPapers5RowCount(Integer i){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) this.selectedPapersTable5.getModel();
+        tableModel.setRowCount(i);
+    }
+    
     public Integer getMarkTableRowCount(){
         return markTable.getRowCount(); 
     }
@@ -1193,6 +1337,18 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     public void addInvigilatorTable4(Object[] obj){
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel = (DefaultTableModel) this.invigilatorTableTab4.getModel();
+        tableModel.addRow(obj);
+    }
+    
+    public void addAvailablePapers5(Object[] obj){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) this.availablePapersTable5.getModel();
+        tableModel.addRow(obj);
+    }
+    
+    public void addSelectedPapers5(Object[] obj){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) this.selectedPapersTable5.getModel();
         tableModel.addRow(obj);
     }
     
@@ -1304,6 +1460,11 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         
     }//GEN-LAST:event_paperTableTab3KeyReleased
+
+    private void dateBox5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_dateBox5ItemStateChanged
+        // TODO add your handling code here:
+       customDefaultComboBoxModel(this.sessionBox5, new GetData().getListWithOneCond(SessionAndDate.TABLE, SessionAndDate.DATE, getDateBox5().getSelectedItem().toString(), SessionAndDate.SESSION));
+    }//GEN-LAST:event_dateBox5ItemStateChanged
     
     
     public void prepareComboBox(){
@@ -1316,6 +1477,9 @@ public final class ExamDataGUI extends javax.swing.JFrame {
        createSuggestList(getDateBox4(), new GetData().getList(SessionAndDate.TABLE, SessionAndDate.DATE));
        createSuggestList(getBlockBox4(), new GetData().getList(Venue.TABLE, Venue.BLOCK));
        createSuggestList(getVenueBox4(), new GetData().getList(Venue.TABLE, Venue.NAME));
+       createSuggestList(getVenueBox5(), new GetData().getList(Venue.TABLE, Venue.NAME));
+       createSuggestList(getDateBox5(), new GetData().getList(SessionAndDate.TABLE, SessionAndDate.DATE));
+
        
        UIManager.getLookAndFeelDefaults().put("ComboBox.noActionOnKeyNavigation", true);
     }
@@ -1355,6 +1519,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         
         model = (DefaultComboBoxModel) comboBox.getModel();
+        
         model.addElement("");
         for(int i = 0; i<list.size(); i++){
             model.addElement(list.get(i));
@@ -1363,6 +1528,18 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         return comboBox;
     }
 
+    public void customDefaultComboBoxModel(JComboBox comboBox, ArrayList<String> list){
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        
+        model = (DefaultComboBoxModel) comboBox.getModel();
+        model.removeAllElements();
+        model.addElement("");
+        for(int i = 0; i<list.size(); i++){
+            System.out.println(list.get(i));
+            model.addElement(list.get(i));
+        }
+    }
+    
     /**
      * @return the saveButton3
      */
@@ -1417,6 +1594,76 @@ public final class ExamDataGUI extends javax.swing.JFrame {
      */
     public javax.swing.JTextField getStaffIDField4() {
         return staffIDField4;
+    }
+
+    /**
+     * @return the venueBox5
+     */
+    public javax.swing.JComboBox<String> getVenueBox5() {
+        return venueBox5;
+    }
+
+    /**
+     * @return the availableSizeLabel
+     */
+    public javax.swing.JLabel getAvailableSizeLabel() {
+        return availableSizeLabel;
+    }
+
+    /**
+     * @return the occupiedSizeLabel
+     */
+    public javax.swing.JLabel getOccupiedSizeLabel() {
+        return occupiedSizeLabel;
+    }
+
+    /**
+     * @return the SessionBox5
+     */
+    public javax.swing.JComboBox<String> getSessionBox5() {
+        return sessionBox5;
+    }
+
+    /**
+     * @return the availablePapers5
+     */
+    public javax.swing.JTable getAvailablePapers5() {
+        return availablePapersTable5;
+    }
+
+    /**
+     * @return the removeButton5
+     */
+    public javax.swing.JButton getRemoveButton5() {
+        return removeButton5;
+    }
+
+    /**
+     * @return the selectButton5
+     */
+    public javax.swing.JButton getSelectButton5() {
+        return selectButton5;
+    }
+
+    /**
+     * @return the selectedPapers5
+     */
+    public javax.swing.JTable getSelectedPapers5() {
+        return selectedPapersTable5;
+    }
+
+    /**
+     * @return the dateBox5
+     */
+    public javax.swing.JComboBox<String> getDateBox5() {
+        return dateBox5;
+    }
+
+    /**
+     * @param sessionBox5 the sessionBox5 to set
+     */
+    public void setSessionBox5(javax.swing.JComboBox<String> sessionBox5) {
+        this.sessionBox5 = sessionBox5;
     }
     
     class CustomCellEditor extends DefaultCellEditor{
@@ -1606,8 +1853,11 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JButton addCandidateButton;
     private javax.swing.JButton addPaperTab3Button;
     private javax.swing.JComboBox<String> attendanceBox;
+    private javax.swing.JTable availablePapersTable5;
+    private javax.swing.JLabel availableSizeLabel;
     private javax.swing.JComboBox<String> blockBox4;
     private javax.swing.JComboBox<String> dateBox4;
+    private javax.swing.JComboBox<String> dateBox5;
     private javax.swing.JTextField dateField;
     private javax.swing.JButton deleteCandidateButton;
     private javax.swing.JButton deletePaperButton;
@@ -1644,6 +1894,13 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1662,21 +1919,22 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField lecturerField3;
     private javax.swing.JTable markTable;
     private javax.swing.JTextField nameField;
     private javax.swing.JTextField nameField1;
     private javax.swing.JLabel nameHelp;
     private javax.swing.JLabel nameHelp2;
+    private javax.swing.JLabel occupiedSizeLabel;
     private javax.swing.JComboBox<String> paperCodeBox;
     private javax.swing.JComboBox<String> paperCodeBox2;
     private javax.swing.JTextField paperCodeField3;
@@ -1685,14 +1943,18 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> programmeBox;
     private javax.swing.JComboBox<String> programmeBox2;
     private javax.swing.JComboBox<String> programmeBox3;
+    private javax.swing.JButton removeButton5;
     private javax.swing.JButton restoreButton;
     private javax.swing.JButton saveButton3;
     private javax.swing.JButton searchButton;
     private javax.swing.JButton searchButton2;
     private javax.swing.JButton searchButton3;
     private javax.swing.JButton searchButton4;
+    private javax.swing.JButton selectButton5;
+    private javax.swing.JTable selectedPapersTable5;
     private javax.swing.JComboBox<String> sessionBox;
     private javax.swing.JComboBox<String> sessionBox4;
+    private javax.swing.JComboBox<String> sessionBox5;
     private javax.swing.JTextField staffIDField4;
     private javax.swing.JComboBox<String> statusBox;
     private javax.swing.JComboBox<String> statusBox4;
@@ -1702,6 +1964,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JTextField tutorField3;
     private javax.swing.JButton updateButton;
     private javax.swing.JComboBox<String> venueBox4;
+    private javax.swing.JComboBox<String> venueBox5;
     private javax.swing.JTextField venueField;
     private javax.swing.JLabel warningMessage;
     private javax.swing.JLabel warningMessage1;

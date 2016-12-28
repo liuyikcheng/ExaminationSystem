@@ -15,6 +15,7 @@ import querylist.Programme;
 import querylist.SessionAndDate;
 import querylist.StaffInfo;
 import querylist.Invigilator;
+import querylist.Paper;
 import querylist.Venue;
 
 
@@ -43,8 +44,11 @@ public class GetData {
     private String faculty = "";
     
     //Paper
+    private Integer paper_id = 0;
     private String date = "";
     private String session = "";
+    private Integer numOfCand = 0;
+    private Integer startingNum = 0;
     
     //PaperInfo
     private String paperCode = "";
@@ -479,6 +483,130 @@ public class GetData {
         
         return list; 
     }
+    
+    
+    /**
+     *@brief    To obtain the size of specific venue
+     */
+    public String getVenueSize(String venue){
+        String size = "";
+        String sql = "SELECT " + Venue.SIZE + 
+                    " FROM " + Venue.TABLE +
+                    " WHERE " + Venue.NAME + " = ? ";
+        
+        try (Connection conn = new ConnectDB().connect();){
+            
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, venue);
+            
+            ResultSet rs = pstmt.executeQuery();
+            // loop through the result set
+            while (rs.next()) {
+                   size = rs.getString(Venue.SIZE);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return size;
+        
+    }
+    
+    public ArrayList<GetData> getUnassignedVenuePaper(){
+        ArrayList<GetData> list = new ArrayList<>();
+        String sql = "SELECT * , " + Programme.TableCol.NAME + " AS ProgName "
+                + " FROM " + Paper.TABLE 
+                + " LEFT OUTER JOIN " + Venue.TABLE + " ON " + Venue.TableCol.ID + " = " + Paper.TableCol.VENUE_ID 
+                + " LEFT OUTER JOIN " + Programme.TABLE + " ON " + Programme.TableCol.ID + " = " + Paper.TableCol.PROGRAMME_ID 
+                + " LEFT OUTER JOIN " + PaperInfo.TABLE + " ON " + PaperInfo.TableCol.ID + " = " + Paper.TableCol.PI_ID 
+                    ;
+        
+       try (Connection conn = new ConnectDB().connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql)){
+            
+            // loop through the result set
+            while (rs.next()) {
+                Paper paper = new Paper();
+                paper.setPaperStartNo(rs.getInt(Paper.PAPER_START_NO));
+                paper.setSession_id(rs.getInt(Paper.SESSION_ID));
+                paper.setVenue_id(rs.getInt(Paper.VENUE_ID));
+
+                
+                
+                if(paper.getVenue_id() != 0 && paper.getVenue_id() != null &&
+                    paper.getPaperStartNo() != 0 && paper.getPaperStartNo() != null &&
+                    paper.getSession_id() != 0 && paper.getSession_id() != null ){
+                    GetData data = new GetData();
+                    data.paper_id = rs.getInt(Paper.ID);
+                    data.paperCode = rs.getString(PaperInfo.PAPER_CODE);
+                    data.progName = rs.getString("ProgName");
+                    data.progGroup = rs.getString(Programme.GROUP);
+                    data.numOfCand = rs.getInt(Paper.TOTAL_CANDIDATE);
+                    
+                    list.add(data);
+                }
+                    
+            }
+        } catch (SQLException ex) { 
+            Logger.getLogger(GetData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+       return list;
+    }
+    
+    public ArrayList<GetData> getAssignedVenuePaper(String venue, String date, String session){
+        ArrayList<GetData> list = new ArrayList<>();
+        String sql = "SELECT * , " + Programme.TableCol.NAME + " AS ProgName, " + Venue.TableCol.NAME + " AS VenueName "
+                + " FROM " + Paper.TABLE 
+                + " LEFT OUTER JOIN " + Venue.TABLE + " ON " + Venue.TableCol.ID + " = " + Paper.TableCol.VENUE_ID 
+                + " LEFT OUTER JOIN " + Programme.TABLE + " ON " + Programme.TableCol.ID + " = " + Paper.TableCol.PROGRAMME_ID 
+                + " LEFT OUTER JOIN " + PaperInfo.TABLE + " ON " + PaperInfo.TableCol.ID + " = " + Paper.TableCol.PI_ID 
+                + " LEFT OUTER JOIN " + SessionAndDate.TABLE + " ON " + SessionAndDate.TableCol.ID + " = " + Paper.TableCol.SESSION_ID 
+                + " WHERE VenueName = ? AND " + SessionAndDate.DATE + " = ? AND " + SessionAndDate.SESSION + " = ? "  
+                ;
+        
+       try (Connection conn = new ConnectDB().connect();
+            ){
+            
+           PreparedStatement pstmt  = conn.prepareStatement(sql);
+           
+           pstmt.setString(1, venue);
+           pstmt.setString(2, date);
+           pstmt.setString(3, session);
+           
+           ResultSet rs    = pstmt.executeQuery();
+                    
+            // loop through the result set
+            while (rs.next()) {
+                Paper paper = new Paper();
+                paper.setPaperStartNo(rs.getInt(Paper.PAPER_START_NO));
+                paper.setSession_id(rs.getInt(Paper.SESSION_ID));
+                paper.setVenue_id(rs.getInt(Paper.VENUE_ID));
+
+                
+                
+                if(paper.getVenue_id() != 0 && paper.getVenue_id() != null &&
+                    paper.getPaperStartNo() != 0 && paper.getPaperStartNo() != null &&
+                    paper.getSession_id() != 0 && paper.getSession_id() != null ){
+                    GetData data = new GetData();
+                    data.paper_id = rs.getInt(Paper.ID);
+                    data.paperCode = rs.getString(PaperInfo.PAPER_CODE);
+                    data.progName = rs.getString("ProgName");
+                    data.progGroup = rs.getString(Programme.GROUP);
+                    data.numOfCand = rs.getInt(Paper.TOTAL_CANDIDATE);
+                    data.startingNum = rs.getInt(Paper.PAPER_START_NO);
+                    
+                    list.add(data);
+                }
+                    
+            }
+        } catch (SQLException ex) { 
+            Logger.getLogger(GetData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+       return list;
+    }
 
     /**
      * @return the ic
@@ -898,6 +1026,20 @@ public class GetData {
      */
     public void setBlock(String block) {
         this.block = block;
+    }
+
+    /**
+     * @return the numOfCand
+     */
+    public Integer getNumOfCand() {
+        return numOfCand;
+    }
+
+    /**
+     * @return the startingNum
+     */
+    public Integer getStartingNum() {
+        return startingNum;
     }
  
 }
