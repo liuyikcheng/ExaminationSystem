@@ -1,4 +1,5 @@
 apply plugin: 'java'
+version = '1.0'
 
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -13,6 +14,18 @@ sourceCompatibility = '1.8'
 if (!hasProperty('mainClass')) {
     ext.mainClass = 'mainserver.MainServer'
 }
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+        	'Implementation-Version': version,
+        	'Main-Class': 'mainserver.MainServer'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 
 repositories {
     flatDir {

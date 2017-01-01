@@ -43,7 +43,6 @@ public class MessageListener extends Thread{
         try {
             server = new ServerSocket(port);
             chief = new ChiefData();
-            this.start();
             
         } catch (IOException ex) {
             Logger.getLogger(MessageListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,6 +53,7 @@ public class MessageListener extends Thread{
     public void run(){
         
         try {
+            System.out.println("Ready to connect....");
             client = server.accept();
             System.out.println("\n connected to "+ client.getRemoteSocketAddress());
             while(client.isClosed() != true){
@@ -93,6 +93,7 @@ public class MessageListener extends Thread{
             String ps = null;
             String block = null;
             String randomMsg = null;
+            String deviceId = "";
             Integer threadId = null;
                                     
             switch(json.getString(InfoType.TYPE)){
@@ -125,16 +126,17 @@ public class MessageListener extends Thread{
                                         ps = json.getString(InfoType.PASSWORD);
                                         randomMsg = json.getString(InfoType.RANDOM_MSG);
                                         threadId = json.getInt(InfoType.THREAD_ID);
+                                        deviceId = json.getString(InfoType.DEVICE_ID);
 
                                         if(new ChiefData().verifyStaff(id, ps, randomMsg)){
-                                            sendMessage(staffSignInReply(id,threadId, CheckInType.STAFF_LOGIN, true).toString());
+                                            sendMessage(staffSignInReply(id,threadId, CheckInType.STAFF_LOGIN, true, deviceId).toString());
                                             System.out.println("Staff "+json.getString(InfoType.ID_NO)+" was signed in");
                                             chief.setInvSignInTime(json.getString(InfoType.ID_NO));
                                         }
                                         else
-                                            sendMessage(staffSignInReply(id, threadId, CheckInType.STAFF_LOGIN, false).toString());
+                                            sendMessage(staffSignInReply(id, threadId, CheckInType.STAFF_LOGIN, false, deviceId).toString());
                                     }catch(SQLException ex){
-                                        sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false).toString());
+                                        sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false, deviceId).toString());
                                     }
                                     break;
                                     
@@ -146,14 +148,14 @@ public class MessageListener extends Thread{
                                         randomMsg = json.getString(InfoType.RANDOM_MSG);
                                     
                                         if(new ChiefData().verifyStaff(id, ps, randomMsg)){
-                                            sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, true).toString());
+                                            sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, true, "").toString());
                                             System.out.println("Staff "+json.getString(InfoType.ID_NO)+" was signed in from ChiefServer");
                                             chief.setInvSignInTime(json.getString(InfoType.ID_NO));
                                         }
                                         else
-                                            sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false).toString());
+                                            sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false, "").toString());
                                     }catch(SQLException ex){
-                                        sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false).toString());
+                                        sendMessage(staffSignInReply(id, 0, CheckInType.STAFF_LOGIN_FROM_CHIEF_SERVER, false, "").toString());
                                     }
                                     break;
                                     
@@ -203,12 +205,12 @@ public class MessageListener extends Thread{
         return bool;
     }
     
-    private JSONObject staffSignInReply(String id, Integer threadId, String type, boolean bool){
+    private JSONObject staffSignInReply(String id, Integer threadId, String type, boolean bool, String deviceID){
         JSONObject json = new JSONObject();
         
         try {
             json.put(InfoType.RESULT, bool);
-            
+            json.put(InfoType.DEVICE_ID, deviceID);
             if(type.equals(CheckInType.STAFF_LOGIN))
                 json.put(InfoType.THREAD_ID, threadId);
 

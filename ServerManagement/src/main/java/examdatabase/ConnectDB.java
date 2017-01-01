@@ -14,11 +14,11 @@ import java.sql.SQLException;
  * @author Krissy
  */
 public class ConnectDB {
+    static String url = "";
+    static String month = "";
+    static String year = "";
     
-    static String month;
-    static String year;
     public ConnectDB(){
-        
     }
     
     public void setConnection(String month, String year){
@@ -35,7 +35,10 @@ public class ConnectDB {
     public static Connection connect() {
         // SQLite connection string
         
-        String url = "jdbc:sqlite:FEB_MAR_2016.db";
+        if(month.equals("")||year.equals(""))
+            url = "jdbc:sqlite:FEB_MAR_2016.db";
+        else
+            url = "jdbc:sqlite:"+month+"_"+year+".db";
         
         Connection conn = null;
         try {

@@ -127,7 +127,9 @@ public class ClientComm extends Thread {
         
             try{
                 System.out.println("Socket "+this.serverSocket.getLocalPort()+" is accepting....");
+                System.out.println("Address "+this.serverSocket.getInetAddress().getHostAddress()+" is accepting....");
                 setClient(this.serverSocket.accept());
+//                this.serverSocket.accept();
 
                 System.out.println("connected to "+ getClient().getRemoteSocketAddress());
                 while(getClient().isClosed() != true){

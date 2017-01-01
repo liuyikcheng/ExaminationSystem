@@ -273,14 +273,14 @@ public class ChiefControl {
     }
     
     public void createNewClientComm() throws IOException, Exception{
-        ServerSocket socket = new ServerSocket();
+        ServerSocket serverSocket = new ServerSocket();
             
         String randomString = this.generateRandomString();
         chiefServer.setPort();
-        socket = this.chiefServer.getServerSocket();
+        serverSocket = this.chiefServer.getServerSocket();
         System.out.println(randomString);
-        System.out.println("new clientComm created");
-        this.currentClientComm = new ClientComm(socket, this.serverComm, this.chiefServer, this.qrgen, this);
+        System.out.println("new clientComm created from address" + serverSocket);
+        this.currentClientComm = new ClientComm(serverSocket, this.serverComm, this.chiefServer, this.qrgen, this);
         (this.currentClientComm).start();
         regenerateCurrentQRInterface();
         

@@ -16,6 +16,16 @@ public class CandidateInfo {
         public final static String NAME = "Name";
         public final static String REGISTER_NUMBER = "RegNum";
         public final static String EXAM_ID = "ExamID";
+        public final static String PROGRAMME_ID = "Programme_id";
+        
+        public class TableCol{
+            public final static String ID = "CandidateInfo.CI_id";
+            public final static String CANDIDATE_INFO_IC = "CandidateInfo.IC";
+            public final static String NAME = "CandidateInfo.Name";
+            public final static String REGISTER_NUMBER = "CandidateInfo.RegNum";
+            public final static String EXAM_ID = "CandidateInfo.ExamID";
+            public final static String PROGRAMME_ID = "CandidateInfo.Programme_id";
+        }
         
     Integer ci_id;
     String ic;

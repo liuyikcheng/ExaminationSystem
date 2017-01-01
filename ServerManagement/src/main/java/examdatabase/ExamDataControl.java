@@ -16,20 +16,30 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import querylist.Invigilator;
+import querylist.Paper;
+import querylist.Programme;
+import querylist.Venue;
 
 /**
  *
  * @author Krissy
  */
-public class ExamDataControl {
+public class ExamDataControl implements Runnable{
+    
+    public final static Integer PAPER_SPACE = 4;
     
     ExamDataGUI examDataGUI;
     ArrayList<GetData> availablePaper5List = new ArrayList<>();
@@ -40,10 +50,14 @@ public class ExamDataControl {
       "May", "Jun", "Jul", "Aug",
       "Sep", "Oct", "Nov", "Dec"};
     
+    public ExamDataControl(){
+        
+    }
+    
     public ExamDataControl(ExamDataGUI examDataGUI){
         this.examDataGUI = examDataGUI;
         availablePaper5List = new GetData().getUnassignedVenuePaper();
-        addGuiListener(this.examDataGUI);
+        
         
     }
     
@@ -217,50 +231,6 @@ public class ExamDataControl {
             
         });
         
-        examDataGUI.addAddCandidateButtonListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                   
-                JPanel panel = new JPanel(new GridLayout(0, 1));
-                JTextField studentIDField = new JTextField();
-                JTextField studentNameField = new JTextField();
-                JTextField studentICField = new JTextField();
-                JTextField examIDField = new JTextField();
-                JTextField ProgrammeNameField = new JTextField();
-                JTextField ProgrammeGroupField = new JTextField();
-
-                    panel.add(new JLabel("Register Number: "));
-                    panel.add(studentIDField);
-                    panel.add(new JLabel("Name: "));
-                    panel.add(studentNameField);
-                    panel.add(new JLabel("IC number: "));
-                    panel.add(studentICField);
-                    panel.add(new JLabel("Exam ID: "));
-                    panel.add(examIDField);
-                    panel.add(new JLabel("Programme Name: "));
-                    panel.add(ProgrammeNameField);
-                    panel.add(new JLabel("Programme Group: "));
-                    panel.add(ProgrammeGroupField);
-
-                    int result = JOptionPane.showConfirmDialog(null, panel, "Add",
-                        JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-                    if (result == JOptionPane.OK_OPTION) {
-                    try {
-                        new DataWriter().insertCandidate(studentICField.getText(), studentNameField.getText(),
-                                studentIDField.getText(), ProgrammeNameField.getText(),
-                                ProgrammeGroupField.getText(), examIDField.getText());
-                    } catch (Exception ex) {
-                        Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
-                        int error = JOptionPane.showConfirmDialog(null, ex.getMessage(), "ERROR", 
-                                JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-                    }
-                    }
-                
-              }
-            
-        });
-        
         //add Search Button Action Listener in Tab 3
         examDataGUI.addSearchButtonTab3Listener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -382,30 +352,20 @@ public class ExamDataControl {
         examDataGUI.getVenueBox5().addItemListener(selectedPaperChange);
         examDataGUI.getDateBox5().addItemListener(selectedPaperChange);
         
-        
         examDataGUI.getSelectButton5().addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 
                 Integer paper_id = (Integer) examDataGUI.getAvailablePapers5().getModel().getValueAt(examDataGUI.getAvailablePapers5().getSelectedRow(), 4);
-                JPanel panel = new JPanel(new GridLayout(0, 1));
-                JTextField statingNoField = new JTextField();
-                panel.add(new JLabel("Candidate Starting Number: "));
-                panel.add(statingNoField);
-                
-                int confirm = JOptionPane.showConfirmDialog(null, panel, "Add",
-                        JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
-                
-                if(confirm == JOptionPane.OK_OPTION){
                     for (int i = 0; i < ExamDataControl.this.availablePaper5List.size(); i++ ){
-                        if (ExamDataControl.this.availablePaper5List.get(i).getPaper_id() == paper_id){
+                        if (Objects.equals(ExamDataControl.this.availablePaper5List.get(i).getPaper_id(), paper_id)){
                             try{
 
                                 GetData data = ExamDataControl.this.availablePaper5List.get(i);
                                 data.setVenue_id(new GetData().getVenueIdFromDB((String)ExamDataControl.this.examDataGUI.getVenueBox5().getSelectedItem()));
                                 data.setSession_id(new GetData().getSessionIdFromDB((String)ExamDataControl.this.examDataGUI.getSessionBox5().getSelectedItem(),
                                                                                     (String)ExamDataControl.this.examDataGUI.getDateBox5().getSelectedItem()));
-                                new UpdateData().setVenueAndSessionForPaper(data.getPaper_id(), data.getVenue_id(), data.getSession_id(), Integer.parseInt(statingNoField.getText()));
+                                new UpdateData().setVenueAndSessionForPaper(data.getPaper_id(), data.getVenue_id(), data.getSession_id(), getCurrentPaperSpace(ExamDataControl.this.selectedPaper5List));
                             } catch (SQLException ex) {
                                 Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -413,7 +373,7 @@ public class ExamDataControl {
                             setSelectedPaperTable5Content();
                             setAvailablePaperTable5Content();
                         }
-                    }
+                    
                     examDataGUI.getOccupiedSizeLabel().setText(calculateTotalOccupiedCandidate(selectedPaper5List).toString());
                 }
             }
@@ -446,11 +406,100 @@ public class ExamDataControl {
                         }
                     }
                 examDataGUI.getOccupiedSizeLabel().setText(calculateTotalOccupiedCandidate(selectedPaper5List).toString());
-                
             }
             
         });
         
+        examDataGUI.addAddCandidateButton6Listener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                   
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                JTextField studentIDField = new JTextField();
+                JTextField studentNameField = new JTextField();
+                JTextField studentICField = new JTextField();
+                JTextField examIDField = new JTextField();
+                JComboBox facultyBox = new JComboBox();
+                JComboBox programmeNameBox = new JComboBox();
+                JComboBox programmeGroupBox = new JComboBox();
+
+                    panel.add(new JLabel("Register Number: "));
+                    panel.add(studentIDField);
+                    panel.add(new JLabel("Name: "));
+                    panel.add(studentNameField);
+                    panel.add(new JLabel("IC number: "));
+                    panel.add(studentICField);
+                    panel.add(new JLabel("Exam ID: "));
+                    panel.add(examIDField);
+                    panel.add(new JLabel("Faculty: "));
+                    panel.add(facultyBox);
+                    panel.add(new JLabel("Programme Name: "));
+                    panel.add(programmeNameBox);
+                    panel.add(new JLabel("Programme Group: "));
+                    panel.add(programmeGroupBox);
+
+                    examDataGUI.createSuggestList(facultyBox, new GetData().getList(Programme.TABLE, Programme.FACULTY));
+                    facultyBox.addItemListener(new ItemListener(){
+                        @Override
+                        public void itemStateChanged(ItemEvent e) {
+                            examDataGUI.customDefaultComboBoxModel(programmeNameBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox.getSelectedItem(), Programme.NAME));
+                        }
+                    });
+                    
+                    programmeNameBox.addItemListener(new ItemListener(){
+                        @Override
+                        public void itemStateChanged(ItemEvent e) {
+                            examDataGUI.customDefaultComboBoxModel(programmeGroupBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeNameBox.getSelectedItem(), Programme.GROUP));
+                        }
+                    });
+                    
+                    int result = JOptionPane.showConfirmDialog(null, panel, "Add",
+                        JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                    if (result == JOptionPane.OK_OPTION) {
+                        try {
+                            new DataWriter().insertCandidate(studentICField.getText(), studentNameField.getText(),
+                                    studentIDField.getText(), (String)programmeNameBox.getSelectedItem(),
+                                    (String)programmeGroupBox.getSelectedItem(), examIDField.getText());
+//                            new DataWriter().addCandidateAttendance(studentICField.getText(), new GetData().getListWithOneCond(Paper.TABLE, data));
+                        } catch (Exception ex) {
+                            Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                            int error = JOptionPane.showConfirmDialog(null, ex.getMessage(), "ERROR", 
+                                    JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                        }
+                        refreshCandidateTable6();
+                    }
+                
+              }
+            
+        });
+        
+        examDataGUI.getSearchButton6().addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshCandidateTable6();
+            
+            }
+            
+        });
+        
+        examDataGUI.getDeleteCandidateButton6().addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer candidate_id = (Integer) examDataGUI.getCandidateTable6().getModel().getValueAt(examDataGUI.getCandidateTable6().getSelectedRow(), 0);
+                int result = JOptionPane.showConfirmDialog(null, "Remove", "Confirm to remove?",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+                
+                if (result == JOptionPane.YES_OPTION){
+                    try {
+                        new DataWriter().removeCandidate(candidate_id);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                refreshCandidateTable6();
+            }
+        });
         
     }
     
@@ -469,6 +518,20 @@ public class ExamDataControl {
                 examDataGUI.setSelectedPapers5RowCount(0);
                 
                 selectedPaper5List = new GetData().getAssignedVenuePaper((String)examDataGUI.getVenueBox5().getSelectedItem(), (String)examDataGUI.getDateBox5().getSelectedItem(), (String)examDataGUI.getSessionBox5().getSelectedItem());
+                Collections.sort(selectedPaper5List, new Comparator<GetData>(){
+                    @Override
+                    public int compare(GetData o1, GetData o2) {
+                        Integer num1 = o1.getStartingNum();
+                        Integer num2 = o2.getStartingNum();
+                        
+                        if(num1>num2)
+                            return 1;
+                        else if (num1<num2)
+                            return -1;
+                        else
+                            return 0;
+                    }
+                });
                 try {
                     
                     int i = 0;
@@ -495,5 +558,52 @@ public class ExamDataControl {
                 } catch (Exception ex) {
                     Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
+    }
+    
+    public Integer getCurrentPaperSpace(ArrayList<GetData> selectedPaperList){
+        
+        GetData data = new GetData();
+       
+        if(!selectedPaperList.isEmpty()){
+            data = selectedPaperList.get(selectedPaperList.size()-1); //return the last element of the arraylist
+            return data.getStartingNum() + PAPER_SPACE + data.getNumOfCand();
+        }
+        else{
+            return 1;
+        }
+        
+    }
+    
+    public void refreshCandidateTable6(){
+        GetData data = new GetData();
+                data.setName(examDataGUI.getNameField6().getText());
+                data.setIc(examDataGUI.getIcField6().getText());
+                data.setRegNum(examDataGUI.getIdField6().getText());
+                data.setFaculty((String)examDataGUI.getFacultyBox6().getSelectedItem());
+                data.setProgName((String)examDataGUI.getProgrammeBox6().getSelectedItem());
+                data.setProgGroup((String)examDataGUI.getProgrammeGroupBox6().getSelectedItem());
+                
+                examDataGUI.setWarningMessage("");
+                ArrayList<GetData> list = null;
+
+                examDataGUI.setCandidateTable6RowCount(0);
+                try {
+                    list = data.getCandidateList(examDataGUI.getNameField6().getText(), examDataGUI.getIcField6().getText(), examDataGUI.getIdField6().getText(),
+                                                   (String)examDataGUI.getFacultyBox6().getSelectedItem(), (String)examDataGUI.getProgrammeBox6().getSelectedItem(),
+                                                   (String)examDataGUI.getProgrammeGroupBox6().getSelectedItem());
+                    int i = 0;
+                    for(i = 0; i<list.size(); i++){
+                        examDataGUI.addCandidateTable6(new Object[]{list.get(i).getCandidate_id(), list.get(i).getName(), list.get(i).getIc(), list.get(i).getRegNum(), list.get(i).getFaculty(), list.get(i).getProgName(), list.get(i).getProgGroup()});
+                    }
+
+                } catch (Exception ex) {
+                    String message = ex.getMessage();
+                    examDataGUI.setWarningMessage(message);
+                }
+    }
+
+    @Override
+    public void run() {
+        addGuiListener(this.examDataGUI);
     }
 }

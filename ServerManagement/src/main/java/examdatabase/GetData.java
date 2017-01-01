@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import querylist.CandidateInfo;
 import querylist.PaperInfo;
 import querylist.Programme;
 import querylist.SessionAndDate;
@@ -29,9 +30,11 @@ public class GetData {
     public String data = "";
     
     //CandidateInfo
+    private Integer candidate_id = 0; 
     private String ic = ""; 
     private String name = ""; 
     private String regNum = "";
+    private String examId = "";
     
     //CandidateAttendance
     private String status = ""; 
@@ -450,8 +453,8 @@ public class GetData {
             Connection conn = new ConnectDB().connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             
-            if(cond.isEmpty())
-               pstmt.setString(1,"null");
+            if(cond == null || cond.isEmpty())
+               pstmt.setString(1,"0");
             else
                pstmt.setString(1,cond);
             
@@ -650,6 +653,53 @@ public class GetData {
         }
        
        return list;
+    }
+    
+    
+    public ArrayList<GetData> getCandidateList(String candName, String ic, String regNum, String faculty, String programme, String programmeGroup) throws Exception{
+        String sql =  "SELECT * , " + Programme.TableCol.NAME + " AS ProgName, " + CandidateInfo.TableCol.NAME + " AS CandName " 
+                + " FROM " + CandidateInfo.TABLE 
+                + " LEFT OUTER JOIN " + Programme.TABLE + " ON " + Programme.TableCol.ID + " = " + CandidateInfo.TableCol.PROGRAMME_ID
+                + " WHERE " + "CandName" + " " + checkInput(candName)
+                + " AND " + CandidateInfo.CANDIDATE_INFO_IC + " " + checkInput(ic)
+                + " AND " + CandidateInfo.REGISTER_NUMBER + " " +  checkInput(regNum)
+                + " AND " + "ProgName" + " " +  checkInput(programme)  
+                + " AND " + Programme.GROUP + " " +  checkInput(programmeGroup)  
+                + " AND " + Programme.FACULTY + " " +  checkInput(faculty)
+                ;
+        
+        ArrayList<GetData> list = new ArrayList<>();
+        
+        try {
+            Connection conn = new ConnectDB().connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+            // loop through the result set
+            while (rs.next()) {
+                GetData info = new GetData();
+                info.setCandidate_id(rs.getInt(CandidateInfo.ID));
+                info.setName(rs.getString("CandName"));
+                info.setIc(rs.getString(CandidateInfo.CANDIDATE_INFO_IC));
+                info.setRegNum(rs.getString(CandidateInfo.REGISTER_NUMBER));
+                info.setExamId(rs.getString(CandidateInfo.EXAM_ID));
+                info.setFaculty(rs.getString(Programme.FACULTY));
+                info.setProgName(rs.getString("ProgName"));
+                info.setProgGroup(rs.getString(Programme.GROUP));
+                
+                list.add(info);
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        if(list.isEmpty())
+            throw new Exception("No data found.");
+        else
+            return list;
     }
 
     /**
@@ -1119,6 +1169,34 @@ public class GetData {
      */
     public void setSession_id(Integer session_id) {
         this.session_id = session_id;
+    }
+
+    /**
+     * @return the candidate_id
+     */
+    public Integer getCandidate_id() {
+        return candidate_id;
+    }
+
+    /**
+     * @param candidate_id the candidate_id to set
+     */
+    public void setCandidate_id(Integer candidate_id) {
+        this.candidate_id = candidate_id;
+    }
+
+    /**
+     * @return the examId
+     */
+    public String getExamId() {
+        return examId;
+    }
+
+    /**
+     * @param examId the examId to set
+     */
+    public void setExamId(String examId) {
+        this.examId = examId;
     }
  
 }

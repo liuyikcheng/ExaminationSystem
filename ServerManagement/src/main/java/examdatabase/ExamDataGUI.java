@@ -233,8 +233,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         facultyBox6 = new javax.swing.JComboBox<>();
         programmeBox6 = new javax.swing.JComboBox<>();
         searchButton6 = new javax.swing.JButton();
+        jLabel43 = new javax.swing.JLabel();
+        programmeGroupBox6 = new javax.swing.JComboBox<>();
         addCandidateButton = new javax.swing.JButton();
-        deleteCandidateButton = new javax.swing.JButton();
+        deleteCandidateButton6 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         yearBox = new javax.swing.JComboBox<>();
@@ -481,12 +483,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel2);
 
-        jTabbedPane1.addTab("tab1", jScrollPane1);
+        jTabbedPane1.addTab("Candidates' Papers", jScrollPane1);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Search", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102))); // NOI18N
 
@@ -703,14 +705,14 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                     .addComponent(tableHelp)
                     .addComponent(statusMessage))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {restoreButton, updateButton});
 
         jScrollPane3.setViewportView(jPanel1);
 
-        jTabbedPane1.addTab("tab2", jScrollPane3);
+        jTabbedPane1.addTab("Candidates' Marks", jScrollPane3);
 
         paperTableTab3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -987,7 +989,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab("tab4", jPanel8);
+        jTabbedPane1.addTab("Invigilators Time Table", jPanel8);
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Venue"));
 
@@ -1146,20 +1148,20 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                         .addComponent(selectButton5)
                         .addGap(51, 51, 51)
                         .addComponent(removeButton5)))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("tab5", jPanel10);
+        jTabbedPane1.addTab("Exam Venue Assigment", jPanel10);
 
         candidateTable6.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "candidate_id", "Student Name", "Student IC", "Student ID", "Programme", "Faculty"
+                "candidate_id", "Student Name", "Student IC", "Student ID", "Faculty", "Programme", "Group"
             }
         ));
         jScrollPane8.setViewportView(candidateTable6);
@@ -1198,44 +1200,57 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         jLabel42.setText("Faculty:");
 
         facultyBox6.setModel(facultyBoxModel);
+        facultyBox6.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                facultyBox6ItemStateChanged(evt);
+            }
+        });
 
-        programmeBox6.setModel(programmeBoxModel);
+        programmeBox6.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                programmeBox6ItemStateChanged(evt);
+            }
+        });
 
         searchButton6.setText("Search");
+
+        jLabel43.setText("Group:");
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(39, 39, 39)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel38)
                     .addComponent(jLabel40)
                     .addComponent(jLabel39))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(icField6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nameField6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(icField6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nameField6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idField6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
                             .addComponent(jLabel41)
-                            .addComponent(jLabel42))
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel13Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(programmeBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel13Layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(facultyBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(248, 248, 248))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                        .addGroup(jPanel13Layout.createSequentialGroup()
+                            .addComponent(jLabel42)
+                            .addGap(32, 32, 32)))
                     .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addComponent(idField6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchButton6)
-                        .addGap(67, 67, 67))))
+                        .addComponent(jLabel43)
+                        .addGap(31, 31, 31)))
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(programmeGroupBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(97, 97, 97)
+                        .addComponent(searchButton6))
+                    .addComponent(programmeBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(facultyBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38))
         );
 
         jPanel13Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {icField6, idField6, nameField6});
@@ -1243,31 +1258,30 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel13Layout.createSequentialGroup()
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(nameField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel38))
-                        .addGap(4, 4, 4)
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(icField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel39)
-                            .addComponent(jLabel42)
-                            .addComponent(facultyBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(3, 3, 3)
-                        .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel40)
-                            .addComponent(idField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchButton6)))
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(nameField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel38)
+                    .addComponent(jLabel42)
+                    .addComponent(facultyBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(icField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel39)
+                    .addComponent(jLabel41)
                     .addComponent(programmeBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel40)
+                    .addComponent(idField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchButton6)
+                    .addComponent(jLabel43)
+                    .addComponent(programmeGroupBox6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         addCandidateButton.setText("Add");
 
-        deleteCandidateButton.setText("Delete");
+        deleteCandidateButton6.setText("Delete");
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -1277,12 +1291,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addContainerGap(224, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(addCandidateButton)
                 .addGap(27, 27, 27)
-                .addComponent(deleteCandidateButton)
+                .addComponent(deleteCandidateButton6)
                 .addGap(174, 174, 174))
         );
         jPanel12Layout.setVerticalGroup(
@@ -1293,12 +1307,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addCandidateButton)
-                    .addComponent(deleteCandidateButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                    .addComponent(deleteCandidateButton6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab("tab6", jPanel12);
+        jTabbedPane1.addTab("Candidate list", jPanel12);
 
         jLabel4.setText("Exam Database Semester:");
 
@@ -1322,7 +1336,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(yearBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1471,6 +1485,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         tableModel.setRowCount(i);
     }
     
+    public void setCandidateTable6RowCount(Integer i){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) this.candidateTable6.getModel();
+        tableModel.setRowCount(i);
+    }
+    
     public Integer getMarkTableRowCount(){
         return markTable.getRowCount(); 
     }
@@ -1508,6 +1528,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     public void addSelectedPapers5(Object[] obj){
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel = (DefaultTableModel) this.selectedPapersTable5.getModel();
+        tableModel.addRow(obj);
+    }
+    
+    public void addCandidateTable6(Object[] obj){
+        DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel = (DefaultTableModel) this.candidateTable6.getModel();
         tableModel.addRow(obj);
     }
     
@@ -1636,10 +1662,19 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private void idField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idField6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_idField6ActionPerformed
+
+    private void facultyBox6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facultyBox6ItemStateChanged
+        // TODO add your handling code here:
+        customDefaultComboBoxModel(this.programmeBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox6.getSelectedItem(), Programme.NAME));
+    }//GEN-LAST:event_facultyBox6ItemStateChanged
+
+    private void programmeBox6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_programmeBox6ItemStateChanged
+        // TODO add your handling code here:
+        customDefaultComboBoxModel(this.programmeGroupBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeBox6.getSelectedItem(), Programme.GROUP));
+    }//GEN-LAST:event_programmeBox6ItemStateChanged
     
     
     public void prepareComboBox(){
-       
        //get the distinct programme list from database
        createSuggestList(programmeBox, new GetData().getList(Programme.TABLE, Programme.NAME));
        createSuggestList(paperCodeBox, new GetData().getList(PaperInfo.TABLE, PaperInfo.PAPER_CODE));
@@ -1650,7 +1685,6 @@ public final class ExamDataGUI extends javax.swing.JFrame {
        createSuggestList(getVenueBox4(), new GetData().getList(Venue.TABLE, Venue.NAME));
        createSuggestList(getVenueBox5(), new GetData().getList(Venue.TABLE, Venue.NAME));
        createSuggestList(getDateBox5(), new GetData().getList(SessionAndDate.TABLE, SessionAndDate.DATE));
-
        
        UIManager.getLookAndFeelDefaults().put("ComboBox.noActionOnKeyNavigation", true);
     }
@@ -1706,9 +1740,9 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         model.removeAllElements();
         model.addElement("");
         for(int i = 0; i<list.size(); i++){
-            System.out.println(list.get(i));
             model.addElement(list.get(i));
         }
+        comboBox.setSelectedIndex(-1);
     }
     
     /**
@@ -1836,6 +1870,69 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     public void setSessionBox5(javax.swing.JComboBox<String> sessionBox5) {
         this.sessionBox5 = sessionBox5;
     }
+
+    /**
+     * @return the searchButton6
+     */
+    public javax.swing.JButton getSearchButton6() {
+        return searchButton6;
+    }
+
+    /**
+     * @return the facultyBox6
+     */
+    public javax.swing.JComboBox<String> getFacultyBox6() {
+        return facultyBox6;
+    }
+
+    /**
+     * @return the icField6
+     */
+    public javax.swing.JTextField getIcField6() {
+        return icField6;
+    }
+
+    /**
+     * @return the idField6
+     */
+    public javax.swing.JTextField getIdField6() {
+        return idField6;
+    }
+
+    /**
+     * @return the nameField6
+     */
+    public javax.swing.JTextField getNameField6() {
+        return nameField6;
+    }
+
+    /**
+     * @return the programmeBox6
+     */
+    public javax.swing.JComboBox<String> getProgrammeBox6() {
+        return programmeBox6;
+    }
+
+    /**
+     * @return the programmeGroupBox6
+     */
+    public javax.swing.JComboBox<String> getProgrammeGroupBox6() {
+        return programmeGroupBox6;
+    }
+
+    /**
+     * @return the candidateTable6
+     */
+    public javax.swing.JTable getCandidateTable6() {
+        return candidateTable6;
+    }
+
+    /**
+     * @return the deleteCandidateButton6
+     */
+    public javax.swing.JButton getDeleteCandidateButton6() {
+        return deleteCandidateButton6;
+    }
     
     class CustomCellEditor extends DefaultCellEditor{
         JComboBox comboBox;
@@ -1936,10 +2033,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     }
     
     public void addDeleteCandidateButtonListener(ActionListener al){
-        this.deleteCandidateButton.addActionListener(al);
+        this.getDeleteCandidateButton6().addActionListener(al);
     }
     
-    public void addAddCandidateButtonListener(ActionListener al){
+    public void addAddCandidateButton6Listener(ActionListener al){
 //        examTableModel.addRow(new Object[]{null,null,null,null,null,null,null,null,null,null,null,null});
         this.addCandidateButton.addActionListener(al);
     }
@@ -2031,7 +2128,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> dateBox4;
     private javax.swing.JComboBox<String> dateBox5;
     private javax.swing.JTextField dateField;
-    private javax.swing.JButton deleteCandidateButton;
+    private javax.swing.JButton deleteCandidateButton6;
     private javax.swing.JButton deletePaperButton;
     private javax.swing.JTable examTable;
     private javax.swing.JComboBox<String> facultyBox;
@@ -2082,6 +2179,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -2128,6 +2226,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> programmeBox2;
     private javax.swing.JComboBox<String> programmeBox3;
     private javax.swing.JComboBox<String> programmeBox6;
+    private javax.swing.JComboBox<String> programmeGroupBox6;
     private javax.swing.JButton removeButton5;
     private javax.swing.JButton restoreButton;
     private javax.swing.JButton saveButton3;

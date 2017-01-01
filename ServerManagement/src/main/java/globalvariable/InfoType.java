@@ -22,5 +22,6 @@ public class InfoType {
     public static final String VALUE = "Value";
     public static final String THREAD_ID = "ThreadId";
     public static final String RANDOM_MSG = "RandomMessage";
+    public static final String DEVICE_ID = "DeviceId";
     
 }

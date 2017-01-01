@@ -24,7 +24,8 @@ public class MainServer {
     public static void main(String[] args) {
         ExamDataGUI gui = new ExamDataGUI();
         gui.setVisible(true);
-        new ExamDataControl(gui);
+        (new Thread(new ExamDataControl(gui))).start();
+        (new Thread(new MessageListener(5006))).start();
 //        MessageListener ml = new MessageListener(5006);
         
     }

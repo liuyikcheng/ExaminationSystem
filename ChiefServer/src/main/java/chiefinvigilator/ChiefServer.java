@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import org.json.JSONException;
@@ -31,11 +32,14 @@ public class ChiefServer {
     
     public void setPort() throws IOException{
         
-        this.serverSocket = new ServerSocket(0);
+        this.serverSocket = new ServerSocket(5657);
         this.localPort = serverSocket.getLocalPort();
+        System.out.println(this.serverSocket.getInetAddress().getHostAddress());
+        System.out.println(this.serverSocket.getLocalSocketAddress());
     }
     
     public ServerSocket getServerSocket(){
+        
         return serverSocket;
     }
     

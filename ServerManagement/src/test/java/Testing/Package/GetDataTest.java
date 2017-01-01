@@ -6,6 +6,7 @@
 package Testing.Package;
 
 import examdatabase.ConnectDB;
+import examdatabase.ExamDataControl;
 //import examdatabase.CustomException;
 import examdatabase.GetData;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class GetDataTest {
     
     @Before
     public void oneTimeSetUp(){
-        new ConnectDB().setConnection("FEB_MAR", "2016");
+        new ConnectDB().setConnection("FEB_MAR", "2016_test");
         
         adlas = new GetData(    "829911092234", "Adlas", "16WAR25342", 
                                 "Legal", "Present", "56",
@@ -68,7 +69,7 @@ public class GetDataTest {
         try {
             list = getData.getDataFromTable();
 //            System.out.println(list.get(0).getName());
-            System.out.println(list.size());
+//            System.out.println(list.size());
         } catch (Exception ex) {
             Logger.getLogger(GetDataTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -87,7 +88,7 @@ public class GetDataTest {
         try {
             list = getData.getListWithOneCond(Programme.TABLE, Programme.NAME, "RMB3", Programme.GROUP);
 //            System.out.println(list.get(0).getName());
-            System.out.println(list.size());
+//            System.out.println(list.size());
         } catch (Exception ex) {
             Logger.getLogger(GetDataTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -372,5 +373,21 @@ public class GetDataTest {
         CustomAssertion.assertDataEqual(liu,list.get(0));
 
     }*/
+    
+    @Test
+    public void testGetAssignedVenuePaper(){
+        ArrayList<GetData> selectedPaper5List = new ArrayList<>();
+        selectedPaper5List = new GetData().getAssignedVenuePaper("PA2", "12/5/2012", "AM");
+        assertEquals(2, selectedPaper5List.size());
+    }
+    
+    @Test
+    public void testGetCurrentPaperSpace(){
+        ArrayList<GetData> selectedPaper5List = new ArrayList<>();
+        selectedPaper5List = new GetData().getAssignedVenuePaper("PA2", "12/5/2012", "AM");
+        int result = new ExamDataControl().getCurrentPaperSpace(selectedPaper5List);
+        
+        assertEquals(157, result);
+    }
 }
 
