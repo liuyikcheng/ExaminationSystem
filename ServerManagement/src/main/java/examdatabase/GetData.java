@@ -55,6 +55,7 @@ public class GetData {
     private String paperDesc = "";
     
     //Venue
+    private Integer venue_id = 0;
     private String venueName = "";
     private String venueSize = "";
     private String block = "";
@@ -79,6 +80,8 @@ public class GetData {
     private String tutor = "";
     
     private int day; private int month; private int year;
+    
+    private Integer session_id = 0;
     
     public GetData(){
         
@@ -173,7 +176,6 @@ public class GetData {
      * @return list     The arraylist contain the info of the candidate
      */
     public ArrayList<GetData> getDataFromTable() throws Exception{
-        String result = "";
         
         String sql =    "SELECT CandidateInfo.IC, CandidateInfo.Name, CandidateInfo.RegNum "
                 + ", CandidateAttendance.Status, CandidateAttendance.Attendance, CandidateAttendance.TableNumber "
@@ -189,12 +191,6 @@ public class GetData {
                 + " LEFT OUTER JOIN PaperInfo ON Paper.PI_id = PaperInfo.PI_id "
                 + " LEFT OUTER JOIN Venue ON Paper.Venue_id = Venue.Venue_id "
                 + " LEFT OUTER JOIN SessionAndDate ON SessionAndDate.Session_id = Paper.Session_id "
-//                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
-//                + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
-//                + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
-//                + " LEFT OUTER JOIN PaperInfo ON Paper.PI_id = PaperInfo.PI_id "
-//                + " LEFT OUTER JOIN Venue ON Paper.Venue_id = Venue.Venue_id "
-//                + " LEFT OUTER JOIN SessionAndDate ON SessionAndDate.Session_id = Paper.Session_id "
                 + " WHERE CandidateInfo.IC " + checkInput(this.ic)
                 + " AND CandidateInfo.Name " + checkInput(this.name)
                 + " AND CandidateInfo.RegNum "+ checkInput(this.regNum)
@@ -241,15 +237,6 @@ public class GetData {
             System.out.println(e.getMessage());
         }
 
-//        Iterator itr = list.iterator();  
-//        while(itr.hasNext()){  
-//            GetData st=(GetData)itr.next();  
-//            System.out.println(st.ic+" "+st.name+" "+st.regNum+
-//                                " "+st.status+" "+st.attendance);     
-//        }  
-//        if(list.isEmpty())
-//            throw new Exception("No data found.");
-//        else
             return list;
     }
     
@@ -476,12 +463,61 @@ public class GetData {
             
             rs.close();
             pstmt.close();
-            conn.close();
         } catch (SQLException ex) { 
             Logger.getLogger(GetData.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return list; 
+    }
+    
+    
+    
+    public Integer getVenueIdFromDB(String venueName) throws SQLException{
+        Integer id = 0;
+        String sql = "Select " + Venue.ID +
+                    " FROM " + Venue.TABLE +
+                    " WHERE " + Venue.NAME + " = ? ";
+        
+        Connection conn = new ConnectDB().connect();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        
+        pstmt.setString(1, venueName);
+        
+        ResultSet rs    = pstmt.executeQuery();
+        
+        if(rs.next())
+            id = rs.getInt(Venue.ID);
+
+        rs.close();
+        pstmt.close();
+        conn.close();
+        
+        return id;
+    }
+    
+    public Integer getSessionIdFromDB(String session, String date) throws SQLException{
+        Integer id = 0;
+        String sql = "Select " + SessionAndDate.ID +
+                    " FROM " + SessionAndDate.TABLE +
+                    " WHERE " + SessionAndDate.SESSION + " = ? " +
+                    " AND " + SessionAndDate.DATE + " = ? ";
+        
+        Connection conn = new ConnectDB().connect();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        
+        pstmt.setString(1, session);
+        pstmt.setString(2, date);
+        
+        ResultSet rs    = pstmt.executeQuery();
+        
+        if(rs.next())
+            id = rs.getInt(SessionAndDate.ID);
+
+        rs.close();
+        pstmt.close();
+        conn.close();
+            
+        return id;
     }
     
     
@@ -504,6 +540,9 @@ public class GetData {
             while (rs.next()) {
                    size = rs.getString(Venue.SIZE);
             }
+            
+            rs.close();
+                pstmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -537,6 +576,9 @@ public class GetData {
                 if(paper.getVenue_id() != 0 && paper.getVenue_id() != null &&
                     paper.getPaperStartNo() != 0 && paper.getPaperStartNo() != null &&
                     paper.getSession_id() != 0 && paper.getSession_id() != null ){
+                    
+                }
+                else{
                     GetData data = new GetData();
                     data.paper_id = rs.getInt(Paper.ID);
                     data.paperCode = rs.getString(PaperInfo.PAPER_CODE);
@@ -546,7 +588,7 @@ public class GetData {
                     
                     list.add(data);
                 }
-                    
+                
             }
         } catch (SQLException ex) { 
             Logger.getLogger(GetData.class.getName()).log(Level.SEVERE, null, ex);
@@ -566,9 +608,8 @@ public class GetData {
                 + " WHERE VenueName = ? AND " + SessionAndDate.DATE + " = ? AND " + SessionAndDate.SESSION + " = ? "  
                 ;
         
-       try (Connection conn = new ConnectDB().connect();
-            ){
-            
+       try {
+           Connection conn = new ConnectDB().connect();
            PreparedStatement pstmt  = conn.prepareStatement(sql);
            
            pstmt.setString(1, venue);
@@ -599,8 +640,11 @@ public class GetData {
                     
                     list.add(data);
                 }
-                    
             }
+            rs.close();
+            pstmt.close();
+            conn.close();
+            
         } catch (SQLException ex) { 
             Logger.getLogger(GetData.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1040,6 +1084,41 @@ public class GetData {
      */
     public Integer getStartingNum() {
         return startingNum;
+    }
+
+    /**
+     * @return the paper_id
+     */
+    public Integer getPaper_id() {
+        return paper_id;
+    }
+
+    /**
+     * @return the venue_id
+     */
+    public Integer getVenue_id() {
+        return venue_id;
+    }
+
+    /**
+     * @return the session_id
+     */
+    public Integer getSession_id() {
+        return session_id;
+    }
+
+    /**
+     * @param venue_id the venue_id to set
+     */
+    public void setVenue_id(Integer venue_id) {
+        this.venue_id = venue_id;
+    }
+
+    /**
+     * @param session_id the session_id to set
+     */
+    public void setSession_id(Integer session_id) {
+        this.session_id = session_id;
     }
  
 }

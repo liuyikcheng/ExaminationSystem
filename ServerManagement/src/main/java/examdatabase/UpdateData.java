@@ -5,6 +5,11 @@
  */
 package examdatabase;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import querylist.Paper;
+import querylist.SessionAndDate;
+import querylist.Venue;
 
 /**
  *
@@ -98,5 +103,44 @@ public class UpdateData {
 //                + " AND Programme.Faculty "+ checkInput(this.getFaculty())
 //                + " AND PaperInfo.PaperCode "+ checkInput(this.getPaperCode())  ;
         
+    }
+    
+    public void setVenueAndSessionForPaper(Integer paper_id, Integer venue_id, Integer session_id, Integer candStartNo){
+        String sql = "UPDATE Paper "
+//                + " SET "+ Paper.VENUE_ID + " = "
+//                + "(SELECT "+ Venue.ID + " FROM " + Venue.TABLE + " WHERE " + Venue.NAME + " = ? ) , "
+//                + Paper.SESSION_ID + " = "
+//                + "(SELECT "+ SessionAndDate.ID + " FROM " + SessionAndDate.TABLE + " WHERE " + SessionAndDate.SESSION + " = ? AND "+SessionAndDate.DATE+" = ? ) , "
+//                + Paper.PAPER_START_NO + " = ? " 
+                + " SET "+ Paper.VENUE_ID + " = ? ,"
+                + Paper.SESSION_ID + " = ? , "
+                + Paper.PAPER_START_NO + " = ? "
+                + "WHERE " + Paper.ID + " = ? ";
+        
+        try (Connection conn = new ConnectDB().connect();){
+            
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            
+            if(venue_id != null && venue_id != 0 &&
+                    session_id != null && session_id != 0 &&
+                    candStartNo != null && candStartNo != 0){
+                pstmt.setInt(1,venue_id);
+                pstmt.setInt(2,session_id);
+                pstmt.setInt(3,candStartNo);
+                pstmt.setInt(4,paper_id);
+            }
+            else{
+                pstmt.setInt(1,0);
+                pstmt.setInt(2,0);
+                pstmt.setInt(3,0);
+                pstmt.setInt(4,paper_id);
+            }
+            
+            pstmt.executeUpdate();
+            
+            pstmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateData.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }

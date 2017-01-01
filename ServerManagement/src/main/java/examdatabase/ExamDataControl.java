@@ -5,6 +5,7 @@
  */
 package examdatabase;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -362,18 +363,7 @@ public class ExamDataControl {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 
-                examDataGUI.getAvailableSizeLabel().setText(new GetData().getVenueSize(examDataGUI.getVenueBox5().getSelectedItem().toString()));
-                examDataGUI.setAvailablePapers5RowCount(0);
-                try {
-                    
-                    int i = 0;
-                    for(i = 0; i<availablePaper5List.size(); i++){
-                        examDataGUI.addAvailablePapers5(new Object[]{availablePaper5List.get(i).getPaperCode(), availablePaper5List.get(i).getProgName(), availablePaper5List.get(i).getProgGroup(), availablePaper5List.get(i).getNumOfCand()});
-                        }
-
-                } catch (Exception ex) {
-                    Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                setAvailablePaperTable5Content();
             }
             
         });
@@ -381,22 +371,9 @@ public class ExamDataControl {
         ItemListener selectedPaperChange = new ItemListener(){
             @Override
             public void itemStateChanged(ItemEvent e) {
+//                System.out.println(examDataGUI.getAvailablePapers5().getSelectedRow());
+                setSelectedPaperTable5Content();
                 
-                examDataGUI.getAvailableSizeLabel().setText(new GetData().getVenueSize(examDataGUI.getVenueBox5().getSelectedItem().toString()));
-                examDataGUI.getOccupiedSizeLabel().setText(calculateTotalOccupiedCandidate(selectedPaper5List).toString());
-                examDataGUI.setSelectedPapers5RowCount(0);
-                
-                selectedPaper5List = new GetData().getAssignedVenuePaper((String)examDataGUI.getVenueBox5().getSelectedItem(), (String)examDataGUI.getDateBox5().getSelectedItem(), (String)examDataGUI.getSessionBox5().getSelectedItem());
-                try {
-                    
-                    int i = 0;
-                    for(i = 0; i< selectedPaper5List.size(); i++){
-                        examDataGUI.addSelectedPapers5(new Object[]{selectedPaper5List.get(i).getPaperCode(), selectedPaper5List.get(i).getProgName(), selectedPaper5List.get(i).getProgGroup(), selectedPaper5List.get(i).getNumOfCand(), selectedPaper5List.get(i).getStartingNum()});
-                        }
-
-                } catch (Exception ex) {
-                    Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
             
         };
@@ -406,7 +383,73 @@ public class ExamDataControl {
         examDataGUI.getDateBox5().addItemListener(selectedPaperChange);
         
         
+        examDataGUI.getSelectButton5().addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                Integer paper_id = (Integer) examDataGUI.getAvailablePapers5().getModel().getValueAt(examDataGUI.getAvailablePapers5().getSelectedRow(), 4);
+                JPanel panel = new JPanel(new GridLayout(0, 1));
+                JTextField statingNoField = new JTextField();
+                panel.add(new JLabel("Candidate Starting Number: "));
+                panel.add(statingNoField);
+                
+                int confirm = JOptionPane.showConfirmDialog(null, panel, "Add",
+                        JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
+                
+                if(confirm == JOptionPane.OK_OPTION){
+                    for (int i = 0; i < ExamDataControl.this.availablePaper5List.size(); i++ ){
+                        if (ExamDataControl.this.availablePaper5List.get(i).getPaper_id() == paper_id){
+                            try{
+
+                                GetData data = ExamDataControl.this.availablePaper5List.get(i);
+                                data.setVenue_id(new GetData().getVenueIdFromDB((String)ExamDataControl.this.examDataGUI.getVenueBox5().getSelectedItem()));
+                                data.setSession_id(new GetData().getSessionIdFromDB((String)ExamDataControl.this.examDataGUI.getSessionBox5().getSelectedItem(),
+                                                                                    (String)ExamDataControl.this.examDataGUI.getDateBox5().getSelectedItem()));
+                                new UpdateData().setVenueAndSessionForPaper(data.getPaper_id(), data.getVenue_id(), data.getSession_id(), Integer.parseInt(statingNoField.getText()));
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                            setSelectedPaperTable5Content();
+                            setAvailablePaperTable5Content();
+                        }
+                    }
+                    examDataGUI.getOccupiedSizeLabel().setText(calculateTotalOccupiedCandidate(selectedPaper5List).toString());
+                }
+            }
+            
+        });
         
+        examDataGUI.getRemoveButton5().addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                Integer paper_id = (Integer) examDataGUI.getSelectedPapers5().getModel().getValueAt(examDataGUI.getSelectedPapers5().getSelectedRow(), 5);
+                
+                for (int i = 0; i < ExamDataControl.this.selectedPaper5List.size(); i++ ){
+                        if (ExamDataControl.this.selectedPaper5List.get(i).getPaper_id() == paper_id){
+                            try{
+
+                                GetData data = ExamDataControl.this.selectedPaper5List.get(i);
+                                data.setVenue_id(new GetData().getVenueIdFromDB((String)ExamDataControl.this.examDataGUI.getVenueBox5().getSelectedItem()));
+                                data.setSession_id(new GetData().getSessionIdFromDB((String)ExamDataControl.this.examDataGUI.getSessionBox5().getSelectedItem(),
+                                                                                    (String)ExamDataControl.this.examDataGUI.getDateBox5().getSelectedItem()));
+//                                ExamDataControl.this.selectedPaper5List.add(data);
+//                                ExamDataControl.this.availablePaper5List.remove(i);
+                                new UpdateData().setVenueAndSessionForPaper(data.getPaper_id(), 0, 0, 0);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+                            setSelectedPaperTable5Content();
+                            setAvailablePaperTable5Content();
+                        }
+                    }
+                examDataGUI.getOccupiedSizeLabel().setText(calculateTotalOccupiedCandidate(selectedPaper5List).toString());
+                
+            }
+            
+        });
         
         
     }
@@ -418,5 +461,39 @@ public class ExamDataControl {
             total = total + list.get(i).getNumOfCand();
         }
         return total;
+    }
+    
+    public void setSelectedPaperTable5Content(){
+        examDataGUI.getAvailableSizeLabel().setText(new GetData().getVenueSize(examDataGUI.getVenueBox5().getSelectedItem().toString()));
+                examDataGUI.getOccupiedSizeLabel().setText(calculateTotalOccupiedCandidate(selectedPaper5List).toString());
+                examDataGUI.setSelectedPapers5RowCount(0);
+                
+                selectedPaper5List = new GetData().getAssignedVenuePaper((String)examDataGUI.getVenueBox5().getSelectedItem(), (String)examDataGUI.getDateBox5().getSelectedItem(), (String)examDataGUI.getSessionBox5().getSelectedItem());
+                try {
+                    
+                    int i = 0;
+                    for(i = 0; i< selectedPaper5List.size(); i++){
+                        examDataGUI.addSelectedPapers5(new Object[]{selectedPaper5List.get(i).getPaperCode(), selectedPaper5List.get(i).getProgName(), selectedPaper5List.get(i).getProgGroup(), selectedPaper5List.get(i).getNumOfCand(), selectedPaper5List.get(i).getStartingNum(), selectedPaper5List.get(i).getPaper_id()});
+                        }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+    }
+    
+    public void setAvailablePaperTable5Content(){
+        examDataGUI.getAvailableSizeLabel().setText(new GetData().getVenueSize(examDataGUI.getVenueBox5().getSelectedItem().toString()));
+                examDataGUI.setAvailablePapers5RowCount(0);
+                availablePaper5List = new GetData().getUnassignedVenuePaper();
+                try {
+                    
+                    int i = 0;
+                    for(i = 0; i<availablePaper5List.size(); i++){
+                        examDataGUI.addAvailablePapers5(new Object[]{availablePaper5List.get(i).getPaperCode(), availablePaper5List.get(i).getProgName(), availablePaper5List.get(i).getProgGroup(), availablePaper5List.get(i).getNumOfCand(), availablePaper5List.get(i).getPaper_id()});
+                        }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
     }
 }
