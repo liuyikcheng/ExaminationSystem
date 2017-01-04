@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Testing.Package.test" tests="2" skipped="0" failures="1" errors="0" timestamp="2017-01-04T08:41:02" hostname="DESKTOP-LBC9K4R" time="0.162">
+<testsuite name="Testing.Package.test" tests="2" skipped="0" failures="1" errors="0" timestamp="2017-01-04T09:06:37" hostname="DESKTOP-LBC9K4R" time="0.0">
   <properties/>
-  <testcase name="testInvIsAssigned" classname="Testing.Package.test" time="0.147"/>
   <testcase name="testGetCountTotalCdd" classname="Testing.Package.test" time="0.0">
-    <failure message="java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;13&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;13&gt;
+    <failure message="java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;7&gt;" type="java.lang.AssertionError">java.lang.AssertionError: expected:&lt;1&gt; but was:&lt;7&gt;
 	at org.junit.Assert.fail(Assert.java:93)
 	at org.junit.Assert.failNotEquals(Assert.java:647)
 	at org.junit.Assert.assertEquals(Assert.java:128)
@@ -57,7 +56,7 @@
 	at java.lang.Thread.run(Thread.java:745)
 </failure>
   </testcase>
-  <system-out><![CDATA[SELECT *, Venue.Name as VenueName FROM CandidateAttendance  LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.paper_id  LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id  
-]]></system-out>
+  <testcase name="testInvIsAssigned" classname="Testing.Package.test" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

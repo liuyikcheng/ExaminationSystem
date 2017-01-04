@@ -14,6 +14,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.encoder.QRCode;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -39,8 +40,8 @@ public class QRgen extends JPanel {
     ServerComm serverComm;
     QRCodeWriter qrCodeWriter = new QRCodeWriter();
     String qrCode = "";
-    int width = 300;
-    int height = 300;
+    int width = 400;
+    int height = 400;
     
     String randomString;
          
@@ -53,7 +54,7 @@ public class QRgen extends JPanel {
     public QRgen(ServerSocket socket, ServerComm serverComm, String randomString){
         JLabel qrLabel = new JLabel("Scan the QR Code to sign in");
         qrLabel.setFont(new Font("Serif", Font.PLAIN, 20));
-        this.add(qrLabel);
+        this.add(qrLabel, BorderLayout.NORTH);
         this.serverComm = serverComm;
         this.socket = socket;
         this.randomString = randomString;

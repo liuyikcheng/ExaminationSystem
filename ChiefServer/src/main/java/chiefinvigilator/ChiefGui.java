@@ -81,10 +81,12 @@ public class ChiefGui extends javax.swing.JFrame {
     public ChiefGui() {
 
         initComponents();
+        
         prepareComboBox();
         
         staffInfoTable.getColumnModel().getColumn(4).setCellRenderer(new InvLogOutButtonRenderer());
         staffInfoTable.getColumnModel().getColumn(4).setCellEditor(new InvLogOutButtonEditor(new JTextField()));
+        staffInfoTable.removeColumn(staffInfoTable.getColumnModel().getColumn(4));
 //        staffInfoTable(new Object());
         
         candidateTableModel = (DefaultTableModel) candidateTable.getModel();
@@ -106,18 +108,20 @@ public class ChiefGui extends javax.swing.JFrame {
         chiefTabbedPane = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        signInButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         staffInfoTable = new javax.swing.JTable();
-        idTextField = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        passwordField = new javax.swing.JPasswordField();
         loggedChief = new javax.swing.JLabel();
         loggedBlock = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        signInButton = new javax.swing.JButton();
+        passwordField = new javax.swing.JPasswordField();
+        jLabel2 = new javax.swing.JLabel();
+        idTextField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         qrGenPanel = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -159,8 +163,6 @@ public class ChiefGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        signInButton.setText("Sign In");
-
         staffInfoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -178,6 +180,9 @@ public class ChiefGui extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(staffInfoTable);
+        if (staffInfoTable.getColumnModel().getColumnCount() > 0) {
+            staffInfoTable.getColumnModel().getColumn(4).setHeaderValue("Log Out");
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -187,70 +192,110 @@ public class ChiefGui extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE))
         );
-
-        jLabel1.setText("ID:");
-
-        jLabel2.setText("Password:");
 
         loggedChief.setText("Chief :");
 
         loggedBlock.setText("Block:");
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Invigilator Sign In"));
+
+        signInButton.setText("Sign In");
+
+        jLabel2.setText("Password:");
+
+        jLabel1.setText("ID:");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(jLabel1)
+                .addGap(26, 26, 26)
+                .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(signInButton)
+                .addGap(24, 24, 24))
+        );
+
+        jPanel8Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {idTextField, passwordField});
+
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(signInButton)
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        jPanel8Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {idTextField, passwordField});
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addComponent(signInButton)
-                .addGap(94, 94, 94)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addComponent(loggedChief)
-                .addGap(116, 116, 116)
+                .addGap(103, 103, 103)
                 .addComponent(loggedBlock)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {idTextField, passwordField});
-
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2)
-                        .addComponent(signInButton)
-                        .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(loggedChief, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(loggedBlock)))
-                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(loggedChief, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(loggedBlock))))
+                .addGap(32, 32, 32)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {idTextField, passwordField});
-
         jScrollPane1.setViewportView(jPanel1);
 
-        chiefTabbedPane.addTab("tab1", jScrollPane1);
+        chiefTabbedPane.addTab("Main", jScrollPane1);
 
         qrGenPanel.setLayout(new java.awt.GridLayout(1, 0));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1050, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 365, Short.MAX_VALUE)
+        );
+
+        qrGenPanel.add(jPanel9);
+
         jScrollPane3.setViewportView(qrGenPanel);
 
-        chiefTabbedPane.addTab("tab2", jScrollPane3);
+        chiefTabbedPane.addTab("QR Gen", jScrollPane3);
 
         candidateTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -405,7 +450,7 @@ public class ChiefGui extends javax.swing.JFrame {
 
         jScrollPane4.setViewportView(jPanel3);
 
-        chiefTabbedPane.addTab("tab3", jScrollPane4);
+        chiefTabbedPane.addTab("Candidates' Summary", jScrollPane4);
 
         submitButton.setText("Submit");
 
@@ -479,7 +524,7 @@ public class ChiefGui extends javax.swing.JFrame {
     public void addQRPanel(QRgen s){
         JLabel qrLabel = new JLabel("Scan to sign in.");
         
-        qrLabel.setFont(new Font("Serif", Font.BOLD, 12));
+        qrLabel.setFont(new Font("Serif", Font.BOLD, 40));
         
         qrGenPanel.removeAll();
 //        qrGenPanel.setLayout(new BoxLayout(qrGenPanel, BoxLayout.Y_AXIS));
@@ -487,9 +532,9 @@ public class ChiefGui extends javax.swing.JFrame {
         GridBagConstraints c = new GridBagConstraints();
         
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
+        c.weightx = 4;
         c.fill = GridBagConstraints.HORIZONTAL;
-	c.gridx = 0;
+	c.gridx = 2;
 	c.gridy = 0;
 	qrGenPanel.add(qrLabel, c);
         
@@ -833,6 +878,8 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

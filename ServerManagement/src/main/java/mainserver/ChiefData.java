@@ -543,7 +543,7 @@ public class ChiefData {
             programmeList.add(new Programme(    result.getInt("Programme_id"),
                                                 result.getString("Name"),
                                                 result.getString("Faculty"),
-                                                result.getInt("Group")
+                                                result.getInt(Programme.GROUP)
                                                     ));
         }
         
