@@ -280,18 +280,20 @@ public class InfoData {
         return list; 
     }
     
-    public int getCountTotalCdd() throws SQLException{
+    public int getCountTotalCdd(String venue) throws SQLException{
         int count = 0;
         
-        String sql = "SELECT COUNT(*) AS totalCdd FROM CandidateAttendance ";
-        
+        String sql = "SELECT *, Venue.Name as VenueName FROM CandidateAttendance "
+                + " LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.paper_id "
+                + " LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
+                + " WHERE Venue.Name " + checkInput(venue)
+                + " ";
         Connection conn = new ConnectDB().connect();
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
         
         while (rs.next()) {
-
-               count = rs.getInt("totalCdd");
+                count = count +1;
             }
             
             rs.close();
@@ -300,11 +302,14 @@ public class InfoData {
         return count;
     }
     
-    public int getCountAttdCdd(String attendance) throws SQLException{
+    public int getCountAttdCdd(String attendance, String venue) throws SQLException{
         int count = 0;
         
         String sql = "SELECT COUNT(Attendance) AS totalCdd FROM CandidateAttendance"
-                + " WHERE Attendance = ?";
+                 + " LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.paper_id "
+                + " LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
+                + " WHERE Attendance = ? "
+                + " AND Venue.Name " + checkInput(venue) ;
         
         Connection conn = new ConnectDB().connect();
         PreparedStatement ps = conn.prepareStatement(sql);

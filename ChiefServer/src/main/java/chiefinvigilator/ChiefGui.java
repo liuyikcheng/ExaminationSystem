@@ -40,6 +40,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -788,8 +789,8 @@ public class ChiefGui extends javax.swing.JFrame {
         return new String(passwordField.getPassword());
     }
     
-    public String getVenueComboBox(){
-        return venueComboBox.getSelectedItem().toString();
+    public JComboBox getVenueComboBox(){
+        return venueComboBox;
     }
     
     public String getRegNumCandidiate(){

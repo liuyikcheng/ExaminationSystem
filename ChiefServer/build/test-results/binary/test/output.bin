@@ -1,0 +1,1 @@
+ÀSELECT *, Venue.Name as VenueName FROM CandidateAttendance  LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.paper_id  LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id  

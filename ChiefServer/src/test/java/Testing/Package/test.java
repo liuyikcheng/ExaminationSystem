@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import chiefinvigilator.CurrentTime;
+import chiefinvigilator.InfoData;
 import chiefinvigilator.ServerComm;
 import chiefinvigilator.Staff;
 import java.io.PrintWriter;
@@ -289,5 +290,18 @@ public class test {
         }
         
         assertEquals(result, true);
+    }
+    
+    @Test
+    public void testGetCountTotalCdd(){
+        int result = 0;
+        
+        try {
+            result = new InfoData().getCountTotalCdd("M4");
+        } catch (SQLException ex) {
+            Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(1,result);
     }
 }

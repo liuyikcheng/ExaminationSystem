@@ -12,6 +12,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -212,6 +214,20 @@ public class ChiefControl {
             }
         });
         
+        chiefGui.getVenueComboBox().addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                InfoData data = new InfoData();
+                try {
+                    ChiefControl.this.chiefGui.setSummaryPanel(data.getCountTotalCdd((String)chiefGui.getVenueComboBox().getSelectedItem()), data.getCountAttdCdd("PRESENT",(String)chiefGui.getVenueComboBox().getSelectedItem()),
+                            data.getCountAttdCdd("ABSENT",(String)chiefGui.getVenueComboBox().getSelectedItem()));
+                } catch (SQLException ex) {
+                    Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+        });
+        
     }
     
     public boolean serverIsConnected(){
@@ -302,7 +318,7 @@ public class ChiefControl {
         data.setAttendance(chiefGui.getAttendanceComboBox());
         data.setRegNum(chiefGui.getRegNumCandidiate());
         data.setTableNum(chiefGui.getTableNumber());
-        data.setVenueName(chiefGui.getVenueComboBox());
+        data.setVenueName((String)chiefGui.getVenueComboBox().getSelectedItem());
         
         ArrayList<InfoData> cddList = new ArrayList<>();
         System.out.print(chiefGui.getAttendanceComboBox());
@@ -330,12 +346,12 @@ public class ChiefControl {
                 }
             }
         
-        try {
-            chiefGui.setSummaryPanel(data.getCountTotalCdd(), data.getCountAttdCdd("PRESENT"),
-                                        data.getCountAttdCdd("ABSENT"));
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+                try {
+                    ChiefControl.this.chiefGui.setSummaryPanel(data.getCountTotalCdd((String)chiefGui.getVenueComboBox().getSelectedItem()), data.getCountAttdCdd("PRESENT",(String)chiefGui.getVenueComboBox().getSelectedItem()),
+                            data.getCountAttdCdd("ABSENT",(String)chiefGui.getVenueComboBox().getSelectedItem()));
+                } catch (SQLException ex) {
+                    Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
     }
     
     public void addStaffInfoToGuiTable(Staff staff){
@@ -343,8 +359,8 @@ public class ChiefControl {
     }
     
     public void updateGuiLoggedChief(){
-        chiefGui.setLoggedChief(id);
-        chiefGui.setLoggedBlock(block);
+        chiefGui.setLoggedChief("Staff: " + id);
+        chiefGui.setLoggedBlock("Block: " + block);
     }
     
     protected String generateRandomString() {
