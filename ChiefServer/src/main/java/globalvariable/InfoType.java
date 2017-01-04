@@ -26,5 +26,6 @@ public class InfoType {
     public static final String BLOCK = "Block";
     public static final String PAPERBUNDLE_JSON = "PaperBundle";
     public static final String COLLECTOR = "Collector";
+    public static final String DEVICE_ID = "DeviceId";
     
 }

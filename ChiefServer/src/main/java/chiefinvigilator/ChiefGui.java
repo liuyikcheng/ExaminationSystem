@@ -43,6 +43,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
@@ -79,10 +80,12 @@ public class ChiefGui extends javax.swing.JFrame {
      * Creates new form ChiefGui
      */
     public ChiefGui() {
-
+        super("Chief");
         initComponents();
         
         prepareComboBox();
+        
+//        setFrontPanelEnable(false);
         
         staffInfoTable.getColumnModel().getColumn(4).setCellRenderer(new InvLogOutButtonRenderer());
         staffInfoTable.getColumnModel().getColumn(4).setCellEditor(new InvLogOutButtonEditor(new JTextField()));
@@ -93,6 +96,13 @@ public class ChiefGui extends javax.swing.JFrame {
         candidateTable.setDefaultRenderer(Object.class, new CandidateTableCellRenderer());
         candidateTable.setAutoCreateRowSorter(rootPaneCheckingEnabled);
 //        chiefTabbedPane.setEnabled(false);
+    }
+    
+    public void setFrontPanelEnable(Boolean bool){
+        chiefTabbedPane.setEnabled(bool);
+        signInButton.setEnabled(bool);
+        downloadButton.setEnabled(bool);
+        submitButton.setEnabled(bool);
     }
 
     /**
@@ -180,9 +190,6 @@ public class ChiefGui extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(staffInfoTable);
-        if (staffInfoTable.getColumnModel().getColumnCount() > 0) {
-            staffInfoTable.getColumnModel().getColumn(4).setHeaderValue("Log Out");
-        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -778,7 +785,7 @@ public class ChiefGui extends javax.swing.JFrame {
     public void popUpChiefSignInJOptionPane(){
         JPanel panel = new JPanel(new GridLayout(0, 1));
         JTextField chiefIdField = new JTextField();
-        JTextField chiefPsField = new JTextField();
+        JPasswordField chiefPsField = new JPasswordField();
         JTextField chiefBlockField = new JTextField();
         
         panel.add(new JLabel("Chief ID: "));
@@ -793,7 +800,7 @@ public class ChiefGui extends javax.swing.JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
             this.chiefId = chiefIdField.getText();
-            this.chiefPs = chiefPsField.getText();
+            this.chiefPs = String.valueOf(chiefPsField.getPassword());
             this.chiefBlock = chiefBlockField.getText();
         }
     }

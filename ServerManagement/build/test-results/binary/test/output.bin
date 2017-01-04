@@ -1,5 +1,5 @@
-	no such column: 'Group'
-		MPU3123
-	
+	ñUnrecognized field "paper" (Class querylist.Collector), not marked as ignorable
+ at [Source: java.io.StringReader@1120e43e; line: 1, column: 3332] (through reference chain: querylist.ExamDataList["collector"]->querylist.Collector["paper"])
+		MPU3123
+	
 BABE2203
-	no such column: 'Group'

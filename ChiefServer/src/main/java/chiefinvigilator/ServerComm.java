@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Mac;
@@ -61,6 +62,7 @@ public class ServerComm extends Thread implements Runnable{
     Queue serverQueue = new LinkedList();
     HashMap clientQueueList = new HashMap();
     
+    static Semaphore mutex = new Semaphore(1);
     Thread queueThread = new Thread(new Runnable() {
          public void run()
          {
@@ -216,6 +218,7 @@ public class ServerComm extends Thread implements Runnable{
                                     if(json.getBoolean(InfoType.RESULT)){
                                         this.signIn = true;
                                         this.chiefControl.updateGuiLoggedChief();
+                                        this.chiefControl.setGuiPanelEnable(true);
                                     }
                                     else
                                         this.chiefControl.chiefGui.popUpErrorPane("Chief Sign in : Wrong ID/PASSWORD");
@@ -228,8 +231,10 @@ public class ServerComm extends Thread implements Runnable{
                                         staff.setInvInfo(id);
                                         this.chiefControl.addStaffInfoToGuiTable(staff);
                                     }
-                                    else
-                                        this.chiefControl.chiefGui.popUpErrorPane("Staff Sign in : Wrong ID/PASSWORD");
+                                    else{
+                                        this.chiefControl.chiefGui.popUpErrorPane("Staff Siaaaaaaaaaaaaaaaaaagn in : Wrong ID/PASSWORD");
+                                        
+                                    }
                                     break;
                                     
                 case CheckInType.EXAM_DATA_DOWNLOAD:    
@@ -331,9 +336,26 @@ public class ServerComm extends Thread implements Runnable{
      * @return 
      */
     public ThreadMessage getReceiveQueue(long threadId){
-        LinkedList list = (LinkedList)(this.clientQueueList.get(threadId));
-        while(list.isEmpty()){
+        Boolean set = false;
+        LinkedList list = new LinkedList();
+        
+        while(set == false){
             list = (LinkedList)(this.clientQueueList.get(threadId));
+            
+            if(!list.isEmpty()){
+                try {
+                    mutex.acquire();
+                    System.out.println("List = "+list.isEmpty());
+                    ThreadMessage tm = (ThreadMessage) list.get(0);
+                    if(list.get(0) != null && tm.getThreadId() == threadId){
+                        list = (LinkedList)(this.clientQueueList.get(threadId));
+                        set = true;
+                    mutex.release();
+                    }
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ServerComm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return (ThreadMessage)list.poll();
     }
@@ -378,7 +400,6 @@ public class ServerComm extends Thread implements Runnable{
             ExamDataList examDataList = new ExamDataList(
                     chiefData.getCddAttdList(block)
             );
-            System.out.println("check");
             jsonString = mapper.writeValueAsString(examDataList);
             JSONObject jsonData = new JSONObject(jsonString);
             json.put(InfoType.TYPE, CheckInType.EXAM_DATA_SUBMIT);

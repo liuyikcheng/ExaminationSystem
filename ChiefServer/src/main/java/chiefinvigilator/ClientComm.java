@@ -132,6 +132,7 @@ public class ClientComm extends Thread {
 //                this.serverSocket.accept();
 
                 System.out.println("connected to "+ getClient().getRemoteSocketAddress());
+                chiefControl.createNewClientComm();
                 while(getClient().isClosed() != true){
 
                                     System.out.println(getClient().isClosed());
@@ -174,7 +175,9 @@ public class ClientComm extends Thread {
         JSONObject json = new JSONObject(message);
             System.out.println(json.toString());
             String checkIn;
+            Integer deviceId = json.getInt(InfoType.DEVICE_ID);
             try {
+                 
                 checkIn = json.getString(InfoType.TYPE);
             
             
@@ -187,7 +190,7 @@ public class ClientComm extends Thread {
                                     break;
                                     
                 case CheckInType.EXAM_INFO_LIST :  
-                                    sendMessage(this.staff.prepareInvExamList(json.getString(InfoType.VALUE)).toString());
+                                    sendMessage(this.staff.prepareInvExamList(json.getString(InfoType.VALUE), deviceId).toString());
                                     break;
                                     
                 case CheckInType.STAFF_RECONNECT:   
@@ -197,7 +200,7 @@ public class ClientComm extends Thread {
                 case CheckInType.COLLECTION : 
                                     JSONObject paperBundle = new JSONObject(json.getJSONObject(InfoType.PAPERBUNDLE_JSON));
                                     boolean verifyResult = this.getStaff().verifyForCollector(json.getString(InfoType.COLLECTOR), paperBundle.getString(PaperBundle.BUNDLE_ID));
-                                    sendMessage(booleanToJson(verifyResult, CheckInType.COLLECTION).toString());
+                                    sendMessage(booleanToJson(verifyResult, CheckInType.COLLECTION, deviceId).toString());
                                     break;
                     
                 case CheckInType.CDDPAPERS : 
@@ -206,12 +209,12 @@ public class ClientComm extends Thread {
                     
                 case CheckInType.ATTDLIST : 
                                     downloadCddData(json.getJSONArray(InfoType.ATTENDANCE_LIST));
-                                    sendMessage(booleanToJson(true, CheckInType.ATTDLIST).toString());
+                                    sendMessage(booleanToJson(true, CheckInType.ATTDLIST, deviceId).toString());
                                     break;
                                   
                 case CheckInType.PAPERS:      
                                     if(isSignedIn()){
-                                        JSONObject jsonMsg = this.getStaff().prepareInvExamList(json.getString(JSONKey.VENUE));
+                                        JSONObject jsonMsg = this.getStaff().prepareInvExamList(json.getString(JSONKey.VENUE), deviceId);
                                     }
                                     break;
                 default: break;
@@ -219,7 +222,7 @@ public class ClientComm extends Thread {
             
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            sendMessage(booleanToJson(false, "Error").toString());
+            sendMessage(booleanToJson(false, "Error", deviceId).toString());
         }
         }
     }
@@ -234,6 +237,7 @@ public class ClientComm extends Thread {
             JSONObject json;
             
             ThreadMessage tm = this.getServerComm().getReceiveQueue(this.getThreadId());
+
             System.out.println("ClientComm queue packet received : " + tm.getMessage());
             json = new JSONObject(tm.getMessage());
             
@@ -249,7 +253,7 @@ public class ClientComm extends Thread {
                                     if((result) && (role != null)){
                                         this.setStaff(new Staff(id));
                                         this.setSignIn(tm.getResultKey());
-                                        message = this.getStaff().toJson(true).toString();
+                                        message = this.getStaff().toJsonMsg(true, json.getInt(InfoType.DEVICE_ID), json.getString(InfoType.TYPE)).toString();
 //                                        json.put(InfoType.ROLE, role);
                                         // add staff info to the chief GUI staffInfoTable
                                         this.chiefControl.addStaffInfoToGuiTable(this.staff);
@@ -261,13 +265,15 @@ public class ClientComm extends Thread {
                                     break;
                 
                 case CheckInType.CDDPAPERS:   
+                                    
                                     message = json.toString();
                                     sendMessage(message);
                                     break;
                                     
                 case CheckInType.GEN_RANDOM_MSG:
                                     regenerateQRInterface(json.getString(InfoType.VALUE));
-                                    connectionThread.start();
+                                    if(!connectionThread.isAlive())
+                                        connectionThread.start();
                                     break;                   
              
             }
@@ -489,11 +495,12 @@ public class ClientComm extends Thread {
     * @return   boolean in JSONObject format
     * @throws   JSONException 
     */
-    private JSONObject booleanToJson(boolean b, String type) throws JSONException{
+    private JSONObject booleanToJson(boolean b, String type, Integer deviceId) throws JSONException{
         JSONObject bool = new JSONObject();
         
         bool.put(InfoType.RESULT, b);
         bool.put(InfoType.TYPE, type);
+        bool.put(InfoType.DEVICE_ID, deviceId);
         
         return bool;
     }

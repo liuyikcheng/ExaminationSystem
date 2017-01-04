@@ -131,7 +131,7 @@ public class Staff {
      * @return
      * @throws JSONException 
      */
-    public JSONObject toJson(boolean valid) throws Exception{
+    public JSONObject toJsonMsg(boolean valid, Integer deviceId, String type) throws Exception{
         JSONObject json = new JSONObject();
         JSONArray arr = new JSONArray();
         try {
@@ -146,6 +146,8 @@ public class Staff {
                 json.put("Venue", getVenue());
                 json.put("IdNo", getID());
                 json.put("Role", getStatus());
+                json.put(InfoType.DEVICE_ID, deviceId);
+                json.put(InfoType.TYPE, type);
 //                json.put("CddList", attdListToJson(ServerComm.getAttdList(getVenue())));
 //                json.put("PaperMap", attdListToJson(ServerComm.getAttdList(getVenue())));
             }
@@ -282,7 +284,7 @@ public class Staff {
         return paperList;
     }
     
-    public JSONObject prepareInvExamList(String venue){
+    public JSONObject prepareInvExamList(String venue, Integer deviceId){
         JSONObject json = new JSONObject();
         JSONArray papers;
         
@@ -294,6 +296,7 @@ public class Staff {
             json.put(InfoType.PAPER_LIST, papers);
             json.put(InfoType.RESULT, true);
             json.put(InfoType.TYPE, CheckInType.EXAM_INFO_LIST);
+            json.put(InfoType.DEVICE_ID, deviceId);
             
         } catch (Exception ex) {
             json.put(InfoType.RESULT, false);

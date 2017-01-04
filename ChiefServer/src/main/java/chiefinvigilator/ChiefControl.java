@@ -9,6 +9,7 @@ import globalvariable.CheckInType;
 import globalvariable.InfoType;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +28,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -61,10 +67,13 @@ public class ChiefControl {
     Integer mainServerPortNum = 5006;
     
     
-    Timer timer = new Timer(4000, new ChiefControl.TimerActionListener());
+    Timer timer = new Timer(5000, new ChiefControl.TimerActionListener());
     
     HashMap invMap = new HashMap();
     Integer invNum;
+    private String chiefId;
+    private String chiefPs;
+    private String chiefBlock;
     
     ChiefControl(ChiefGui chiefGui) throws Exception{
         
@@ -86,12 +95,12 @@ public class ChiefControl {
             public void actionPerformed(ActionEvent e){
                 try {
                     
-                    ChiefControl.this.chiefGui.popUpChiefSignInJOptionPane();
-                    
-                    ChiefControl.this.id = chiefGui.getChiefId();
-                    ChiefControl.this.block = chiefGui.getChiefBlock();
+                    //ChiefControl.this.chiefGui.popUpChiefSignInJOptionPane();
+                    popUpChiefSignInJOptionPane();
+//                    ChiefControl.this.id = chiefGui.getChiefId();
+//                    ChiefControl.this.block = chiefGui.getChiefBlock();
                     ChiefControl.this.serverComm.connectToServer(ChiefControl.this.mainServerHostName, ChiefControl.this.mainServerPortNum);
-                    chiefSignIn(ChiefControl.this.id, chiefGui.getChiefPs(),ChiefControl.this.block);
+                    
                     ChiefControl.this.displayConnectivity("Connected");
                     chiefGui.setConnectButtonIcon(connectedIcon);
                 } catch (Exception ex) {
@@ -103,6 +112,7 @@ public class ChiefControl {
                 if(ChiefControl.this.serverIsConnected()){
                     ChiefControl.this.displayConnectivity("Connected");
                     chiefGui.setConnectButtonIcon(connectedIcon);
+                    if(!ChiefControl.this.serverComm.isAlive())
                     ChiefControl.this.serverComm.start();
                 }
                 else{
@@ -270,13 +280,13 @@ public class ChiefControl {
         if(tabNum == 1){
             try {
                 createNewClientComm();
-//                timer.start();
+                timer.start();
             } catch (Exception ex) {
                 Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
-//            timer.stop();
+            timer.stop();
         }
     }
     
@@ -363,6 +373,10 @@ public class ChiefControl {
         chiefGui.setLoggedBlock("Block: " + block);
     }
     
+    public void setGuiPanelEnable(Boolean bool){
+        chiefGui.setFrontPanelEnable(bool);
+    }
+    
     protected String generateRandomString() {
         String seed = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+Long.toString(System.nanoTime());
         StringBuilder str = new StringBuilder();
@@ -373,6 +387,30 @@ public class ChiefControl {
         }
         String saltStr = str.toString();
         return saltStr;
+    }
+    
+    public void popUpChiefSignInJOptionPane() throws Exception{
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        JTextField chiefIdField = new JTextField();
+        JPasswordField chiefPsField = new JPasswordField();
+        JTextField chiefBlockField = new JTextField();
+        
+        panel.add(new JLabel("Chief ID: "));
+        panel.add(chiefIdField);
+        panel.add(new JLabel("Password: "));
+        panel.add(chiefPsField);
+        panel.add(new JLabel("Block: "));
+        panel.add(chiefBlockField);
+        
+        int result = JOptionPane.showConfirmDialog(null, panel, "Chief Sign In",
+            JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            this.chiefId = chiefIdField.getText();
+            this.chiefPs = String.valueOf(chiefPsField.getPassword());
+            this.chiefBlock = chiefBlockField.getText();
+            chiefSignIn(ChiefControl.this.chiefId, this.chiefPs, this.chiefBlock);
+        }
     }
 
     class TimerActionListener implements ActionListener{

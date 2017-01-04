@@ -32,7 +32,7 @@ public class ChiefServer {
     
     public void setPort() throws IOException{
         
-        this.serverSocket = new ServerSocket(5657);
+        this.serverSocket = new ServerSocket(0);
         this.localPort = serverSocket.getLocalPort();
         System.out.println(this.serverSocket.getInetAddress().getHostAddress());
         System.out.println(this.serverSocket.getLocalSocketAddress());

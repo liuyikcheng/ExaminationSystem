@@ -87,7 +87,7 @@ public class ChiefData {
     }
     
     public void setInvSignInTime(String id) throws SQLException{
-        Connection conn = new ConnectDB("ExamDataBase.db").connect();
+        Connection conn = new ConnectDB().connect();
         String sql = "UPDATE InvigilatorAndAssistant "
                 + "SET SignInTime = ? "
                 + "WHERE StaffID = ? ;";

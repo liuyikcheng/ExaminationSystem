@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Testing.Package.ChiefData_Test" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-01-01T12:28:37" hostname="DESKTOP-LBC9K4R" time="0.327">
+<testsuite name="Testing.Package.ChiefData_Test" tests="1" skipped="0" failures="0" errors="0" timestamp="2017-01-04T12:50:41" hostname="Kriss" time="0.545">
   <properties/>
-  <testcase name="testUpdateTime" classname="Testing.Package.ChiefData_Test" time="0.327"/>
+  <testcase name="testUpdateTime" classname="Testing.Package.ChiefData_Test" time="0.545"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
