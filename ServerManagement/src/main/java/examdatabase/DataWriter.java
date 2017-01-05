@@ -21,6 +21,7 @@ import querylist.CandidateInfo;
 public class DataWriter {
     
     public static final String ERR_INVALID_PROG_GROUP = "Invalid Programme Group";
+    public static final String EXIST_CANDIDATE = "Candidate already existed";
     
     public DataWriter(){
         
@@ -30,6 +31,7 @@ public class DataWriter {
                                 String programmeName, String programmeGroup,
                                 String examId) throws Exception {
         
+        if (!new GetData().checkDataIsAvailable(CandidateInfo.TABLE, CandidateInfo.CANDIDATE_INFO_IC, ic)){
         String sql = "INSERT OR REPLACE INTO "
                     + "CandidateInfo(IC, Name, RegNum, Programme_id, ExamID) "
                     + "VALUES(?,?,?,(SELECT Programme_id FROM Programme WHERE Programme_Group =? AND Name =?), ?) ";
@@ -53,6 +55,10 @@ public class DataWriter {
             ps.close();
         
             conn.close();
+        }
+        else{
+            throw new Exception(EXIST_CANDIDATE);
+        }
             
     }
     
@@ -68,7 +74,7 @@ public class DataWriter {
         conn.close();
     }
     
-    public void addCandidateAttendance(String candidateIC, ArrayList<Integer> paperId) throws SQLException{
+    public void addCandidateAttendance(String candidateIC, ArrayList<String> paperId) throws SQLException{
         
         Connection conn = new ConnectDB().connect();
         
@@ -80,9 +86,9 @@ public class DataWriter {
             
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,candidateIC);
-            ps.setInt(2,paperId.get(i));
+            ps.setInt(2,Integer.parseInt(paperId.get(i)));
             ps.setString(3,CandidateAttendance.ELIGIBLE);
-            ps.setString(4,CandidateAttendance.ATTENDANCE);
+            ps.setString(4,CandidateAttendance.ABSENT);
             ps.setInt(5,0);
             
             ps.executeUpdate();

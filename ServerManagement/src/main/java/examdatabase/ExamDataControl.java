@@ -442,14 +442,24 @@ public class ExamDataControl implements Runnable{
                     facultyBox.addItemListener(new ItemListener(){
                         @Override
                         public void itemStateChanged(ItemEvent e) {
-                            examDataGUI.customDefaultComboBoxModel(programmeNameBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox.getSelectedItem(), Programme.NAME));
+                            try {
+                                examDataGUI.customDefaultComboBoxModel(programmeNameBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox.getSelectedItem(), Programme.NAME));
+                            } catch (Exception ex) {
+                                popUpWarningMessage(ex.getMessage());
+                                Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     });
                     
                     programmeNameBox.addItemListener(new ItemListener(){
                         @Override
                         public void itemStateChanged(ItemEvent e) {
-                            examDataGUI.customDefaultComboBoxModel(programmeGroupBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeNameBox.getSelectedItem(), Programme.GROUP));
+                            try {
+                                examDataGUI.customDefaultComboBoxModel(programmeGroupBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeNameBox.getSelectedItem(), Programme.GROUP));
+                            } catch (Exception ex) {
+                                popUpWarningMessage(ex.getMessage());
+                                Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     });
                     
@@ -461,11 +471,12 @@ public class ExamDataControl implements Runnable{
                             new DataWriter().insertCandidate(studentICField.getText(), studentNameField.getText(),
                                     studentIDField.getText(), (String)programmeNameBox.getSelectedItem(),
                                     (String)programmeGroupBox.getSelectedItem(), examIDField.getText());
-//                            new DataWriter().addCandidateAttendance(studentICField.getText(), new GetData().getListWithOneCond(Paper.TABLE, data));
+                            int programmeId = new GetData().getPaperIdBaseProgrammeFromDB((String)programmeNameBox.getSelectedItem(), (String)programmeGroupBox.getSelectedItem());
+//                                    popUpWarningMessage
+                            new DataWriter().addCandidateAttendance(studentICField.getText(), new GetData().getListWithOneCond(Paper.TABLE, Paper.PROGRAMME_ID, String.valueOf(programmeId), Paper.ID));
                         } catch (Exception ex) {
                             Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
-                            int error = JOptionPane.showConfirmDialog(null, ex.getMessage(), "ERROR", 
-                                    JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                            popUpWarningMessage(ex.getMessage());
                         }
                         refreshCandidateTable6();
                     }
@@ -600,6 +611,18 @@ public class ExamDataControl implements Runnable{
                     String message = ex.getMessage();
                     examDataGUI.setWarningMessage(message);
                 }
+    }
+    
+    public void popUpWarningMessage(String message){
+        Object[] options = {"OK"};
+        int n = JOptionPane.showOptionDialog(examDataGUI,
+                   "Message here ","Title",
+                   JOptionPane.PLAIN_MESSAGE,
+                   JOptionPane.QUESTION_MESSAGE,
+                   null,
+                   options,
+                   options[0]);
+
     }
 
     @Override

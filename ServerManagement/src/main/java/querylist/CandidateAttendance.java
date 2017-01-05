@@ -12,7 +12,7 @@ package querylist;
 public class CandidateAttendance {
         public final static String TABLE = "CandidateAttendance";
         public final static String ID = "CI_id";
-        public final static String CANDIDATE_INFO_IC = "IC";
+        public final static String CANDIDATE_INFO_IC = "CandidateInfoIC";
         public final static String PAPER_ID = "Paper_id";
         public final static String STATUS = "Status";
         public final static String ATTENDANCE = "Attendance";

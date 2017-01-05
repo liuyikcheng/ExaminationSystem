@@ -7,7 +7,6 @@
       <group>
         <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/ClientComm.java</file>
         <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/ChiefGui.java</file>
-        <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/queue/ThreadMessage.java</file>
         <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/ChiefControl.java</file>
         <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/ChiefServer.java</file>
         <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/ServerComm.java</file>
@@ -22,7 +21,9 @@
         <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/ChiefControl.java</file>
         <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/ChiefServer.java</file>
         <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/ServerComm.java</file>
-        <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/qrgen/QRgen.java</file>
+        <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/globalvariable/InfoType.java</file>
+        <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/globalvariable/CheckInType.java</file>
+        <file>file:/C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/src/main/java/chiefinvigilator/Staff.java</file>
       </group>
     </open-files>
   </auxiliary>

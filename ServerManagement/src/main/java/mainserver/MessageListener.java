@@ -5,6 +5,7 @@
  */
 package mainserver;
 
+import globalvariable.CandidatePaperList;
 import globalvariable.CheckInType;
 import globalvariable.InfoType;
 import java.io.BufferedReader;
@@ -23,6 +24,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import querylist.CddPaper;
@@ -163,7 +165,8 @@ public class MessageListener extends Thread{
                                     
                 case CheckInType.CDDPAPERS:   
                                     deviceId = json.getInt(InfoType.DEVICE_ID);
-                                    sendMessage(cddPaperListToJson(json.getString(InfoType.VALUE), deviceId));
+                                    threadId = json.getInt(InfoType.THREAD_ID);
+                                    sendMessage(cddPaperListToJson(json.getString(InfoType.VALUE), deviceId, threadId));
                                     break;
                                     
                 case CheckInType.GEN_RANDOM_MSG:
@@ -246,7 +249,7 @@ public class MessageListener extends Thread{
             //System.out.println(chief.getCddAttdList().get(0).getCa_id());
             jsonString = mapper.writeValueAsString(examDataList);
             JSONObject jsonData = new JSONObject(jsonString);
-            json.put(InfoType.TYPE, CheckInType.EXAM_INFO_LIST);
+            json.put(InfoType.TYPE, CheckInType.EXAM_DATA_DOWNLOAD);
             json.put(InfoType.VALUE, jsonData);
         } catch (SQLException | IOException ex) {
             Logger.getLogger(MessageListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -271,7 +274,7 @@ public class MessageListener extends Thread{
      * @return
      * @throws IOException 
      */
-    private String cddPaperListToJson(String regNum, Integer deviceId) throws IOException{
+    private String cddPaperListToJson(String regNum, Integer deviceId, Integer threadId) throws IOException{
         
         ObjectMapper mapper = new ObjectMapper();
         JSONObject json = new JSONObject();
@@ -280,11 +283,24 @@ public class MessageListener extends Thread{
         try {
             String jsonString = null;
             cddPaperList = chief.getCddPaperList(regNum);
-            jsonString = mapper.writeValueAsString(cddPaperList);
-            JSONObject jsonData = new JSONObject(jsonString);
+            
+            JSONArray jsonPaperList = new JSONArray();
+//            jsonString = mapper.writeValueAsString(cddPaperList);
+            for(int i = 0; i < cddPaperList.size(); i++){
+                JSONObject jsonPaper = new JSONObject();
+                jsonPaper.put(CandidatePaperList.PAPER_CODE, cddPaperList.get(0).getPaperCode());
+                jsonPaper.put(CandidatePaperList.PAPER_DATE, cddPaperList.get(0).getDate());
+                jsonPaper.put(CandidatePaperList.PAPER_DESC, cddPaperList.get(0).getPaperDesc());
+                jsonPaper.put(CandidatePaperList.PAPER_SESSION, cddPaperList.get(0).getSession());
+                jsonPaper.put(CandidatePaperList.PAPER_VENUE, cddPaperList.get(0).getVenue());
+                
+                jsonPaperList.put(jsonPaper);
+            }
+//            JSONArray jsonData = new JSONArray(jsonString);
             json.put(InfoType.RESULT, true);
-            json.put(InfoType.VALUE, jsonData);
+            json.put(InfoType.VALUE, jsonPaperList);
             json.put(InfoType.DEVICE_ID, deviceId);
+            json.put(InfoType.THREAD_ID, threadId);
         } catch (SQLException ex) {
             json.put(InfoType.RESULT, false);
         }

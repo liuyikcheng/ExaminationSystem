@@ -25,6 +25,7 @@ import querylist.Venue;
  * @author Krissy
  */
 public class GetData {
+    public final static String ERR_EMPTY_CONDITION = "Error: Invalid input search";
     
     public String type = "";
     public String data = "";
@@ -442,19 +443,24 @@ public class GetData {
      * @param data
      * @return 
      */
-    public ArrayList<String> getListWithOneCond(String table, String condColumn, String cond, String data){
+    public ArrayList<String> getListWithOneCond(String table, String condColumn, String cond, String data) throws SQLException, Exception{
         ArrayList<String> list = new ArrayList<>();
         
         String sql = "SELECT DISTINCT " + data + 
                         " From " + table +
                         " WHERE " + condColumn + " = ?";
         
-        try {
             Connection conn = new ConnectDB().connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
             
+            if(condColumn == Programme.ID){
+                if(cond == null || cond.isEmpty())
+                    throw new Exception(ERR_EMPTY_CONDITION);
+                 else
+                    pstmt.setInt(1,Integer.parseInt(cond));
+            }
             if(cond == null || cond.isEmpty())
-               pstmt.setString(1,"0");
+               throw new Exception(ERR_EMPTY_CONDITION);
             else
                pstmt.setString(1,cond);
             
@@ -466,9 +472,7 @@ public class GetData {
             
             rs.close();
             pstmt.close();
-        } catch (SQLException ex) { 
-            Logger.getLogger(GetData.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         
         return list; 
     }
@@ -700,6 +704,52 @@ public class GetData {
             throw new Exception("No data found.");
         else
             return list;
+    }
+    
+    public Boolean checkDataIsAvailable(String table, String condCol, String condition) throws SQLException{
+        String sql = "SELECT *  " 
+                + " FROM " + table 
+                + " WHERE " + condCol + " = ? "  
+                ;
+        Boolean result = false;
+        Connection conn = new ConnectDB().connect();
+        PreparedStatement pstmt  = conn.prepareStatement(sql);
+           
+        pstmt.setString(1, condition);
+           
+        ResultSet rs    = pstmt.executeQuery();
+        result = rs.next();
+        
+        rs.close();
+        pstmt.close();
+        conn.close();
+        
+        return result;
+    }
+    
+    public int getPaperIdBaseProgrammeFromDB(String venue, String programmeGroup) throws SQLException{
+        int paperId = 0;
+        String sql = "SELECT *  " 
+                + " FROM " + Programme.TABLE 
+                + " WHERE " + Programme.NAME + " = ? "  
+                + " AND " + Programme.GROUP + " = ? "  
+                ;
+        Connection conn = new ConnectDB().connect();
+        PreparedStatement pstmt  = conn.prepareStatement(sql);
+           
+        pstmt.setString(1, venue);
+        pstmt.setString(2, programmeGroup);
+           
+        ResultSet rs    = pstmt.executeQuery();
+        
+        if(rs.next())
+            paperId = rs.getInt(Programme.ID);
+        
+        rs.close();
+        pstmt.close();
+        conn.close();
+            
+        return paperId;
     }
 
     /**

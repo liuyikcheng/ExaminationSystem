@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -1625,8 +1627,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         
         if(paperTableTab3.getValueAt(row, 4) != null)
             value = paperTableTab3.getValueAt(row, 4).toString();
-//        System.out.println("value: "+ value);
-        paperTableTab3.getColumnModel().getColumn(5).setCellEditor(new CustomCellEditor(customComboBox(new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, value, Programme.GROUP))));
+        try {
+            //        System.out.println("value: "+ value);
+            paperTableTab3.getColumnModel().getColumn(5).setCellEditor(new CustomCellEditor(customComboBox(new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, value, Programme.GROUP))));
+        } catch (Exception ex) {
+//            Logger.getLogger(ExamDataGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_paperTableTab3MousePressed
 
@@ -1639,15 +1645,23 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         
         if(paperTableTab3.getValueAt(row, 4) != null)
             value = paperTableTab3.getValueAt(row, 4).toString();
-//        System.out.println("value: "+ value);
-        paperTableTab3.getColumnModel().getColumn(5).setCellEditor(new CustomCellEditor(customComboBox(new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, value, Programme.GROUP))));
+        try {
+            //        System.out.println("value: "+ value);
+            paperTableTab3.getColumnModel().getColumn(5).setCellEditor(new CustomCellEditor(customComboBox(new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, value, Programme.GROUP))));
+        } catch (Exception ex) {
+//            Logger.getLogger(ExamDataGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         
     }//GEN-LAST:event_paperTableTab3KeyReleased
 
     private void dateBox5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_dateBox5ItemStateChanged
-        // TODO add your handling code here:
-       customDefaultComboBoxModel(this.sessionBox5, new GetData().getListWithOneCond(SessionAndDate.TABLE, SessionAndDate.DATE, getDateBox5().getSelectedItem().toString(), SessionAndDate.SESSION));
+        try {
+            // TODO add your handling code here:
+            customDefaultComboBoxModel(this.sessionBox5, new GetData().getListWithOneCond(SessionAndDate.TABLE, SessionAndDate.DATE, getDateBox5().getSelectedItem().toString(), SessionAndDate.SESSION));
+        } catch (Exception ex) {
+//            Logger.getLogger(ExamDataGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_dateBox5ItemStateChanged
 
     private void nameField6jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameField6jTextField1ActionPerformed
@@ -1663,13 +1677,21 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_idField6ActionPerformed
 
     private void facultyBox6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facultyBox6ItemStateChanged
-        // TODO add your handling code here:
-        customDefaultComboBoxModel(this.programmeBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox6.getSelectedItem(), Programme.NAME));
+        try {
+            // TODO add your handling code here:
+            customDefaultComboBoxModel(this.programmeBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox6.getSelectedItem(), Programme.NAME));
+        } catch (Exception ex) {
+//            Logger.getLogger(ExamDataGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_facultyBox6ItemStateChanged
 
     private void programmeBox6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_programmeBox6ItemStateChanged
-        // TODO add your handling code here:
-        customDefaultComboBoxModel(this.programmeGroupBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeBox6.getSelectedItem(), Programme.GROUP));
+        try {
+            // TODO add your handling code here:
+            customDefaultComboBoxModel(this.programmeGroupBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeBox6.getSelectedItem(), Programme.GROUP));
+        } catch (Exception ex) {
+//            Logger.getLogger(ExamDataGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_programmeBox6ItemStateChanged
     
     

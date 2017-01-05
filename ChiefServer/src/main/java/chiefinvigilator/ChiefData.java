@@ -521,6 +521,8 @@ public class ChiefData {
         for(int i=0; i<invList.size(); i++){
             String sql = "INSERT OR REPLACE INTO InvigilatorAndAssistant VALUES"
                    + "(?,?,?,?,?,?,?)";
+            
+            System.out.println(invList.get(i).getStatus()+ "  " +invList.get(i).getstaffId());
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, invList.get(i).getIa_id());
             ps.setString(2, invList.get(i).getstaffId());

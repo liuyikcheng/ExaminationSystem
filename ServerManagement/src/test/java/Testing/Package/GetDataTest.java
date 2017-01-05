@@ -6,14 +6,17 @@
 package Testing.Package;
 
 import examdatabase.ConnectDB;
+import examdatabase.DataWriter;
 import examdatabase.ExamDataControl;
 //import examdatabase.CustomException;
 import examdatabase.GetData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.*;
 import static org.junit.Assert.*;
+import querylist.CandidateInfo;
 import querylist.Programme;
     
 /**
@@ -388,6 +391,65 @@ public class GetDataTest {
         int result = new ExamDataControl().getCurrentPaperSpace(selectedPaper5List);
         
         assertEquals(157, result);
+    }
+    
+    @Test
+    public void testGetListWithOneCondPaperId(){
+        ArrayList<Integer> paperIdList = new ArrayList<>();
+        
+        
+    }
+    
+    @Test
+    public void testAddCandidateAttendance(){
+        ArrayList<String> paperIdList = new ArrayList<>();
+        
+        paperIdList.add("1");
+        paperIdList.add("2");
+        try {
+            new DataWriter().addCandidateAttendance("123342342544", paperIdList);
+        } catch (SQLException ex) {
+            Logger.getLogger(GetDataTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void testCheckDataIsAvailable(){
+        Boolean result = false;
+                
+        try {
+            result = new GetData().checkDataIsAvailable(CandidateInfo.TABLE, CandidateInfo.CANDIDATE_INFO_IC, "900000000001");
+        } catch (SQLException ex) {
+            Logger.getLogger(GetDataTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(true, result);
+    }
+    
+    @Test
+    public void testCheckDataIsAvailable2(){
+        Boolean result = false;
+                
+        try {
+            result = new GetData().checkDataIsAvailable(CandidateInfo.TABLE, CandidateInfo.CANDIDATE_INFO_IC, "9000456000001");
+        } catch (SQLException ex) {
+            Logger.getLogger(GetDataTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(false, result);
+    }
+    
+    @Test
+    public void testGetPaperIdBaseProgrammeFromDB(){
+        int paperId = 0;
+                
+        try {
+            paperId = new GetData().getPaperIdBaseProgrammeFromDB("DOC1", "4" );
+        } catch (SQLException ex) {
+            Logger.getLogger(GetDataTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        assertEquals(2, paperId);
     }
 }
 

@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.Mac;
@@ -55,6 +56,7 @@ import serverquerylist.ExamDataList;
  */
 public class ServerComm extends Thread implements Runnable{
 
+    ReentrantLock mutex = new ReentrantLock();
     Socket socket;
     boolean signIn = false;
     ChiefData chiefData;
@@ -62,7 +64,7 @@ public class ServerComm extends Thread implements Runnable{
     Queue serverQueue = new LinkedList();
     HashMap clientQueueList = new HashMap();
     
-    static Semaphore mutex = new Semaphore(1);
+    //static Semaphore mutex = new Semaphore(1);
     Thread queueThread = new Thread(new Runnable() {
          public void run()
          {
@@ -194,6 +196,7 @@ public class ServerComm extends Thread implements Runnable{
     }
     
     private void sendMessage(String message) throws IOException{
+        System.out.println("SeverComm Sending: " + message);
         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
         out.writeUTF(message);
             
@@ -262,9 +265,13 @@ public class ServerComm extends Thread implements Runnable{
                                     break;
                                     
             }
+        } catch (IOException ex) {
+            Logger.getLogger(ServerComm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerComm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+            Logger.getLogger(ServerComm.class.getName()).log(Level.SEVERE, null, ex);
+        }  
     }
     
     private void setInviSignInTime(String id) throws SQLException{
@@ -343,18 +350,14 @@ public class ServerComm extends Thread implements Runnable{
             list = (LinkedList)(this.clientQueueList.get(threadId));
             
             if(!list.isEmpty()){
-                try {
-                    mutex.acquire();
-                    System.out.println("List = "+list.isEmpty());
-                    ThreadMessage tm = (ThreadMessage) list.get(0);
-                    if(list.get(0) != null && tm.getThreadId() == threadId){
-                        list = (LinkedList)(this.clientQueueList.get(threadId));
-                        set = true;
-                    mutex.release();
-                    }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ServerComm.class.getName()).log(Level.SEVERE, null, ex);
+                mutex.lock();
+                System.out.println("List = "+list.isEmpty());
+                ThreadMessage tm = (ThreadMessage) list.get(0);
+                if(list.get(0) != null && tm.getThreadId() == threadId){
+                    list = (LinkedList)(this.clientQueueList.get(threadId));
+                    set = true;
                 }
+                mutex.unlock();
             }
         }
         return (ThreadMessage)list.poll();

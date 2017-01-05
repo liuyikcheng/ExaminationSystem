@@ -50,8 +50,6 @@ public class ChiefControl {
     private final static String BARRED = "BARRED";
     private final static String EXEMPTED = "EXEMPTED";
     
-    String id = null;
-    String block = null;
     
     ImageIcon connectedIcon;
     ImageIcon disconnectedIcon;
@@ -96,11 +94,12 @@ public class ChiefControl {
                 try {
                     
                     //ChiefControl.this.chiefGui.popUpChiefSignInJOptionPane();
+                    ChiefControl.this.serverComm.connectToServer(ChiefControl.this.mainServerHostName, ChiefControl.this.mainServerPortNum);
+                   
                     popUpChiefSignInJOptionPane();
 //                    ChiefControl.this.id = chiefGui.getChiefId();
 //                    ChiefControl.this.block = chiefGui.getChiefBlock();
-                    ChiefControl.this.serverComm.connectToServer(ChiefControl.this.mainServerHostName, ChiefControl.this.mainServerPortNum);
-                    
+                     
                     ChiefControl.this.displayConnectivity("Connected");
                     chiefGui.setConnectButtonIcon(connectedIcon);
                 } catch (Exception ex) {
@@ -152,7 +151,7 @@ public class ChiefControl {
                     if(ChiefControl.this.serverIsConnected()){
                         ChiefControl.this.displayConnectivity("Connected");
                         chiefGui.setConnectButtonIcon(connectedIcon);
-                        ChiefControl.this.serverComm.submitDB(id, block);
+                        ChiefControl.this.serverComm.submitDB(ChiefControl.this.chiefId, ChiefControl.this.chiefBlock);
                     
                     }
                     else{
@@ -173,7 +172,7 @@ public class ChiefControl {
                     if(ChiefControl.this.serverIsConnected()){
                         ChiefControl.this.displayConnectivity("Connected");
                         chiefGui.setConnectButtonIcon(connectedIcon);
-                        ChiefControl.this.serverComm.downloadDB(id, block);
+                        ChiefControl.this.serverComm.downloadDB(ChiefControl.this.chiefId, ChiefControl.this.chiefBlock);
                     
                     }
                     else{
@@ -369,8 +368,8 @@ public class ChiefControl {
     }
     
     public void updateGuiLoggedChief(){
-        chiefGui.setLoggedChief("Staff: " + id);
-        chiefGui.setLoggedBlock("Block: " + block);
+        chiefGui.setLoggedChief("Staff: " + this.chiefId);
+        chiefGui.setLoggedBlock("Block: " + this.chiefBlock);
     }
     
     public void setGuiPanelEnable(Boolean bool){
