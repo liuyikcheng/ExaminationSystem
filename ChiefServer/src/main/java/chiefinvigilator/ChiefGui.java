@@ -86,7 +86,7 @@ public class ChiefGui extends javax.swing.JFrame {
         
         prepareComboBox();
         
-//        setFrontPanelEnable(false);
+        setFrontPanelEnable(false);
         
         staffInfoTable.getColumnModel().getColumn(4).setCellRenderer(new InvLogOutButtonRenderer());
         staffInfoTable.getColumnModel().getColumn(4).setCellEditor(new InvLogOutButtonEditor(new JTextField()));
@@ -303,7 +303,7 @@ public class ChiefGui extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(qrGenPanel);
 
-        chiefTabbedPane.addTab("QR Gen", jScrollPane3);
+        chiefTabbedPane.addTab("Invigilator Sign in", jScrollPane3);
 
         candidateTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

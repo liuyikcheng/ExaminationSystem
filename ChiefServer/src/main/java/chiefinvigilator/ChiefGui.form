@@ -275,8 +275,8 @@
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="QR Gen">
-                <Property name="tabTitle" type="java.lang.String" value="QR Gen"/>
+              <JTabbedPaneConstraints tabName="Invigilator Sign in">
+                <Property name="tabTitle" type="java.lang.String" value="Invigilator Sign in"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

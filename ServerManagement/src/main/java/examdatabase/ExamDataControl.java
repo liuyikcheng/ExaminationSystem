@@ -81,7 +81,11 @@ public class ExamDataControl implements Runnable{
                     list = getData.getDataFromTable();
                     int i = 0;
                     for(i = 0; i<list.size(); i++){
-                        examDataGUI.addExamTableRow(new Object[]{list.get(i).getName(), list.get(i).getIc(), list.get(i).getRegNum(), list.get(i).getProgName(), list.get(i).getFaculty(), list.get(i).getPaperCode(), list.get(i).getVenueName(), list.get(i).getDate(), list.get(i).getSession(), list.get(i).getStatus(), list.get(i).getAttendance(), list.get(i).getTableNum()});
+                        examDataGUI.addExamTableRow(new Object[]{list.get(i).getName(), list.get(i).getIc(), 
+                            list.get(i).getRegNum(), list.get(i).getProgName(), list.get(i).getFaculty(),
+                            list.get(i).getPaperCode(), list.get(i).getVenueName(), list.get(i).getDate(), 
+                            list.get(i).getSession(), list.get(i).getStatus(), list.get(i).getAttendance(), 
+                            list.get(i).getTableNum()});
                     }
 
                 } catch (Exception ex) {
@@ -355,7 +359,9 @@ public class ExamDataControl implements Runnable{
         examDataGUI.getSelectButton5().addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                String available = new GetData().getVenueSize((String)ExamDataControl.this.examDataGUI.getVenueBox5().getSelectedItem());
+                Integer leftSize = Integer.parseInt(available) - calculateTotalOccupiedCandidate(selectedPaper5List);
+                System.out.println("available: " + available);
                 Integer paper_id = (Integer) examDataGUI.getAvailablePapers5().getModel().getValueAt(examDataGUI.getAvailablePapers5().getSelectedRow(), 4);
                     for (int i = 0; i < ExamDataControl.this.availablePaper5List.size(); i++ ){
                         if (Objects.equals(ExamDataControl.this.availablePaper5List.get(i).getPaper_id(), paper_id)){
@@ -365,9 +371,17 @@ public class ExamDataControl implements Runnable{
                                 data.setVenue_id(new GetData().getVenueIdFromDB((String)ExamDataControl.this.examDataGUI.getVenueBox5().getSelectedItem()));
                                 data.setSession_id(new GetData().getSessionIdFromDB((String)ExamDataControl.this.examDataGUI.getSessionBox5().getSelectedItem(),
                                                                                     (String)ExamDataControl.this.examDataGUI.getDateBox5().getSelectedItem()));
-                                new UpdateData().setVenueAndSessionForPaper(data.getPaper_id(), data.getVenue_id(), data.getSession_id(), getCurrentPaperSpace(ExamDataControl.this.selectedPaper5List));
+                                int requireSize = (int) examDataGUI.getAvailablePapers5().getModel().getValueAt(examDataGUI.getAvailablePapers5().getSelectedRow(), 3);
+                                System.out.println("require: " + requireSize);
+                                System.out.println("left: " + leftSize);
+                                if(leftSize < requireSize)
+                                    throw new Exception("Space is full.");
+                                else
+                                    new UpdateData().setVenueAndSessionForPaper(data.getPaper_id(), data.getVenue_id(), data.getSession_id(), getCurrentPaperSpace(ExamDataControl.this.selectedPaper5List));
                             } catch (SQLException ex) {
                                 Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (Exception ex) {
+                                ExamDataControl.this.popUpWarningMessage(ex.getMessage());
                             }
 
                             setSelectedPaperTable5Content();
@@ -443,10 +457,10 @@ public class ExamDataControl implements Runnable{
                         @Override
                         public void itemStateChanged(ItemEvent e) {
                             try {
-                                examDataGUI.customDefaultComboBoxModel(programmeNameBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox.getSelectedItem(), Programme.NAME));
+                                examDataGUI.createSuggestList(programmeNameBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox.getSelectedItem(), Programme.NAME));
                             } catch (Exception ex) {
-                                popUpWarningMessage(ex.getMessage());
-                                Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+//                                popUpWarningMessage(ex.getMessage());
+//                                Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     });
@@ -455,10 +469,10 @@ public class ExamDataControl implements Runnable{
                         @Override
                         public void itemStateChanged(ItemEvent e) {
                             try {
-                                examDataGUI.customDefaultComboBoxModel(programmeGroupBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeNameBox.getSelectedItem(), Programme.GROUP));
+                                examDataGUI.createSuggestList(programmeGroupBox, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeNameBox.getSelectedItem(), Programme.GROUP));
                             } catch (Exception ex) {
-                                popUpWarningMessage(ex.getMessage());
-                                Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+//                                popUpWarningMessage(ex.getMessage());
+//                                Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     });
@@ -468,12 +482,23 @@ public class ExamDataControl implements Runnable{
 
                     if (result == JOptionPane.OK_OPTION) {
                         try {
-                            new DataWriter().insertCandidate(studentICField.getText(), studentNameField.getText(),
-                                    studentIDField.getText(), (String)programmeNameBox.getSelectedItem(),
-                                    (String)programmeGroupBox.getSelectedItem(), examIDField.getText());
-                            int programmeId = new GetData().getPaperIdBaseProgrammeFromDB((String)programmeNameBox.getSelectedItem(), (String)programmeGroupBox.getSelectedItem());
-//                                    popUpWarningMessage
-                            new DataWriter().addCandidateAttendance(studentICField.getText(), new GetData().getListWithOneCond(Paper.TABLE, Paper.PROGRAMME_ID, String.valueOf(programmeId), Paper.ID));
+                            if(studentICField.getText()==null || studentICField.getText().isEmpty() ||
+                                    studentNameField.getText()==null || studentNameField.getText().isEmpty() ||
+                                    studentIDField.getText()==null || studentIDField.getText().isEmpty() ||
+                                    examIDField.getText()==null || examIDField.getText().isEmpty() ||
+                                    (String)programmeNameBox.getSelectedItem() == null || ((String)programmeNameBox.getSelectedItem()).isEmpty()||
+                                    (String)programmeGroupBox.getSelectedItem() == null || ((String)programmeGroupBox.getSelectedItem()).isEmpty()
+                                    ){
+                                throw new Exception("Please fill in all the requirement.");
+                            }
+                            else{
+                                new DataWriter().insertCandidate(studentICField.getText(), studentNameField.getText(),
+                                        studentIDField.getText(), (String)programmeNameBox.getSelectedItem(),
+                                        (String)programmeGroupBox.getSelectedItem(), examIDField.getText());
+                                int programmeId = new GetData().getPaperIdBaseProgrammeFromDB((String)programmeNameBox.getSelectedItem(), (String)programmeGroupBox.getSelectedItem());
+    //                                    popUpWarningMessage
+                                new DataWriter().addCandidateAttendance(studentICField.getText(), new GetData().getListWithOneCond(Paper.TABLE, Paper.PROGRAMME_ID, String.valueOf(programmeId), Paper.ID));
+                            }
                         } catch (Exception ex) {
                             Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
                             popUpWarningMessage(ex.getMessage());
@@ -498,14 +523,18 @@ public class ExamDataControl implements Runnable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 Integer candidate_id = (Integer) examDataGUI.getCandidateTable6().getModel().getValueAt(examDataGUI.getCandidateTable6().getSelectedRow(), 0);
+                String candidate_ic = (String) examDataGUI.getCandidateTable6().getModel().getValueAt(examDataGUI.getCandidateTable6().getSelectedRow(), 2);
                 int result = JOptionPane.showConfirmDialog(null, "Remove", "Confirm to remove?",
                         JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
                 
                 if (result == JOptionPane.YES_OPTION){
                     try {
                         new DataWriter().removeCandidate(candidate_id);
+                        new DataWriter().removeCandidateAttendance(candidate_ic);
+                        
                     } catch (SQLException ex) {
                         Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
+                        popUpWarningMessage("Please select a row.");
                     }
                 }
                 refreshCandidateTable6();
@@ -549,6 +578,7 @@ public class ExamDataControl implements Runnable{
                     for(i = 0; i< selectedPaper5List.size(); i++){
                         examDataGUI.addSelectedPapers5(new Object[]{selectedPaper5List.get(i).getPaperCode(), selectedPaper5List.get(i).getProgName(), selectedPaper5List.get(i).getProgGroup(), selectedPaper5List.get(i).getNumOfCand(), selectedPaper5List.get(i).getStartingNum(), selectedPaper5List.get(i).getPaper_id()});
                         }
+                    examDataGUI.getOccupiedSizeLabel().setText(calculateTotalOccupiedCandidate(selectedPaper5List).toString());
 
                 } catch (Exception ex) {
                     Logger.getLogger(ExamDataControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -616,7 +646,7 @@ public class ExamDataControl implements Runnable{
     public void popUpWarningMessage(String message){
         Object[] options = {"OK"};
         int n = JOptionPane.showOptionDialog(examDataGUI,
-                   "Message here ","Title",
+                   message,"Title",
                    JOptionPane.PLAIN_MESSAGE,
                    JOptionPane.QUESTION_MESSAGE,
                    null,

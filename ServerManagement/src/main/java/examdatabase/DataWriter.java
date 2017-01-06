@@ -99,6 +99,32 @@ public class DataWriter {
         
     }
     
+    public void addStudentMark(String regNum, ArrayList<String> paperId) throws SQLException{
+        
+        Connection conn = new ConnectDB().connect();
+        
+        for(int i = 0; i < paperId.size(); i++){
+            String sql = "INSERT INTO StudentMark"
+                    + "(RegNum, PI_id, Pratical, Coursework, Exam)"
+                    + "VALUES(?,?,?,?,?) ";
+            
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,regNum);
+            ps.setInt(2,Integer.parseInt(paperId.get(i)));
+            ps.setInt(3,0);
+            ps.setInt(4,0);
+            ps.setInt(5,0);
+            
+            ps.executeUpdate();
+            ps.close();
+        }
+        
+        conn.close();
+        
+    }
+    
+    
+    
     public void removeCandidateAttendance(String candidateIC) throws SQLException{
         String sql = " DELETE FROM " + CandidateAttendance.TABLE +
                     " WHERE " + CandidateAttendance.CANDIDATE_INFO_IC + " = ? ";

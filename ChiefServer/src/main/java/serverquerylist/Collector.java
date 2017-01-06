@@ -10,8 +10,10 @@ package serverquerylist;
  * @author Krissy
  */
 public class Collector {
+    Integer collector_id;
     Integer paper_id;
     String staffId;
+    String bundleId;
     
     public Collector(){}
     
@@ -23,7 +25,7 @@ public class Collector {
         
     }
     
-    public Integer getPaper(){
+    public Integer getPaper_id(){
         return this.paper_id;
     }
     

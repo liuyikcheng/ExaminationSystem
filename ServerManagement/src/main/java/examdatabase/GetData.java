@@ -188,6 +188,7 @@ public class GetData {
                 + ", PaperInfo.PaperCode, PaperInfo.PaperDescription "
                 + ", Venue.Name AS VenueName, Venue.Size "
                 + ", SessionAndDate.Session AS SessionType "
+                + ", SessionAndDate.Date AS SessionDate "
                 + " FROM CandidateAttendance "
                 + " LEFT OUTER JOIN CandidateInfo ON CandidateAttendance.CandidateInfoIC = CandidateInfo.IC "
                 + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
@@ -204,6 +205,7 @@ public class GetData {
                 + " AND ProgName "+ checkInput(this.progName)
                 + " AND Programme.Faculty "+ checkInput(this.faculty)
                 + " AND SessionAndDate.Session "+ checkInput(this.session)
+                + " AND SessionAndDate.Date "+ checkInput(this.date)
 //                + " AND PaperInfo.PaperCode = * "//+ checkInput(this.paperCode)
 //                + " AND VenueName = * "//+ checkInput(this.venueName)     
                 ;
@@ -231,6 +233,7 @@ public class GetData {
                 info.setPaperCode(rs.getString("PaperCode"));
                 info.setPaperDesc(rs.getString("PaperDescription"));
                 info.setVenueName(rs.getString("VenueName"));
+                info.setDate(rs.getString("SessionDate"));
                 
 //                System.out.println(info.getName());
                 

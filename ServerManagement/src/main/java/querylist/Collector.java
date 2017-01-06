@@ -28,7 +28,7 @@ public class Collector {
         this.bundleId = bundleId;
     }
     
-    public Integer getPaper(){
+    public Integer getPaper_id(){
         return this.paper_id;
     }
     

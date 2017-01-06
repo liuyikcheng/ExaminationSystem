@@ -72,6 +72,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
      * Creates new form GUIapp
      */
     public ExamDataGUI() {
+        super.setTitle("Server");
         new ConnectDB().setConnection("FEB_MAR", "2016");
         initComponents();
         prepareComboBox();
@@ -90,6 +91,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         this.availablePapersTable5.removeColumn(this.availablePapersTable5.getColumnModel().getColumn(4)); //hide paper ide column in selected paper table 5
         this.selectedPapersTable5.removeColumn(this.selectedPapersTable5.getColumnModel().getColumn(5)); //hide paper ide column in selected paper table 5
         this.candidateTable6.removeColumn(this.candidateTable6.getColumnModel().getColumn(0)); //hide paper ide column in selected paper table 5
+        
+        jTabbedPane1.remove(2);
+        
+        
         
         customPaperTableTab3Editor();
         
@@ -877,7 +882,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         jScrollPane5.setViewportView(jPanel6);
 
-        jTabbedPane1.addTab("tab3", jScrollPane5);
+        jTabbedPane1.addTab("Time Table", jScrollPane5);
 
         invigilatorTableTab4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1679,7 +1684,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private void facultyBox6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_facultyBox6ItemStateChanged
         try {
             // TODO add your handling code here:
-            customDefaultComboBoxModel(this.programmeBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox6.getSelectedItem(), Programme.NAME));
+            createSuggestList(this.programmeBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.FACULTY, (String)facultyBox6.getSelectedItem(), Programme.NAME));
         } catch (Exception ex) {
 //            Logger.getLogger(ExamDataGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1688,7 +1693,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private void programmeBox6ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_programmeBox6ItemStateChanged
         try {
             // TODO add your handling code here:
-            customDefaultComboBoxModel(this.programmeGroupBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeBox6.getSelectedItem(), Programme.GROUP));
+            createSuggestList(this.programmeGroupBox6, new GetData().getListWithOneCond(Programme.TABLE, Programme.NAME, (String)programmeBox6.getSelectedItem(), Programme.GROUP));
         } catch (Exception ex) {
 //            Logger.getLogger(ExamDataGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1706,6 +1711,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
        createSuggestList(getVenueBox4(), new GetData().getList(Venue.TABLE, Venue.NAME));
        createSuggestList(getVenueBox5(), new GetData().getList(Venue.TABLE, Venue.NAME));
        createSuggestList(getDateBox5(), new GetData().getList(SessionAndDate.TABLE, SessionAndDate.DATE));
+       createSuggestList(facultyBox6, new GetData().getList(Programme.TABLE, Programme.FACULTY));
        
        UIManager.getLookAndFeelDefaults().put("ComboBox.noActionOnKeyNavigation", true);
     }
@@ -1714,6 +1720,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         JTextField field = (JTextField) comboBox.getEditor().getEditorComponent();
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model = (DefaultComboBoxModel) comboBox.getModel();
+        model.removeAllElements();
         model.addElement("");
        for(int i = 0; i<list.size(); i++){
            model.addElement(list.get(i));
