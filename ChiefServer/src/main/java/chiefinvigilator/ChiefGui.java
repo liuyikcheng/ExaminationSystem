@@ -86,7 +86,7 @@ public class ChiefGui extends javax.swing.JFrame {
         
         prepareComboBox();
         
-        setFrontPanelEnable(false);
+//        setFrontPanelEnable(false);
         
         staffInfoTable.getColumnModel().getColumn(4).setCellRenderer(new InvLogOutButtonRenderer());
         staffInfoTable.getColumnModel().getColumn(4).setCellEditor(new InvLogOutButtonEditor(new JTextField()));

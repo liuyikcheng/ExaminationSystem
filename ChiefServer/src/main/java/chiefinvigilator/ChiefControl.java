@@ -151,7 +151,7 @@ public class ChiefControl {
                     if(ChiefControl.this.serverIsConnected()){
                         ChiefControl.this.displayConnectivity("Connected");
                         chiefGui.setConnectButtonIcon(connectedIcon);
-                        ChiefControl.this.serverComm.submitDB(ChiefControl.this.chiefId, ChiefControl.this.chiefBlock);
+                        ChiefControl.this.serverComm.submitDB(ChiefControl.this.getChiefId(), ChiefControl.this.getChiefBlock());
                     
                     }
                     else{
@@ -172,7 +172,7 @@ public class ChiefControl {
                     if(ChiefControl.this.serverIsConnected()){
                         ChiefControl.this.displayConnectivity("Connected");
                         chiefGui.setConnectButtonIcon(connectedIcon);
-                        ChiefControl.this.serverComm.downloadDB(ChiefControl.this.chiefId, ChiefControl.this.chiefBlock);
+                        ChiefControl.this.serverComm.downloadDB(ChiefControl.this.getChiefId(), ChiefControl.this.getChiefBlock());
                     
                     }
                     else{
@@ -368,8 +368,8 @@ public class ChiefControl {
     }
     
     public void updateGuiLoggedChief(){
-        chiefGui.setLoggedChief("Staff: " + this.chiefId);
-        chiefGui.setLoggedBlock("Block: " + this.chiefBlock);
+        chiefGui.setLoggedChief("Staff: " + this.getChiefId());
+        chiefGui.setLoggedBlock("Block: " + this.getChiefBlock());
     }
     
     public void setGuiPanelEnable(Boolean bool){
@@ -408,8 +408,22 @@ public class ChiefControl {
             this.chiefId = chiefIdField.getText();
             this.chiefPs = String.valueOf(chiefPsField.getPassword());
             this.chiefBlock = chiefBlockField.getText();
-            chiefSignIn(ChiefControl.this.chiefId, this.chiefPs, this.chiefBlock);
+            chiefSignIn(ChiefControl.this.getChiefId(), this.chiefPs, this.getChiefBlock());
         }
+    }
+
+    /**
+     * @return the chiefId
+     */
+    public String getChiefId() {
+        return chiefId;
+    }
+
+    /**
+     * @return the chiefBlock
+     */
+    public String getChiefBlock() {
+        return chiefBlock;
     }
 
     class TimerActionListener implements ActionListener{

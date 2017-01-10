@@ -222,6 +222,8 @@ public class ServerComm extends Thread implements Runnable{
                                         this.signIn = true;
                                         this.chiefControl.updateGuiLoggedChief();
                                         this.chiefControl.setGuiPanelEnable(true);
+                                        submitDB(this.chiefControl.getChiefId(), this.chiefControl.getChiefBlock());
+                    
                                     }
                                     else
                                         this.chiefControl.chiefGui.popUpErrorPane("Chief Sign in : Wrong ID/PASSWORD");
@@ -350,14 +352,14 @@ public class ServerComm extends Thread implements Runnable{
             list = (LinkedList)(this.clientQueueList.get(threadId));
             
             if(!list.isEmpty()){
-                mutex.lock();
+//                mutex.lock();
                 System.out.println("List = "+list.isEmpty());
                 ThreadMessage tm = (ThreadMessage) list.get(0);
                 if(list.get(0) != null && tm.getThreadId() == threadId){
                     list = (LinkedList)(this.clientQueueList.get(threadId));
                     set = true;
                 }
-                mutex.unlock();
+//                mutex.unlock();
             }
         }
         return (ThreadMessage)list.poll();
