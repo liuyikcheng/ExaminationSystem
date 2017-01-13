@@ -223,6 +223,14 @@ public class ChiefControl {
             }
         });
         
+        chiefGui.addSearchButton4(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                collectorSearch();
+            }
+            
+        });
+        
         chiefGui.getVenueComboBox().addItemListener(new ItemListener(){
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -330,7 +338,7 @@ public class ChiefControl {
         data.setVenueName((String)chiefGui.getVenueComboBox().getSelectedItem());
         
         ArrayList<InfoData> cddList = new ArrayList<>();
-        System.out.print(chiefGui.getAttendanceComboBox());
+//        System.out.print(chiefGui.getAttendanceComboBox());
         try {
             cddList = data.getDataFromTable();
         } catch (CustomException ex) {
@@ -361,6 +369,37 @@ public class ChiefControl {
                 } catch (SQLException ex) {
                     Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
+    }
+    
+    public void collectorSearch(){
+        InfoData data = new InfoData();
+        
+        data.setBundleId(chiefGui.getBundleIdField4().getText());
+        data.setPaperCode(chiefGui.getPaperCodeField4().getText());
+        data.setVenueName((String) chiefGui.getVenueComboBox().getSelectedItem());
+        data.setProgName((String) chiefGui.getProgrammeBox4().getSelectedItem());
+        data.setCollector(chiefGui.getStaffIdField4().getText());
+        
+        ArrayList<InfoData> collectorList = new ArrayList<>();
+//        System.out.print(chiefGui.getAttendanceComboBox());
+        try {
+            collectorList = data.getCollectorList();
+        } catch (CustomException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        chiefGui.setCollectorTableModelRow(0);
+        
+        for(int i = 0; i<collectorList.size(); i++){
+            
+            chiefGui.addCollectorTable4ModelRow(new Object[]{collectorList.get(i).getBundleId(),
+                                                            collectorList.get(i).getProgName(),
+                                                            collectorList.get(i).getPaperCode(),
+                                                            collectorList.get(i).getVenueName(),
+                                                            collectorList.get(i).getCollector()
+                                                            });
+        }
+        
     }
     
     public void addStaffInfoToGuiTable(Staff staff){

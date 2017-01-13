@@ -92,8 +92,11 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         this.selectedPapersTable5.removeColumn(this.selectedPapersTable5.getColumnModel().getColumn(5)); //hide paper ide column in selected paper table 5
         this.candidateTable6.removeColumn(this.candidateTable6.getColumnModel().getColumn(0)); //hide paper ide column in selected paper table 5
         
-        jTabbedPane1.remove(2);
+//        jTabbedPane1.remove(2);
         
+        jPanel6.remove(addPaperTab3Button);
+        jPanel6.remove(saveButton3);
+        jPanel6.remove(deletePaperButton);
         
         
         customPaperTableTab3Editor();
@@ -176,15 +179,15 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         paperCodeField3 = new javax.swing.JTextField();
         paperNameField3 = new javax.swing.JTextField();
-        lecturerField3 = new javax.swing.JTextField();
-        tutorField3 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         searchButton3 = new javax.swing.JButton();
         programmeBox3 = new javax.swing.JComboBox<>();
+        jLabel44 = new javax.swing.JLabel();
+        jLabel45 = new javax.swing.JLabel();
+        venueBox3 = new javax.swing.JComboBox<>();
+        dateBox3 = new javax.swing.JComboBox<>();
         addPaperTab3Button = new javax.swing.JButton();
         deletePaperButton = new javax.swing.JButton();
         saveButton3 = new javax.swing.JButton();
@@ -723,15 +726,23 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         paperTableTab3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Paper Code", "Paper Name", "Lecturer", "Tutor", "Programme", "Group"
+                "Paper Code", "Paper Name", "Programme", "Group", "Venue", "Date", "Session", "Collector"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         paperTableTab3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 paperTableTab3MousePressed(evt);
@@ -743,19 +754,12 @@ public final class ExamDataGUI extends javax.swing.JFrame {
             }
         });
         jScrollPane7.setViewportView(paperTableTab3);
-        if (paperTableTab3.getColumnModel().getColumnCount() > 0) {
-            paperTableTab3.getColumnModel().getColumn(5).setResizable(false);
-        }
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jLabel5.setText("Paper Code:");
 
         jLabel6.setText("Paper Name:");
-
-        jLabel7.setText("Lecturer:");
-
-        jLabel8.setText("Tutor:");
 
         paperCodeField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -774,6 +778,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         programmeBox3.setModel(programmeBox3Model);
 
+        jLabel44.setText("Venue:");
+
+        jLabel45.setText("Date:");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -787,18 +795,19 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(paperCodeField3, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(paperNameField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lecturerField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addComponent(jLabel44)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(venueBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(95, 95, 95))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(tutorField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(39, 39, 39)
+                        .addGap(44, 44, 44)
+                        .addComponent(jLabel45)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dateBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -809,7 +818,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {lecturerField3, paperCodeField3, paperNameField3, tutorField3});
+        jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {paperCodeField3, paperNameField3});
 
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -817,22 +826,22 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel7)
                     .addComponent(paperCodeField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lecturerField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9)
-                    .addComponent(programmeBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(programmeBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel44)
+                    .addComponent(venueBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel8)
                     .addComponent(paperNameField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tutorField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchButton3))
+                    .addComponent(searchButton3)
+                    .addComponent(jLabel45)
+                    .addComponent(dateBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel7Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {lecturerField3, paperCodeField3, paperNameField3, tutorField3});
+        jPanel7Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {paperCodeField3, paperNameField3});
 
         addPaperTab3Button.setText("Add");
         addPaperTab3Button.addActionListener(new java.awt.event.ActionListener() {
@@ -851,7 +860,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(191, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -863,7 +872,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
                         .addGap(117, 117, 117))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(200, Short.MAX_VALUE))))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -882,7 +891,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
 
         jScrollPane5.setViewportView(jPanel6);
 
-        jTabbedPane1.addTab("Time Table", jScrollPane5);
+        jTabbedPane1.addTab("Paper List", jScrollPane5);
 
         invigilatorTableTab4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -915,6 +924,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
         jLabel30.setText("Status:");
 
         statusBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "INVIGILATOR", "IN-CHARGE" }));
+        statusBox4.setSelectedIndex(-1);
 
         searchButton4.setText("Search");
 
@@ -1712,6 +1722,8 @@ public final class ExamDataGUI extends javax.swing.JFrame {
        createSuggestList(getVenueBox5(), new GetData().getList(Venue.TABLE, Venue.NAME));
        createSuggestList(getDateBox5(), new GetData().getList(SessionAndDate.TABLE, SessionAndDate.DATE));
        createSuggestList(facultyBox6, new GetData().getList(Programme.TABLE, Programme.FACULTY));
+       createSuggestList(dateBox3, new GetData().getList(SessionAndDate.TABLE, SessionAndDate.DATE));
+       createSuggestList(venueBox3, new GetData().getList(Venue.TABLE, Venue.NAME));
        
        UIManager.getLookAndFeelDefaults().put("ComboBox.noActionOnKeyNavigation", true);
     }
@@ -1961,6 +1973,20 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     public javax.swing.JButton getDeleteCandidateButton6() {
         return deleteCandidateButton6;
     }
+
+    /**
+     * @return the dateBox3
+     */
+    public javax.swing.JComboBox<String> getDateBox3() {
+        return dateBox3;
+    }
+
+    /**
+     * @return the venueBox3
+     */
+    public javax.swing.JComboBox<String> getVenueBox3() {
+        return venueBox3;
+    }
     
     class CustomCellEditor extends DefaultCellEditor{
         JComboBox comboBox;
@@ -2153,6 +2179,7 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JLabel availableSizeLabel;
     private javax.swing.JComboBox<String> blockBox4;
     private javax.swing.JTable candidateTable6;
+    private javax.swing.JComboBox<String> dateBox3;
     private javax.swing.JComboBox<String> dateBox4;
     private javax.swing.JComboBox<String> dateBox5;
     private javax.swing.JTextField dateField;
@@ -2208,10 +2235,10 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -2237,7 +2264,6 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField lecturerField3;
     private javax.swing.JTable markTable;
     private javax.swing.JTextField nameField;
     private javax.swing.JTextField nameField1;
@@ -2274,8 +2300,8 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JLabel statusMessage;
     private javax.swing.JLabel tableHelp;
     private javax.swing.JTextField tableNumberField;
-    private javax.swing.JTextField tutorField3;
     private javax.swing.JButton updateButton;
+    private javax.swing.JComboBox<String> venueBox3;
     private javax.swing.JComboBox<String> venueBox4;
     private javax.swing.JComboBox<String> venueBox5;
     private javax.swing.JTextField venueField;
@@ -2283,14 +2309,6 @@ public final class ExamDataGUI extends javax.swing.JFrame {
     private javax.swing.JLabel warningMessage1;
     private javax.swing.JComboBox<String> yearBox;
     // End of variables declaration//GEN-END:variables
-
-
-    /**
-     * @return the lecturerField3
-     */
-    public javax.swing.JTextField getLecturerField3() {
-        return lecturerField3;
-    }
 
     /**
      * @return the paperNameField3
@@ -2304,13 +2322,6 @@ public final class ExamDataGUI extends javax.swing.JFrame {
      */
     public javax.swing.JButton getSearchButton3() {
         return searchButton3;
-    }
-
-    /**
-     * @return the tutorField3
-     */
-    public javax.swing.JTextField getTutorField3() {
-        return tutorField3;
     }
 
     /**

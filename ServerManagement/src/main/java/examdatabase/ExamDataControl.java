@@ -240,11 +240,12 @@ public class ExamDataControl implements Runnable{
             public void actionPerformed(ActionEvent e){
                 GetData getData = new GetData();
                 
-                getData.setLecturer(examDataGUI.getLecturerField3().getText());
-                getData.setTutor(examDataGUI.getTutorField3().getText());
+                getData.setVenueName((String) examDataGUI.getVenueBox3().getSelectedItem());
+                getData.setDate((String) examDataGUI.getDateBox3().getSelectedItem());
                 getData.setProgName(examDataGUI.getProgrammeBox3().getSelectedItem().toString());
                 getData.setPaperCode(examDataGUI.getPaperCodeField3().getText());
                 getData.setPaperDesc(examDataGUI.getPaperNameField3().getText());
+//                getData.setPaperDesc(examDataGUI.getPaperNameField3().getText());
         
             examDataGUI.setStatusMessage("");
             ArrayList<GetData> list = null;
@@ -252,10 +253,14 @@ public class ExamDataControl implements Runnable{
             examDataGUI.setPaperTable3RowCount(0);
 
             try {
-                list = getData.getCourseStructure();
+                list = getData.getPaperList();
                 int i = 0;
                 for(i = 0; i<list.size(); i++){
-                    examDataGUI.addPaperToPaperTable3(new Object[]{list.get(i).getPaperCode(), list.get(i).getPaperDesc(), list.get(i).getLecturer(), list.get(i).getTutor(), list.get(i).getProgName(), list.get(i).getProgGroup(), list.get(i).getExamWeight(), list.get(i).getCourseworkWeight()});
+                    examDataGUI.addPaperToPaperTable3(new Object[]{list.get(i).getPaperCode(), list.get(i).getPaperDesc(),
+                                                                 list.get(i).getProgName(), list.get(i).getProgGroup(),
+                                                                 list.get(i).getVenueName(),
+                                                                 list.get(i).getDate(), list.get(i).getSession(),
+                                                                 list.get(i).getCollector()});
                 }
 
             } catch (Exception ex) {
@@ -303,13 +308,7 @@ public class ExamDataControl implements Runnable{
         examDataGUI.addSearchButtonTab4Listener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 GetData getData = new GetData();
-                
-                getData.setLecturer(examDataGUI.getLecturerField3().getText());
-                getData.setTutor(examDataGUI.getTutorField3().getText());
-                getData.setProgName(examDataGUI.getProgrammeBox3().getSelectedItem().toString());
-                getData.setPaperCode(examDataGUI.getPaperCodeField3().getText());
-                getData.setPaperDesc(examDataGUI.getPaperNameField3().getText());
-        
+          
                 examDataGUI.setStatusMessage("");
                 ArrayList<GetData> list = null;
                 availablePaper5List = new GetData().getUnassignedVenuePaper();

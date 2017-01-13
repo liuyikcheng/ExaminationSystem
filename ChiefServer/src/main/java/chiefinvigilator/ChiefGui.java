@@ -61,6 +61,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 public class ChiefGui extends javax.swing.JFrame {
 //    Staff staff = new Staff();
     DefaultTableModel staffInfoTableModel = new DefaultTableModel();
+    DefaultTableModel collectorTable4Model = new DefaultTableModel();
     DefaultTableModel candidateTableModel = new DefaultTableModel();
     DefaultComboBoxModel  venueBoxModel = new DefaultComboBoxModel();
     DefaultComboBoxModel  statusBoxModel = new DefaultComboBoxModel();
@@ -94,6 +95,7 @@ public class ChiefGui extends javax.swing.JFrame {
 //        staffInfoTable(new Object());
         
         candidateTableModel = (DefaultTableModel) candidateTable.getModel();
+        collectorTable4Model = (DefaultTableModel) collectorTable4.getModel();
         candidateTable.setDefaultRenderer(Object.class, new CandidateTableCellRenderer());
         candidateTable.setAutoCreateRowSorter(rootPaneCheckingEnabled);
 //        chiefTabbedPane.setEnabled(false);
@@ -155,6 +157,21 @@ public class ChiefGui extends javax.swing.JFrame {
         statusComboBox = new javax.swing.JComboBox<>();
         attendanceComboBox = new javax.swing.JComboBox<>();
         tableNumTextField = new javax.swing.JTextField();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        bundleIdField4 = new javax.swing.JTextField();
+        programmeBox4 = new javax.swing.JComboBox<>();
+        venueBox4 = new javax.swing.JComboBox<>();
+        staffIdField4 = new javax.swing.JTextField();
+        paperCodeField4 = new javax.swing.JTextField();
+        searchButton4 = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        collectorTable4 = new javax.swing.JTable();
         statusPanel = new javax.swing.JPanel();
         connectivityTextField = new javax.swing.JLabel();
         connectButton = new javax.swing.JButton();
@@ -196,13 +213,13 @@ public class ChiefGui extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1167, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
         );
 
         loggedChief.setText("Chief :");
@@ -292,11 +309,11 @@ public class ChiefGui extends javax.swing.JFrame {
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1050, Short.MAX_VALUE)
+            .addGap(0, 1167, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 365, Short.MAX_VALUE)
+            .addGap(0, 556, Short.MAX_VALUE)
         );
 
         qrGenPanel.add(jPanel9);
@@ -424,7 +441,7 @@ public class ChiefGui extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1165, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -440,7 +457,7 @@ public class ChiefGui extends javax.swing.JFrame {
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(28, 28, 28)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
         );
 
         jScrollPane5.setViewportView(jPanel4);
@@ -459,6 +476,117 @@ public class ChiefGui extends javax.swing.JFrame {
         jScrollPane4.setViewportView(jPanel3);
 
         chiefTabbedPane.addTab("Candidates' Summary", jScrollPane4);
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Search"));
+
+        jLabel8.setText("Bundle ID:");
+
+        jLabel9.setText("Programme:");
+
+        jLabel10.setText("PaperCode:");
+
+        jLabel11.setText("Venue:");
+
+        jLabel12.setText("Staff ID: ");
+
+        bundleIdField4.setText(" ");
+
+        staffIdField4.setText(" ");
+
+        paperCodeField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                paperCodeField4ActionPerformed(evt);
+            }
+        });
+
+        searchButton4.setText("Search");
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(23, 23, 23)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(programmeBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bundleIdField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(paperCodeField4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel12))
+                    .addComponent(venueBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(staffIdField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchButton4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel11Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {bundleIdField4, paperCodeField4, staffIdField4});
+
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel12)
+                    .addComponent(bundleIdField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(staffIdField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(paperCodeField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel11)
+                    .addComponent(programmeBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(venueBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchButton4))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel11Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {bundleIdField4, paperCodeField4, staffIdField4});
+
+        collectorTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Bundle ID", "Programme", "PaperCode", "Venue", "StafflD"
+            }
+        ));
+        jScrollPane7.setViewportView(collectorTable4);
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane7)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap(142, Short.MAX_VALUE)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(131, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7))
+        );
+
+        chiefTabbedPane.addTab("CollectorList", jPanel10);
 
         submitButton.setText("Submit");
 
@@ -495,7 +623,7 @@ public class ChiefGui extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(chiefTabbedPane)
+            .addComponent(chiefTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 931, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(statusPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(42, 42, 42))
@@ -503,13 +631,17 @@ public class ChiefGui extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(chiefTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addComponent(chiefTabbedPane)
                 .addGap(0, 0, 0)
                 .addComponent(statusPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void paperCodeField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paperCodeField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_paperCodeField4ActionPerformed
 
     public void addSignInButtonListener(ActionListener al){
         this.signInButton.addActionListener(al);
@@ -521,6 +653,10 @@ public class ChiefGui extends javax.swing.JFrame {
 
     public void addCandSearchListener(MouseListener al){
         this.candSearch.addMouseListener(al);
+    }
+    
+    public void addSearchButton4(ActionListener al){
+        this.searchButton4.addActionListener(al);
     }
     
     public void addConnectListener(ActionListener al){
@@ -608,11 +744,27 @@ public class ChiefGui extends javax.swing.JFrame {
     }
     
     /**
+     * @brief   set the collector table row number
+     * @param num 
+     */
+    public void setCollectorTableModelRow(Integer num){
+        collectorTable4Model.setRowCount(num);
+    }
+    
+    /**
      * @brief   add new object to candidate table
      * @param object 
      */
     public void addCandidateTableModelRow(Object[] object){
         candidateTableModel.addRow(object);
+    }
+    
+    /**
+     * @brief   add new object to candidate table
+     * @param object 
+     */
+    public void addCollectorTable4ModelRow(Object[] object){
+        collectorTable4Model.addRow(object);
     }
     
     public void setTableRowColor(Color color, Integer row){
@@ -638,6 +790,48 @@ public class ChiefGui extends javax.swing.JFrame {
     
     public void setLoggedBlock(String text){
         this.loggedBlock.setText(text);
+    }
+
+    /**
+     * @return the bundleIdField4
+     */
+    public javax.swing.JTextField getBundleIdField4() {
+        return bundleIdField4;
+    }
+
+    /**
+     * @return the paperCodeField4
+     */
+    public javax.swing.JTextField getPaperCodeField4() {
+        return paperCodeField4;
+    }
+
+    /**
+     * @return the programmeBox4
+     */
+    public javax.swing.JComboBox<String> getProgrammeBox4() {
+        return programmeBox4;
+    }
+
+    /**
+     * @return the staffIdField4
+     */
+    public javax.swing.JTextField getStaffIdField4() {
+        return staffIdField4;
+    }
+
+    /**
+     * @return the venueBox4
+     */
+    public javax.swing.JComboBox<String> getVenueBox4() {
+        return venueBox4;
+    }
+
+    /**
+     * @return the collectorTable4
+     */
+    public javax.swing.JTable getCollectorTable4() {
+        return collectorTable4;
     }
     
     /**
@@ -867,21 +1061,30 @@ public class ChiefGui extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel absCddLabel;
     private javax.swing.JComboBox<String> attendanceComboBox;
+    private javax.swing.JTextField bundleIdField4;
     private javax.swing.JButton candSearch;
     private static javax.swing.JTable candidateTable;
     public static javax.swing.JTabbedPane chiefTabbedPane;
+    private javax.swing.JTable collectorTable4;
     private javax.swing.JButton connectButton;
     private javax.swing.JLabel connectivityTextField;
     private javax.swing.JButton downloadButton;
     private javax.swing.JTextField idTextField;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -896,19 +1099,25 @@ public class ChiefGui extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JLabel loggedBlock;
     private javax.swing.JLabel loggedChief;
+    private javax.swing.JTextField paperCodeField4;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel preCddLabel;
+    private javax.swing.JComboBox<String> programmeBox4;
     private javax.swing.JPanel qrGenPanel;
     private javax.swing.JTextField regNumTextField;
+    private javax.swing.JButton searchButton4;
     private javax.swing.JButton signInButton;
+    private javax.swing.JTextField staffIdField4;
     private static javax.swing.JTable staffInfoTable;
     private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JPanel statusPanel;
     private javax.swing.JButton submitButton;
     private javax.swing.JTextField tableNumTextField;
     private javax.swing.JLabel totalCddLabel;
+    private javax.swing.JComboBox<String> venueBox4;
     private javax.swing.JComboBox<String> venueComboBox;
     // End of variables declaration//GEN-END:variables
 }

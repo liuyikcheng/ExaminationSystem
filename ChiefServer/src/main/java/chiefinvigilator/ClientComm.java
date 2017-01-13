@@ -95,7 +95,7 @@ public class ClientComm extends Thread {
         this.chiefServer = chiefServer;
         this.qrGen = qrGen;
         this.chiefControl = chiefControl;
-        serverComm.createReceiveQueue(this.threadId);
+//        serverComm.createReceiveQueue(this.threadId);
 //        timer.start();
     }
 
@@ -198,8 +198,14 @@ public class ClientComm extends Thread {
                                     break;
                                     
                 case CheckInType.COLLECTION : 
-                                    JSONObject paperBundle = new JSONObject(json.getJSONObject(InfoType.PAPERBUNDLE_JSON));
-                                    boolean verifyResult = this.getStaff().verifyForCollector(json.getString(InfoType.COLLECTOR), paperBundle.getString(PaperBundle.BUNDLE_ID));
+                                    JSONObject paperBundle = json.getJSONObject(InfoType.PAPERBUNDLE_JSON);
+                                    String bundleId = paperBundle.getString(InfoType.BUNDLE_ID);
+                                    String staffId = json.getString(InfoType.COLLECTOR);
+                                    
+                                    boolean verifyResult = new Staff().verifyForCollector(staffId, bundleId);
+                                    if(verifyResult)
+                                        updatePaperCollector(bundleId, staffId);
+//                                    System.out.println("Collection " +bundleId+" "+"staffId"+" "+deviceId+" "+verifyResult);
                                     sendMessage(booleanToJson(verifyResult, CheckInType.COLLECTION, deviceId).toString());
                                     break;
                     
@@ -221,8 +227,7 @@ public class ClientComm extends Thread {
             }
             
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            sendMessage(booleanToJson(false, "Error", deviceId).toString());
+            Logger.getLogger(ClientComm.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
     }
@@ -238,7 +243,8 @@ public class ClientComm extends Thread {
             
             ThreadMessage tm = this.getServerComm().getReceiveQueue(this.getThreadId());
 
-            System.out.println("ClientComm queue packet received : " + tm.getMessage());
+//            System.out.println("ClientComm queue packet received : " + tm.getMessage());
+            if(tm != null){
             json = new JSONObject(tm.getMessage());
             
             String type = json.getString(InfoType.TYPE);
@@ -277,11 +283,13 @@ public class ClientComm extends Thread {
                                     break;                   
              
             }
+            }
         } catch (IOException ex) {
             Logger.getLogger(ServerComm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(ClientComm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         
     }
     
@@ -301,7 +309,7 @@ public class ClientComm extends Thread {
                 + "LEFT OUTER JOIN Paper ON Paper.Venue_id = Venue.Venue_id "
                 + "LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = Paper.PI_id "
                 + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.Paper_id = Paper.Paper_id "
-                + "LEFT OUTER JOIN CandidateInfo ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
+                + "LEFT OUTER JOIN CandidateInfo ON CandidateInfo.CI_id = CandidateAttendance.CI_id "
                 + "LEFT OUTER JOIN Programme ON Programme.Programme_id = CandidateInfo.Programme_id "
                 + "WHERE VenueName = ? ";
 //                + "AND Date = ? AND Session = ? ";
@@ -366,7 +374,7 @@ public class ClientComm extends Thread {
         Connection conn = new ConnectDB().connect();
         String sql = "SELECT Venue.Name AS VenueName "
                 + ",* FROM CandidateInfo "
-                + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CandidateInfoIC = CandidateInfo.IC "
+                + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CI_id = CandidateInfo.CI_id "
                 + "LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.Paper_id "
                 + "LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = Paper.PI_id "
                 + "LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
@@ -470,7 +478,7 @@ public class ClientComm extends Thread {
    public void updateCandidateAttendence(ArrayList<Candidate> cddList) throws SQLException{
         String sql = "UPDATE CandidateAttendance "
                 + "SET Attendance = ?, TableNumber = ? "
-                + "WHERE CandidateInfoIC = (SELECT IC FROM CandidateInfo WHERE ExamID = ? ) ";
+                + "WHERE CI_id = (SELECT CI_id FROM CandidateInfo WHERE ExamID = ? ) ";
     
         Connection conn = new ConnectDB().connect();
         
@@ -488,6 +496,25 @@ public class ClientComm extends Thread {
         pstmt.close();
         conn.close();
     }
+   
+   public void updatePaperCollector(String bundleId, String staffId) throws SQLException{
+       String sql = "UPDATE Paper "
+                + "SET Collector = ? "
+                + "WHERE bundleId = ? ";
+    
+        Connection conn = new ConnectDB().connect();
+        
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+  
+            
+            pstmt.setString(1,staffId);
+            pstmt.setString(2,bundleId);
+            pstmt.executeUpdate();
+
+        
+        pstmt.close();
+        conn.close();
+   }
 
    /**
     * @brief    To convert a boolean into JSON object

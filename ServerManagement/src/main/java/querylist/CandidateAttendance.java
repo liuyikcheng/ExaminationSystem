@@ -11,8 +11,8 @@ package querylist;
  */
 public class CandidateAttendance {
         public final static String TABLE = "CandidateAttendance";
-        public final static String ID = "CI_id";
-        public final static String CANDIDATE_INFO_IC = "CandidateInfoIC";
+        public final static String ID = "CA_id";
+        public final static String CI_ID = "CI_id";
         public final static String PAPER_ID = "Paper_id";
         public final static String STATUS = "Status";
         public final static String ATTENDANCE = "Attendance";
@@ -29,7 +29,7 @@ public class CandidateAttendance {
         
     
     Integer ca_id;
-    String ic;
+    Integer ci_id;
     Integer paper_id;
     String status;
     String attendance;
@@ -38,13 +38,13 @@ public class CandidateAttendance {
     public CandidateAttendance(){}
     
     public CandidateAttendance( Integer ca_id,
-                                String ic,
+                                Integer ci_id,
                                 Integer paper_id,
                                 String status,
                                 String attendance,
                                 Integer tableNo){
         this.ca_id = ca_id;
-        this.ic = ic;
+        this.ci_id = ci_id;
         this.paper_id = paper_id;
         this.status = status;
         this.attendance = attendance;
@@ -55,10 +55,11 @@ public class CandidateAttendance {
         return this.ca_id;
     }
     
-    public String getIc(){
-        return this.ic;
+    public Integer getCi_id() {
+        return this.ci_id;
     }
     
+
     public Integer getPaper_id(){
         return this.paper_id;
     }
@@ -74,5 +75,6 @@ public class CandidateAttendance {
     public Integer getTableNo(){
         return this.tableNo;
     }
-    
+
+
 }

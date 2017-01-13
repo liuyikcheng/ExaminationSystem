@@ -181,6 +181,7 @@ public class MessageListener extends Thread{
                                         sendMessage(booleanToJson(false,CheckInType.EXAM_DATA_SUBMIT).toString());
                                     }
                                     break;
+                                    
             }
         } catch (Exception ex) {
             Logger.getLogger(MessageListener.class.getName()).log(Level.SEVERE, null, ex);
@@ -195,6 +196,7 @@ public class MessageListener extends Thread{
         ChiefData chief = new ChiefData();
         ExamDataList examDataList = mapper.readValue(data, ExamDataList.class);
         chief.updateCddAttdList(examDataList.getCddAttd());
+        chief.updatePaper(examDataList.getPaper());
     }
     
     /**

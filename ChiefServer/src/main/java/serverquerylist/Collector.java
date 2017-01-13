@@ -10,16 +10,23 @@ package serverquerylist;
  * @author Krissy
  */
 public class Collector {
-    Integer collector_id;
+    
+    public final static String TABLE = "Collector";
+    public final static String ID = "Collector_id";
+    public final static String PAPER_ID = "Paper_id";
+    public final static String STAFF_ID = "StaffID";
+    
+    private Integer collector_id;
     Integer paper_id;
     String staffId;
-    String bundleId;
     
     public Collector(){}
     
-    public Collector(   Integer paper_id,
+    public Collector(   Integer collector_id,
+                        Integer paper_id,
                         String staffId
                         ){
+        this.collector_id = collector_id;
         this.paper_id = paper_id;
         this.staffId = staffId;
         
@@ -31,5 +38,12 @@ public class Collector {
     
     public String getStaffId(){
         return this.staffId;
+    }
+
+    /**
+     * @return the collector_id
+     */
+    public Integer getCollector_id() {
+        return collector_id;
     }
 }

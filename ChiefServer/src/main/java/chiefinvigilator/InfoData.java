@@ -37,6 +37,8 @@ public class InfoData {
     //Paper
     private String date = "";
     private String session = "";
+    private String bundleId = "";
+    private String collector = "";
     
     //PaperInfo
     private String paperCode = "";
@@ -140,7 +142,7 @@ public class InfoData {
                 + ", PaperInfo.PaperCode, PaperInfo.PaperDescription "
                 + ", Venue.Name AS VenueName, Venue.Size, * "
                 + " FROM CandidateInfo "
-                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
+                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.CI_id = CandidateAttendance.CI_id "
                 + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
                 + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
                 + " LEFT OUTER JOIN PaperInfo ON Paper.PI_id = PaperInfo.PI_id "
@@ -199,6 +201,62 @@ public class InfoData {
      * Get the info of a candidate from the connected database
      * @return list     The arraylist contain the info of the candidate
      */
+    public ArrayList<InfoData> getCollectorList() throws CustomException{
+        String result = "";
+        String sql =    "SELECT * "
+                + ", Programme.Name AS ProgName "
+                + ", Venue.Name AS VenueName "
+                + " FROM Collector "
+                + " LEFT OUTER JOIN Paper ON Collector.Paper_id = Paper.Paper_id "
+                + " LEFT OUTER JOIN Programme ON Programme.Programme_id = Paper.Programme_id "
+                + " LEFT OUTER JOIN PaperInfo ON Paper.PI_id = PaperInfo.PI_id "
+                + " LEFT OUTER JOIN Venue ON Paper.Venue_id = Venue.Venue_id "
+                
+//                + " WHERE BundleID " + checkInput(this.bundleId)
+//                + " AND ProgName " + checkInput(this.progName)
+//                + " AND PaperCode "+ checkInput(this.paperCode)
+//                + " AND VenueName "+ checkInput(this.venueName)
+//                + " AND StaffID "+ checkInput(this.collector)
+                ;
+//        System.out.print("Check: "+ checkInput(this.bundleId)+checkInput(this.collector) );
+        InfoData data;
+        ArrayList<InfoData> list = new ArrayList<>();
+        
+        try (Connection conn = new ConnectDB().connect();
+                
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql)){
+            
+            // loop through the result set
+            while (rs.next()) {
+//                System.out.print("Check: "+ rs.getString("StaffID"));
+                data = new InfoData();
+                
+                data.setBundleId(rs.getString("BundleID"));
+                data.setProgName(rs.getString("ProgName"));
+                data.setPaperCode(rs.getString("PaperCode"));
+                data.setVenueName(rs.getString("VenueName"));
+                data.setCollector(rs.getString("StaffID"));
+                
+                if(rs.getString("BundleID") != null)
+                   list.add(data);
+            }
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        if(list.isEmpty())
+            throw new CustomException("No data found.");
+        else
+            return list;
+    }
+    
+    /**
+     * Get the info of a candidate from the connected database
+     * @return list     The arraylist contain the info of the candidate
+     */
     public ArrayList<InfoData> getDataCheckMark() throws CustomException{
         String sql =    "SELECT CandidateInfo.IC, CandidateInfo.Name, CandidateInfo.RegNum "
                 + ", Programme.Name AS ProgName, Programme.Faculty "
@@ -207,7 +265,7 @@ public class InfoData {
                 + ", PaperInfo.PaperCode, PaperInfo.PaperDescription "
                 + " FROM StudentMark "
                 + " LEFT OUTER JOIN CandidateInfo ON StudentMark.RegNum = CandidateInfo.RegNum "
-                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
+                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.CI_id = CandidateAttendance.CI_id "
                 + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
                 + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
                 + " LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = StudentMark.PI_id "
@@ -690,6 +748,34 @@ public class InfoData {
      */
     public void setYear(int year) {
         this.year = year;
+    }
+
+    /**
+     * @return the bundleId
+     */
+    public String getBundleId() {
+        return bundleId;
+    }
+
+    /**
+     * @param bundleId the bundleId to set
+     */
+    public void setBundleId(String bundleId) {
+        this.bundleId = bundleId;
+    }
+
+    /**
+     * @return the collector
+     */
+    public String getCollector() {
+        return collector;
+    }
+
+    /**
+     * @param collector the collector to set
+     */
+    public void setCollector(String collector) {
+        this.collector = collector;
     }
  
 }

@@ -53,6 +53,7 @@ public class GetData {
     private String session = "";
     private Integer numOfCand = 0;
     private Integer startingNum = 0;
+    private String Collector = "";
     
     //PaperInfo
     private String paperCode = "";
@@ -190,7 +191,7 @@ public class GetData {
                 + ", SessionAndDate.Session AS SessionType "
                 + ", SessionAndDate.Date AS SessionDate "
                 + " FROM CandidateAttendance "
-                + " LEFT OUTER JOIN CandidateInfo ON CandidateAttendance.CandidateInfoIC = CandidateInfo.IC "
+                + " LEFT OUTER JOIN CandidateInfo ON CandidateAttendance.CI_id = CandidateInfo.CI_id "
                 + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
                 + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
                 + " LEFT OUTER JOIN PaperInfo ON Paper.PI_id = PaperInfo.PI_id "
@@ -258,7 +259,7 @@ public class GetData {
                 + ", PaperInfo.PaperCode, PaperInfo.PaperDescription "
                 + " FROM StudentMark "
                 + " LEFT OUTER JOIN CandidateInfo ON StudentMark.RegNum = CandidateInfo.RegNum "
-                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
+                + " LEFT OUTER JOIN CandidateAttendance ON CandidateInfo.CI_id = CandidateAttendance.CI_id "
                 + " LEFT OUTER JOIN Programme ON CandidateInfo.Programme_id = Programme.Programme_id "
                 + " LEFT OUTER JOIN Paper ON CandidateAttendance.Paper_id = Paper.Paper_id "
                 + " LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = StudentMark.PI_id "
@@ -342,6 +343,61 @@ public class GetData {
                 info.setCourseworkWeight(rs.getInt("CourseworkWeight"));                
                 info.setProgName(rs.getString("ProgrammeName"));                
                 info.setProgGroup(rs.getString("ProgrammeGroup"));                
+                
+                list.add(info);
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        if(list.isEmpty())
+            throw new Exception("No data found.");
+        else
+            return list;
+    }
+    
+    /**
+     * Get the info of a course structure from the connected database
+     * @return list     The arraylist contain the info of the candidate
+     */
+    public ArrayList<GetData> getPaperList() throws Exception{
+        String sql =    "SELECT *, Programme.Name AS ProgrammeName, Programme.Programme_Group AS ProgrammeGroup,"
+                + "Venue.Name AS VenueName "
+                + " FROM Paper "
+                + " LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = Paper.PI_id "
+                + " LEFT OUTER JOIN Programme ON Programme.Programme_id = Paper.Programme_id "
+                + " LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
+                + " LEFT OUTER JOIN SessionAndDate ON SessionAndDate.Session_id = Paper.Session_id "
+                + " WHERE VenueName " + checkInput(this.getVenueName())
+                + " AND Date "+ checkInput(this.getDate())
+                + " AND PaperInfo.PaperCode "+ checkInput(this.getPaperCode())
+                + " AND PaperInfo.PaperDescription "+ checkInput(this.getPaperDesc())  
+                + " AND Programme.Name "+ checkInput(this.getProgName())  
+//                + " AND Programme.Group "+ checkInput(this.getProgGroup()) 
+                ;
+
+        
+        ArrayList<GetData> list = new ArrayList<>();
+        
+        try {
+            Connection conn = new ConnectDB().connect();
+            Statement stmt  = conn.createStatement();
+            ResultSet rs    = stmt.executeQuery(sql);
+            // loop through the result set
+            while (rs.next()) {
+                GetData info = new GetData();
+                info.setPaperCode(rs.getString("PaperCode"));
+                info.setPaperDesc(rs.getString("PaperDescription"));                      
+                info.setProgName(rs.getString("ProgrammeName"));                
+                info.setProgGroup(rs.getString("ProgrammeGroup"));                
+                info.setVenueName(rs.getString("VenueName"));                
+                info.setDate(rs.getString("Date"));                
+                info.setSession(rs.getString("Session"));                
+                info.setCollector(rs.getString("Collector"));         
                 
                 list.add(info);
             }
@@ -1250,6 +1306,20 @@ public class GetData {
      */
     public void setExamId(String examId) {
         this.examId = examId;
+    }
+
+    /**
+     * @return the Collector
+     */
+    public String getCollector() {
+        return Collector;
+    }
+
+    /**
+     * @param Collector the Collector to set
+     */
+    public void setCollector(String Collector) {
+        this.Collector = Collector;
     }
  
 }

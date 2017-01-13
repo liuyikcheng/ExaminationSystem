@@ -56,7 +56,8 @@ import serverquerylist.ExamDataList;
  */
 public class ServerComm extends Thread implements Runnable{
 
-    ReentrantLock mutex = new ReentrantLock();
+    ReentrantLock sendMutex = new ReentrantLock();
+
     Socket socket;
     boolean signIn = false;
     ChiefData chiefData;
@@ -197,9 +198,10 @@ public class ServerComm extends Thread implements Runnable{
     
     private void sendMessage(String message) throws IOException{
         System.out.println("SeverComm Sending: " + message);
+        sendMutex.lock();
         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
         out.writeUTF(message);
-            
+        sendMutex.unlock();
         System.out.println("ServerComm Message sent: " + message);
     }
     
@@ -222,7 +224,7 @@ public class ServerComm extends Thread implements Runnable{
                                         this.signIn = true;
                                         this.chiefControl.updateGuiLoggedChief();
                                         this.chiefControl.setGuiPanelEnable(true);
-                                        submitDB(this.chiefControl.getChiefId(), this.chiefControl.getChiefBlock());
+                                        downloadDB(this.chiefControl.getChiefId(), this.chiefControl.getChiefBlock());
                     
                                     }
                                     else
@@ -327,15 +329,15 @@ public class ServerComm extends Thread implements Runnable{
 //        System.out.println("ServerComm Size = "+this.serverQueue.size());
     }
     
-    public void createReceiveQueue(long threadId){
-        this.clientQueueList.put(threadId, new LinkedList());
-    }
+//    public void createReceiveQueue(long threadId){
+//        this.clientQueueList.put(threadId, new LinkedList());
+//    }
     
     public void putQueue(long threadId, String message){
-        
-        LinkedList list = (LinkedList)(this.clientQueueList.get(threadId));
-        list.add(new ThreadMessage(threadId, message));
-        this.clientQueueList.replace(threadId, list);
+        this.clientQueueList.put(threadId, new ThreadMessage(threadId, message));
+//        LinkedList list = (LinkedList)(this.clientQueueList.get(threadId));
+//        list.add(new ThreadMessage(threadId, message));
+//        this.clientQueueList.replace(threadId, list);
         
     }
     
@@ -344,25 +346,37 @@ public class ServerComm extends Thread implements Runnable{
      * @param threadId
      * @return 
      */
-    public ThreadMessage getReceiveQueue(long threadId){
+    public ThreadMessage getReceiveQueue(long threadId) throws InterruptedException{
         Boolean set = false;
-        LinkedList list = new LinkedList();
-        
-        while(set == false){
-            list = (LinkedList)(this.clientQueueList.get(threadId));
-            
-            if(!list.isEmpty()){
-//                mutex.lock();
-                System.out.println("List = "+list.isEmpty());
-                ThreadMessage tm = (ThreadMessage) list.get(0);
-                if(list.get(0) != null && tm.getThreadId() == threadId){
-                    list = (LinkedList)(this.clientQueueList.get(threadId));
-                    set = true;
-                }
-//                mutex.unlock();
+//        LinkedList list = new LinkedList();
+        ThreadMessage tm = new ThreadMessage();
+//            list = (LinkedList)(this.clientQueueList.get(threadId));
+//            readSemaphore.release();
+
+            if(this.clientQueueList.containsKey(threadId)){
+//                list = (LinkedList) this.clientQueueList.remove(threadId);
+                tm = (ThreadMessage) this.clientQueueList.remove(threadId);
+                return tm;
             }
-        }
-        return (ThreadMessage)list.poll();
+            else 
+                return null;
+//            if(list.isEmpty()==false){
+//                
+//                System.out.println("List is empty= "+list.isEmpty());
+//                tm = (ThreadMessage) list.get(0);
+//                
+//                if(tm != null && tm.getThreadId() == threadId){
+////                    writeMutex.lock();
+//                    while(readSemaphore.availablePermits() != MAX_AVAILABLE);
+//                    list = (LinkedList)(this.clientQueueList.get(threadId));
+//                    tm = (ThreadMessage)list.poll();
+//                    set = true;
+////                    writeMutex.unlock();
+//                    return tm;
+//                }
+                
+//            }
+//        return null;
     }
     
     public void updateDB(String data) throws IOException, SQLException{
@@ -374,6 +388,7 @@ public class ServerComm extends Thread implements Runnable{
         chief.updateCddAttdList(examDataList.getCddAttd());
         chief.updateCddInfoList(examDataList.getCddInfo());
         chief.updateChAndRe(examDataList.getChAndRe());
+        chief.updateCollector(examDataList.getCollector());
         chief.updateInvigilator(examDataList.getInv());
         chief.updatePaper(examDataList.getPaper());
         chief.updatePaperInfo(examDataList.getPaperInfo());

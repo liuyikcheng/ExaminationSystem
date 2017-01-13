@@ -217,7 +217,7 @@ public class Staff {
                 + "LEFT OUTER JOIN Paper ON Paper.Venue_id = Venue.Venue_id "
                 + "LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = Paper.PI_id "
                 + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.Paper_id = Paper.Paper_id "
-                + "LEFT OUTER JOIN CandidateInfo ON CandidateInfo.IC = CandidateAttendance.CandidateInfoIC "
+                + "LEFT OUTER JOIN CandidateInfo ON CandidateInfo.CI_id = CandidateAttendance.CI_id "
                 + "LEFT OUTER JOIN Programme ON Programme.Programme_id = CandidateInfo.Programme_id "
                 + "WHERE VenueName = ? ";
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -312,7 +312,7 @@ public class Staff {
         Connection conn = new ConnectDB().connect();
         String sql = "SELECT Venue.Name AS VenueName "
                 + ",* FROM CandidateInfo "
-                + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CandidateInfoIC = CandidateInfo.IC "
+                + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CI_id = CandidateInfo.CI_id "
                 + "LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.Paper_id "
                 + "LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = Paper.PI_id "
                 + "LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
@@ -415,7 +415,7 @@ public class Staff {
    public void updateCandidateAttendence(ArrayList<Candidate> cddList) throws SQLException{
         String sql = "UPDATE CandidateAttendance "
                 + "SET Attendance = ?, TableNumber = ? "
-                + "WHERE CandidateInfoIC = (SELECT IC FROM CandidateInfo WHERE ExamID = ? ) ";
+                + "WHERE CI_id = (SELECT CI_id FROM CandidateInfo WHERE ExamID = ? ) ";
     
         Connection conn = new ConnectDB().connect();
         
@@ -444,7 +444,7 @@ public class Staff {
         Boolean valid = false;
         Connection conn = new ConnectDB().connect();
         String sql = "SELECT Collector_id FROM Collector "
-                + " WHERE StaffID = ? AND BundleID = ? ";
+                + " WHERE StaffID = ? AND Paper_id = (SELECT Paper_id FROM Paper Where BundleID = ?) ";
         
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, staffId);

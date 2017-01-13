@@ -42,7 +42,7 @@ public class CreateDataBase {
         
         sql = "\nCREATE TABLE IF NOT EXISTS CandidateAttendance (\n"
                 + "	CAIndex         INT    PRIMARY KEY,\n"
-                + "	CandidateInfoIC TEXT    ,\n"
+                + "	CI_ID TEXT    ,\n"
                 + "	PaperIndex      INT     ,\n"
                 + "	Status          TEXT    ,\n"
                 + "	Attendance      TEXT    ,\n"

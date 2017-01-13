@@ -80,9 +80,13 @@ public class DataWriter {
         
         for(int i = 0; i < paperId.size(); i++){
             String sql = "INSERT INTO "
-                    + CandidateAttendance.TABLE + "(" + CandidateAttendance.CANDIDATE_INFO_IC + "," + CandidateAttendance.PAPER_ID + ","
+                    + CandidateAttendance.TABLE + "(" 
+                    + CandidateAttendance.CI_ID
+                    + "," + CandidateAttendance.PAPER_ID + ","
                     + CandidateAttendance.STATUS + "," + CandidateAttendance.ATTENDANCE + "," + CandidateAttendance.TABLE_NUMBER + ") "
-                    + "VALUES(?,?,?,?,?) ";
+                    + "VALUES("+" (SELECT " + CandidateInfo.ID + " FROM " + CandidateInfo.TABLE 
+                    +" WHERE " +CandidateInfo.CANDIDATE_INFO_IC +" = ?) "
+                    + ",?,?,?,?) ";
             
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,candidateIC);
@@ -127,7 +131,9 @@ public class DataWriter {
     
     public void removeCandidateAttendance(String candidateIC) throws SQLException{
         String sql = " DELETE FROM " + CandidateAttendance.TABLE +
-                    " WHERE " + CandidateAttendance.CANDIDATE_INFO_IC + " = ? ";
+                    " WHERE " + CandidateAttendance.CI_ID + " = " +
+                    " (SELECT " + CandidateInfo.ID + " FROM " + CandidateInfo.TABLE + 
+                    " WHERE " +CandidateInfo.CANDIDATE_INFO_IC +" = ?) ";
         
         Connection conn = new ConnectDB().connect();
         PreparedStatement ps = conn.prepareStatement(sql);

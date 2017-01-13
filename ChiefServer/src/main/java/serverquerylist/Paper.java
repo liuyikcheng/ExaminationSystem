@@ -10,6 +10,19 @@ package serverquerylist;
  * @author Krissy
  */
 public class Paper {
+    
+    public final static String TABLE = "Paper";
+    public final static String ID = "Paper_id";
+    public final static String PI_ID = "PI_id";
+    public final static String VENUE_ID = "Venue_id";
+    public final static String PAPER_START_NO = "PaperStartNo";
+    public final static String TOTAL_CANDIDATE = "TotalCandidate";
+    public final static String SESSION_ID = "Session_id";
+    public final static String PROGRAMME_ID = "Programme_id";
+    public final static String BUNDLE_ID = "BundleID";
+    public final static String COLLECTOR = "Collector";
+    
+    
     private Integer paper_id;
     private Integer pi_id;
     private Integer venue_id;
@@ -17,6 +30,8 @@ public class Paper {
     private Integer totalCandidate;
     private Integer session_id;
     private Integer programme_id;
+    private String bundleId;
+    private String collector;
     
     public Paper(){}
     
@@ -26,7 +41,9 @@ public class Paper {
             Integer paperStartNo,
             Integer totalCandidate,
             Integer session_id,
-            Integer programme_id
+            Integer programme_id,
+            String bundleId,
+            String collector
             ){
         this.paper_id = paper_id;
         this.pi_id = pi_id;
@@ -35,7 +52,8 @@ public class Paper {
         this.totalCandidate = totalCandidate;
         this.session_id = session_id;
         this.programme_id = programme_id;
-        
+        this.bundleId = bundleId;
+        this.collector = collector;
     }
     
     public Integer getPaper_id(){
@@ -113,6 +131,20 @@ public class Paper {
      */
     public void setProgramme_id(Integer programme_id) {
         this.programme_id = programme_id;
+    }
+
+    /**
+     * @return the bundleId
+     */
+    public String getBundleId() {
+        return bundleId;
+    }
+
+    /**
+     * @return the collector
+     */
+    public String getCollector() {
+        return collector;
     }
     
 }

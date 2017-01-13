@@ -30,6 +30,13 @@ public class ExamDataList {
     }
     
     public ExamDataList(ArrayList<CandidateAttendance> cddAttd,
+                        ArrayList<Paper> paper
+                        ){
+        this.cddAttd = cddAttd;
+        this.paper = paper;
+    }
+    
+    public ExamDataList(ArrayList<CandidateAttendance> cddAttd,
                         ArrayList<CandidateInfo> cddInfo,
                         ArrayList<ChiefAndRelief> chAndRe,
                         ArrayList<Collector> collector,

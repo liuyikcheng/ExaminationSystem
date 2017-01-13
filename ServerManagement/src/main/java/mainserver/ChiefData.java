@@ -292,7 +292,9 @@ public class ChiefData {
                                         result.getInt("PaperStartNo"),
                                         result.getInt("TotalCandidate"),
                                         result.getInt("Session_id"),
-                                        result.getInt("Programme_id")
+                                        result.getInt("Programme_id"),
+                                        result.getString(Paper.BUNDLE_ID),
+                                        result.getString(Paper.COLLECTOR)
                                     ));
         }
         
@@ -313,7 +315,7 @@ public class ChiefData {
 
         Connection conn = new ConnectDB().connect();
         String sql = "SELECT * "
-                + "FROM CandidateAttendance "
+                + "FROM "+CandidateAttendance.TABLE+" "
                 + "LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.Paper_id "
                 + "LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
                 + "WHERE Block = ? AND Session_id = ?";
@@ -326,12 +328,12 @@ public class ChiefData {
         
         while ( result.next() ){
             cddAttdList.add(new CandidateAttendance(    
-                                        result.getInt("CA_id"),
-                                        result.getString("CandidateInfoIC"),
-                                        result.getInt("Paper_id"),
-                                        result.getString("Status"),
-                                        result.getString("Attendance"),
-                                        result.getInt("TableNumber")
+                                        result.getInt(CandidateAttendance.ID),
+                                        result.getInt(CandidateAttendance.CI_ID),
+                                        result.getInt(CandidateAttendance.PAPER_ID),
+                                        result.getString(CandidateAttendance.STATUS),
+                                        result.getString(CandidateAttendance.ATTENDANCE),
+                                        result.getInt(CandidateAttendance.TABLE_NUMBER)
                                     ));
         }
         
@@ -353,7 +355,7 @@ public class ChiefData {
         Connection conn = new ConnectDB().connect();
         String sql = "SELECT * "
                 + "FROM CandidateInfo "
-                + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CandidateInfoIC = CandidateInfo.IC "
+                + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CI_id = CandidateInfo.CI_id "
                 + "LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.Paper_id "
                 + "LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
                 + "WHERE Block = ? AND Session_id = ?";
@@ -437,8 +439,7 @@ public class ChiefData {
         while ( result.next() ){
             collectorList.add(new Collector(    result.getInt("Collector_id"),
                                                 result.getInt("Paper_id"),
-                                                result.getString("StaffID"),
-                                                result.getString("BundleID")
+                                                result.getString("StaffID")
                                                 ));
         }
         
@@ -601,7 +602,7 @@ public class ChiefData {
         Connection conn = new ConnectDB().connect();
         String sql = "SELECT Venue.Name AS VenueName "
                 + ",* FROM CandidateInfo "
-                + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CandidateInfoIC = CandidateInfo.IC "
+                + "LEFT OUTER JOIN CandidateAttendance ON CandidateAttendance.CI_id = CandidateInfo.CI_id "
                 + "LEFT OUTER JOIN Paper ON Paper.Paper_id = CandidateAttendance.Paper_id "
                 + "LEFT OUTER JOIN PaperInfo ON PaperInfo.PI_id = Paper.PI_id "
                 + "LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
@@ -659,11 +660,34 @@ public class ChiefData {
                    + "(?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, cddAttdList.get(i).getCa_id());
-            ps.setString(2, cddAttdList.get(i).getIc());
+            ps.setInt(2, cddAttdList.get(i).getCi_id());
             ps.setInt(3, cddAttdList.get(i).getPaper_id());
             ps.setString(4, cddAttdList.get(i).getStatus());
             ps.setString(5, cddAttdList.get(i).getAttendance());
             ps.setInt(6, cddAttdList.get(i).getTableNo());
+
+            ps.executeUpdate();
+            ps.close();
+           
+       }
+        conn.close();
+   }
+    
+    public void updatePaper(ArrayList<Paper> paperList) throws SQLException{
+        Connection conn = new ConnectDB().connect();
+        for(int i=0; i<paperList.size(); i++){
+            String sql = "INSERT OR REPLACE INTO Paper VALUES"
+                   + "(?,?,?,?,?,?,?,?,?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, paperList.get(i).getPaper_id());
+            ps.setInt(2, paperList.get(i).getPi_id());
+            ps.setInt(3, paperList.get(i).getVenue_id());
+            ps.setInt(4, paperList.get(i).getPaperStartNo());
+            ps.setInt(5, paperList.get(i).getTotalCandidate());
+            ps.setInt(6, paperList.get(i).getSession_id());
+            ps.setInt(7, paperList.get(i).getProgramme_id());
+            ps.setString(8, paperList.get(i).getBundleId());
+            ps.setString(9, paperList.get(i).getCollector());
 
             ps.executeUpdate();
             ps.close();
