@@ -200,13 +200,13 @@ public class ChiefData {
         ArrayList<Paper> paperList = new ArrayList<>();
         
         Connection conn = new ConnectDB().connect();
-        String sql = "SELECT * FROM Paper"
-                + " LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id "
-                + " WHERE Block = ?"
-                + " AND Session_id = ? ";
+        String sql = "SELECT * FROM Paper";
+//                + " LEFT OUTER JOIN Venue ON Venue.Venue_id = Paper.Venue_id ";
+//                + " WHERE Block = ?";
+//                + " AND Session_id = ? ";
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setString(1, this.block);
-        ps.setInt(2, getSession_id());
+//        ps.setString(1, this.block);
+//        ps.setInt(2, getSession_id());
 
         ResultSet result = ps.executeQuery();
         

@@ -418,7 +418,8 @@ public class ServerComm extends Thread implements Runnable{
         
         try {
             ExamDataList examDataList = new ExamDataList(
-                    chiefData.getCddAttdList(block)
+                    chiefData.getCddAttdList(block),
+                    chiefData.getPaperList()
             );
             jsonString = mapper.writeValueAsString(examDataList);
             JSONObject jsonData = new JSONObject(jsonString);

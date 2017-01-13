@@ -432,13 +432,19 @@ public class ChiefControl {
         JTextField chiefIdField = new JTextField();
         JPasswordField chiefPsField = new JPasswordField();
         JTextField chiefBlockField = new JTextField();
+        JTextField dateField = new JTextField();
+        JTextField sessionField = new JTextField();
         
         panel.add(new JLabel("Chief ID: "));
         panel.add(chiefIdField);
         panel.add(new JLabel("Password: "));
         panel.add(chiefPsField);
-        panel.add(new JLabel("Block: "));
-        panel.add(chiefBlockField);
+//        panel.add(new JLabel("Block: "));
+//        panel.add(chiefBlockField);
+//        panel.add(new JLabel("Date: "));
+//        panel.add(dateField);
+//        panel.add(new JLabel("Session: "));
+//        panel.add(sessionField);
         
         int result = JOptionPane.showConfirmDialog(null, panel, "Chief Sign In",
             JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -446,7 +452,10 @@ public class ChiefControl {
         if (result == JOptionPane.OK_OPTION) {
             this.chiefId = chiefIdField.getText();
             this.chiefPs = String.valueOf(chiefPsField.getPassword());
-            this.chiefBlock = chiefBlockField.getText();
+//            this.chiefBlock = chiefBlockField.getText();
+            this.chiefBlock = "M";
+//            String date = dateField.getText();
+//            String session = sessionField.getText();
             chiefSignIn(ChiefControl.this.getChiefId(), this.chiefPs, this.getChiefBlock());
         }
     }

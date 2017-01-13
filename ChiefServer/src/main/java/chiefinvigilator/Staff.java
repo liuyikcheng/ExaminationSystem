@@ -230,6 +230,7 @@ public class Staff {
         
         if(result.isBeforeFirst()){
             while ( result.next() ){
+                if(result.getString("RegNum") != null)
                 cddList.add(new Candidate(result.getString("ExamID"), result.getString("RegNum"),
                                            result.getString("CandidateStatus"), result.getString("PaperCode"),
                                            result.getString("ProgrammeName"), result.getString("CandAttd")));
