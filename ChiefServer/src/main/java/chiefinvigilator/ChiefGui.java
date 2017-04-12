@@ -985,7 +985,7 @@ public class ChiefGui extends javax.swing.JFrame {
         JPasswordField chiefPsField = new JPasswordField();
         JTextField chiefBlockField = new JTextField();
         
-        panel.add(new JLabel("Chief ID: "));
+        panel.add(new JLabel("Staff ID: "));
         panel.add(chiefIdField);
         panel.add(new JLabel("Password: "));
         panel.add(chiefPsField);

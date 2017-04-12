@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="chief database" id="Project_a975cc2" template="Default" database="Sqlite" >
+	<schema name="Default" schemaname="Default" >
+		<table name="CandidateAttendance" >
+			<column name="CA_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="CI_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Paper_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Status" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Attendance" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="TableNumber" type="integer" length="2000000000" decimal="10" jt="4" />
+			<index name="pk_CandidateAttendance" unique="UNIQUE" >
+				<column name="CA_id" />
+			</index>
+			<index name="idx_CandidateAttendance" unique="NORMAL" >
+				<column name="CI_id" />
+			</index>
+			<index name="idx_CandidateAttendance_0" unique="NORMAL" >
+				<column name="Paper_id" />
+			</index>
+			<fk name="fk_CandidateAttendance" to_schema="Default" to_table="CandidateInfo" >
+				<fk_column name="CI_id" pk="CI_id" />
+			</fk>
+			<fk name="fk_CandidateAttendance_0" to_schema="Default" to_table="Paper" >
+				<fk_column name="Paper_id" pk="Paper_id" />
+			</fk>
+		</table>
+		<table name="CandidateInfo" >
+			<column name="CI_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="IC" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Name" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="RegNum" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Programme_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="ExamID" type="text" length="2000000000" decimal="10" jt="-1" />
+			<index name="pk_CandidateInfo" unique="UNIQUE" >
+				<column name="CI_id" />
+			</index>
+			<index name="sqlite_autoindex_CandidateInfo_2" unique="UNIQUE" >
+				<column name="ExamID" />
+			</index>
+			<index name="sqlite_autoindex_CandidateInfo_1" unique="UNIQUE" >
+				<column name="IC" />
+			</index>
+			<index name="idx_CandidateInfo" unique="NORMAL" >
+				<column name="Programme_id" />
+			</index>
+			<index name="Pk_CandidateInfo_0" unique="UNIQUE" >
+				<column name="RegNum" />
+			</index>
+			<fk name="fk_CandidateInfo" to_schema="Default" to_table="Programme" >
+				<fk_column name="Programme_id" pk="Programme_id" />
+			</fk>
+		</table>
+		<table name="ChiefAndRelief" >
+			<column name="CR_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="SI_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Block" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Session_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Status" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Attendance" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="SignInTime" type="text" length="2000000000" decimal="10" jt="-1" />
+			<index name="pk_ChiefAndRelief" unique="UNIQUE" >
+				<column name="CR_id" />
+			</index>
+			<index name="idx_ChiefAndRelief" unique="NORMAL" >
+				<column name="SI_id" />
+			</index>
+			<index name="idx_ChiefAndRelief_0" unique="NORMAL" >
+				<column name="Session_id" />
+			</index>
+			<fk name="fk_ChiefAndRelief" to_schema="Default" to_table="StaffInfo" >
+				<fk_column name="SI_id" pk="SI_id" />
+			</fk>
+			<fk name="fk_ChiefAndRelief_0" to_schema="Default" to_table="SessionAndDate" >
+				<fk_column name="Session_id" pk="Session_id" />
+			</fk>
+		</table>
+		<table name="Collector" >
+			<column name="Collector_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Paper_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="StaffID" type="text" length="2000000000" decimal="10" jt="-1" />
+			<index name="pk_Collector" unique="UNIQUE" >
+				<column name="Collector_id" />
+			</index>
+			<index name="idx_Collector" unique="NORMAL" >
+				<column name="Paper_id" />
+			</index>
+			<fk name="fk_Collector" to_schema="Default" to_table="Paper" >
+				<fk_column name="Paper_id" pk="Paper_id" />
+			</fk>
+		</table>
+		<table name="InvigilatorAndAssistant" >
+			<column name="IA_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="StaffID" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Status" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Attendance" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="SignInTime" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Venue_id" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Session_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<index name="pk_InvigilatorAndAssistant" unique="UNIQUE" >
+				<column name="IA_id" />
+			</index>
+			<index name="idx_InvigilatorAndAssistant" unique="NORMAL" >
+				<column name="Venue_id" />
+			</index>
+			<index name="idx_InvigilatorAndAssistant_0" unique="NORMAL" >
+				<column name="Session_id" />
+			</index>
+			<fk name="fk_InvigilatorAndAssistant" to_schema="Default" to_table="Venue" >
+				<fk_column name="Venue_id" pk="Venue_id" />
+			</fk>
+			<fk name="fk_InvigilatorAndAssistant_0" to_schema="Default" to_table="SessionAndDate" >
+				<fk_column name="Session_id" pk="Session_id" />
+			</fk>
+		</table>
+		<table name="Paper" >
+			<column name="Paper_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="PI_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Venue_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="PaperStartNo" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="TotalCandidate" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Session_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Programme_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="BundleID" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Collector" type="text" length="2000000000" decimal="10" jt="-1" />
+			<index name="pk_Paper" unique="UNIQUE" >
+				<column name="Paper_id" />
+			</index>
+			<index name="idx_Paper" unique="NORMAL" >
+				<column name="PI_id" />
+			</index>
+			<index name="idx_Paper_0" unique="NORMAL" >
+				<column name="Venue_id" />
+			</index>
+			<index name="idx_Paper_1" unique="NORMAL" >
+				<column name="Session_id" />
+			</index>
+			<index name="idx_Paper_2" unique="NORMAL" >
+				<column name="Programme_id" />
+			</index>
+			<index name="idx_Paper_3" unique="NORMAL" >
+				<column name="Collector" />
+			</index>
+			<fk name="fk_Paper" to_schema="Default" to_table="PaperInfo" >
+				<fk_column name="PI_id" pk="PI_id" />
+			</fk>
+			<fk name="fk_Paper_0" to_schema="Default" to_table="Venue" >
+				<fk_column name="Venue_id" pk="Venue_id" />
+			</fk>
+			<fk name="fk_Paper_1" to_schema="Default" to_table="SessionAndDate" >
+				<fk_column name="Session_id" pk="Session_id" />
+			</fk>
+			<fk name="fk_Paper_2" to_schema="Default" to_table="Programme" >
+				<fk_column name="Programme_id" pk="Programme_id" />
+			</fk>
+			<fk name="fk_Paper_3" to_schema="Default" to_table="StaffInfo" >
+				<fk_column name="Collector" pk="StaffID" />
+			</fk>
+		</table>
+		<table name="PaperInfo" >
+			<column name="PI_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="PaperCode" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="PaperDescription" type="text" length="2000000000" decimal="10" jt="-1" />
+			<index name="pk_PaperInfo" unique="UNIQUE" >
+				<column name="PI_id" />
+			</index>
+		</table>
+		<table name="Programme" >
+			<column name="Programme_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Name" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Faculty" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="ProgrammeGroup" type="integer" length="2000000000" decimal="10" jt="4" />
+			<index name="pk_Programme" unique="UNIQUE" >
+				<column name="Programme_id" />
+			</index>
+		</table>
+		<table name="SessionAndDate" >
+			<column name="Session_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Session" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Date" type="text" length="2000000000" decimal="10" jt="-1" />
+			<index name="pk_SessionAndDate" unique="UNIQUE" >
+				<column name="Session_id" />
+			</index>
+		</table>
+		<table name="StaffInfo" >
+			<column name="SI_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="StaffID" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Name" type="text" length="2000000000" decimal="10" jt="-1" />
+			<index name="pk_StaffInfo" unique="UNIQUE" >
+				<column name="SI_id" />
+			</index>
+			<index name="Pk_StaffInfo_0" unique="UNIQUE" >
+				<column name="StaffID" />
+			</index>
+		</table>
+		<table name="StudentMark" >
+			<column name="Mark_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="RegNum" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="PI_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Practical" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Coursework" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Exam" type="integer" length="2000000000" decimal="10" jt="4" />
+			<index name="pk_StudentMark" unique="UNIQUE" >
+				<column name="Mark_id" />
+			</index>
+			<index name="idx_StudentMark" unique="NORMAL" >
+				<column name="PI_id" />
+			</index>
+			<index name="idx_StudentMark_0" unique="NORMAL" >
+				<column name="RegNum" />
+			</index>
+			<fk name="fk_StudentMark" to_schema="Default" to_table="PaperInfo" >
+				<fk_column name="PI_id" pk="PI_id" />
+			</fk>
+			<fk name="fk_StudentMark_0" to_schema="Default" to_table="CandidateInfo" >
+				<fk_column name="RegNum" pk="RegNum" />
+			</fk>
+		</table>
+		<table name="Venue" >
+			<column name="Venue_id" type="integer" length="2000000000" decimal="10" jt="4" />
+			<column name="Block" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Name" type="text" length="2000000000" decimal="10" jt="-1" />
+			<column name="Size" type="integer" length="2000000000" decimal="10" jt="4" />
+			<index name="pk_Venue" unique="UNIQUE" >
+				<column name="Venue_id" />
+			</index>
+		</table>
+		<table name="sqlite_sequence" >
+			<column name="name" type="textfacultytext" length="2000000000" decimal="10" jt="12" />
+			<column name="seq" type="textfacultytext" length="2000000000" decimal="10" jt="12" />
+		</table>
+	</schema>
+	<connector name="chief database" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.14.2.1.jar" driver_desc="Standard" host="localhost" port="7210" instance="C:/Users/Krissy/Documents/fyp/ExaminationSystem/ChiefServer/ChiefDataBase.db" />
+	<layout name="Default Layout" id="Layout_3b87bae" show_relation="columns" >
+		<entity schema="Default" name="CandidateAttendance" color="bfd4f5" x="45" y="45" />
+		<entity schema="Default" name="CandidateInfo" color="bfd4f5" x="225" y="45" />
+		<entity schema="Default" name="ChiefAndRelief" color="bfd4f5" x="225" y="240" />
+		<entity schema="Default" name="Collector" color="bfd4f5" x="45" y="240" />
+		<entity schema="Default" name="InvigilatorAndAssistant" color="c8f5bf" x="600" y="45" />
+		<entity schema="Default" name="Paper" color="c8f5bf" x="795" y="45" />
+		<entity schema="Default" name="PaperInfo" color="c8f5bf" x="600" y="255" />
+		<entity schema="Default" name="Programme" color="c8f5bf" x="420" y="255" />
+		<entity schema="Default" name="SessionAndDate" color="f5ddbf" x="420" y="495" />
+		<entity schema="Default" name="StaffInfo" color="f5ddbf" x="570" y="495" />
+		<entity schema="Default" name="StudentMark" color="f5ddbf" x="570" y="645" />
+		<entity schema="Default" name="Venue" color="f5ddbf" x="420" y="645" />
+		<entity schema="Default" name="sqlite_sequence" color="bfbff5" x="45" y="495" />
+	</layout>
+	<layout name="Sample Layout with Groups" id="Layout_18cbdd" show_relation="columns" >
+		<entity schema="Default" name="PaperInfo" color="c8f5bf" x="915" y="285" />
+		<entity schema="Default" name="Programme" color="c8f5bf" x="915" y="555" />
+		<entity schema="Default" name="SessionAndDate" color="f5ddbf" x="720" y="555" />
+		<entity schema="Default" name="StaffInfo" color="f5ddbf" x="555" y="555" />
+		<entity schema="Default" name="Venue" color="f5ddbf" x="555" y="90" />
+		<entity schema="Default" name="sqlite_sequence" color="bfbff5" x="735" y="750" />
+		<entity schema="Default" name="CandidateAttendance" color="bfd4f5" x="1125" y="285" />
+		<entity schema="Default" name="CandidateInfo" color="bfd4f5" x="1125" y="60" />
+		<entity schema="Default" name="InvigilatorAndAssistant" color="c8f5bf" x="720" y="45" />
+		<entity schema="Default" name="Collector" color="bfd4f5" x="915" y="750" />
+		<entity schema="Default" name="ChiefAndRelief" color="bfd4f5" x="540" y="285" />
+		<entity schema="Default" name="Paper" color="c8f5bf" x="720" y="285" />
+		<entity schema="Default" name="StudentMark" color="f5ddbf" x="1125" y="555" />
+		<callout x="45" y="240" pointer="NO" >
+			<comment><![CDATA[In DbSchema you may create multiple layouts with the same or different tables.
+Layouts will be saved to project file. 
+Double-click any column, foreign key or table headers to edit.]]></comment>
+		</callout>
+	</layout>
+	<layout name="Sample Layout with Relational Data Browse" id="Layout_2d39f97d" show_relation="columns" >
+		<entity schema="Default" name="CandidateAttendance" color="bfd4f5" x="45" y="165" />
+		<entity schema="Default" name="CandidateInfo" color="bfd4f5" x="225" y="165" />
+		<entity schema="Default" name="ChiefAndRelief" color="bfd4f5" x="225" y="360" />
+		<entity schema="Default" name="Collector" color="bfd4f5" x="45" y="360" />
+		<entity schema="Default" name="InvigilatorAndAssistant" color="c8f5bf" x="600" y="165" />
+		<entity schema="Default" name="Paper" color="c8f5bf" x="795" y="165" />
+		<entity schema="Default" name="PaperInfo" color="c8f5bf" x="600" y="375" />
+		<entity schema="Default" name="Programme" color="c8f5bf" x="420" y="375" />
+		<entity schema="Default" name="SessionAndDate" color="f5ddbf" x="420" y="615" />
+		<entity schema="Default" name="StaffInfo" color="f5ddbf" x="570" y="615" />
+		<entity schema="Default" name="StudentMark" color="f5ddbf" x="570" y="765" />
+		<entity schema="Default" name="Venue" color="f5ddbf" x="420" y="765" />
+		<entity schema="Default" name="sqlite_sequence" color="bfbff5" x="45" y="615" />
+		<callout x="45" y="45" pointer="NO" >
+			<comment><![CDATA[Below is a Relational Data Browse for exploring and editing data from multiple tables at a time.
+Tables should be bind by foreign keys - if they are not you can create VIRTUAL foreign keys in the layout. 
+Virtual foreign keys will be saved to project file.
+ 
+Descend into children tables by pressing the foreign key arrow icon near title.
+Right-click column headers in browse tables to set filters.]]></comment>
+		</callout>
+		<browser id="Browse_1156c6" name="Sample Relational Data Browse" confirm_updates="y" >
+			<browse_table schema="Default" entity="CandidateAttendance" x="10" y="10" width="400" height="300" />
+		</browser>
+	</layout>
+</project>

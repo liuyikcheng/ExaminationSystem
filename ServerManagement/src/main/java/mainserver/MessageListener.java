@@ -316,9 +316,9 @@ public class MessageListener extends Thread{
      */
     protected JSONObject challengMsgToJson(JSONObject jsonMessage, String challengMsg){
         JSONObject json = new JSONObject(jsonMessage.toString());
-        System.out.println(json.toString());
+//        System.out.println(json.toString());
         json.put(InfoType.VALUE, challengMsg);
-        System.out.println(jsonMessage.toString());
+//        System.out.println(jsonMessage.toString());
         return json;
     }
     

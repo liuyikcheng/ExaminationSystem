@@ -65,7 +65,7 @@ public class ChiefControl {
     Integer mainServerPortNum = 5006;
     
     
-    Timer timer = new Timer(5000, new ChiefControl.TimerActionListener());
+  //  Timer timer = new Timer(5000, new ChiefControl.TimerActionListener());
     
     HashMap invMap = new HashMap();
     Integer invNum;
@@ -287,13 +287,13 @@ public class ChiefControl {
         if(tabNum == 1){
             try {
                 createNewClientComm();
-                timer.start();
+               // timer.start();
             } catch (Exception ex) {
                 Logger.getLogger(ChiefControl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
-            timer.stop();
+           // timer.stop();
         }
     }
     
